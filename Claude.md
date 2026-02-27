@@ -139,6 +139,21 @@ When producing deal-related output:
 
 ---
 
+## Critical: Ask Before You Build
+
+**NEVER generate a deliverable based on incomplete or ambiguous inputs.** If you are unsure about the situation, missing key data, or need to make a judgment call — stop and ask clarifying questions FIRST. Do not fill gaps with assumptions and present a finished output.
+
+**Required behaviour:**
+- Before starting any model, memo, deck, or analysis: confirm you have the minimum required inputs. If not, ask.
+- If the user's request is ambiguous (e.g., "build the model" without specifying which entity, what multiple, what structure), ask before proceeding.
+- If a workflow requires inputs you don't have, list what's missing and ask the user to provide them — don't guess.
+- If two reasonable interpretations exist, ask which one the user intends rather than picking one silently.
+- It is better to ask one round of clarifying questions upfront than to produce a deliverable that needs to be redone.
+
+**The only exception:** If the user explicitly says "just use your best judgment" or "make reasonable assumptions," then proceed — but tag every assumption with **[ASSUMPTION]** so they can review.
+
+---
+
 ## Critical: Assumptions & Inferences
 
 **NEVER present assumptions or inferences as facts.** This is dangerous in investment analysis and can lead to flawed decision-making.

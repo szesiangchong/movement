@@ -80,6 +80,18 @@ Located in `workflows/`:
 
 If no specific workflow is mentioned, ask clarifying questions to determine the appropriate analysis framework.
 
+## Clarify Before Building
+
+**Do not generate deliverables on incomplete or ambiguous inputs.** Always ask clarifying questions first if:
+- Key inputs are missing (entity, multiple, structure, time period, metric)
+- The request has more than one reasonable interpretation
+- A workflow requires data the user hasn't provided
+- You would need to make a material assumption to proceed
+
+Ask one focused round of questions upfront. Do not produce a full deliverable and hope the user corrects it after.
+
+**Exception:** If the user explicitly says to use best judgment or make reasonable assumptions, proceed — but tag every assumption with [ASSUMPTION].
+
 ## Output Standards
 
 - Structure analysis clearly with headers
