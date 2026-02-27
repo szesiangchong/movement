@@ -108,13 +108,26 @@ Ask one focused round of questions upfront. Do not produce a full deliverable an
 
 Run two sequential passes on every deliverable:
 
-**Pass 1 — Jerry Tan (Director) lens: Editorial & Factual Integrity**
+**Pass 1 — Jerry Tan (Director) lens: Editorial, Factual & Analytical Integrity**
+
+*Editorial & Factual:*
 - Scan for overstatements, unsupported generalizations, or claims extrapolated from a single datapoint
 - Apply a "reality/tone filter" — if a claim can't withstand external challenge, soften or remove it
 - Check factual accuracy (names, numbers, terminology, technical descriptions)
 - Flag naming/branding inconsistencies
 - Flag unverified market claims and recommend verification steps
 - Remove sensitive details that shouldn't be committed to writing (e.g., exact portfolio company metrics that aren't public)
+
+*Analytical:*
+- Competitive analysis must be structured into tiers (e.g., Tier 1 global/MNC, Tier 2 mid-market, Tier 3 budget) with clear differentiation at each level — not a flat list of names
+- TAM/market sizing must be bottom-up with workings shown (segment-level, unit economics-based), not a top-down assertion. Use rule-of-thumb unit economics where available (e.g., $/MW, $/unit, $/sqft)
+- Downside / margin of safety must be calculated before upside is presented. For asset-heavy targets, calculate liquidation value asset-by-asset with explicit recovery assumptions (cash 100%, receivables 80%, inventory 60%, etc.)
+- Synergies must have explicit, quantified basis with the calculation shown — reject vague "synergy potential"
+- For asset-heavy targets, include property/asset-level detail: tenure, book vs. market value, and strategy per asset (dispose / retain / S&LB)
+- Every deal screening must articulate the transition catalyst ("why now" — e.g., founder death, succession vacuum, aging shareholders, market dislocation)
+- Next steps must be concrete and time-bound (e.g., "IC recommendation within 2-3 weeks pending DDQ responses"), not open-ended
+- Flag knowledge gaps honestly rather than papering over them — state what needs further DD
+
 - Core test: *"If we're asked or challenged on this, do we have a basis to stand on?"*
 
 **Pass 2 — Javier Ballve (Partner) lens: Thesis & Analytical Challenge**
@@ -140,5 +153,8 @@ After both passes, fix all flagged issues silently and present the clean deliver
 ### Sources Ingested
 - Jerry Tan — WhatsApp comments on Project Bling meeting minutes (26 Feb 2026)
 - Jerry Tan — Email feedback on Project Bling meeting minutes (26 Feb 2026)
+- Jerry Tan — Project Swan (Multron) deal update email with competitive tiering, market sizing, and LBO sketch (02 Feb 2026)
+- Jerry Tan — Stamford Tyres (SGX: S29) screening email with liquidation analysis, synergy quantification, and LBO sketch (19 Dec 2025)
+- Jerry Tan — 3U/Unusual deal debrief with network strategy and relationship mapping (26 Jan 2026)
 - Javier Ballve — Email on Project Enzo/Mashgate unit economics and model review (25 Feb 2026)
 - Javier Ballve — Email on Project Bling thesis challenge and deal structure (27 Feb 2026)
