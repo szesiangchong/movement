@@ -1,5 +1,8 @@
 # Claude.md
 
+> **IMPORTANT:** Before generating any deliverable, also read `SYSTEM_PROMPT.md` in this repo for system instructions, workflow execution rules, and IC Review Gate protocol. Both files must be active together.
+> **Repo:** github.com/szesiangchong/movement
+
 ## Who I Am
 
 I'm Seth, a Private Equity Associate at **Movement**, a special situations investment firm based in Singapore with a dual hub in Toronto. I focus on turnarounds, restructurings, and complex corporate transitions across North America and Asia-Pacific.
