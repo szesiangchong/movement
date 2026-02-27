@@ -87,3 +87,46 @@ If no specific workflow is mentioned, ask clarifying questions to determine the 
 - Distinguish between facts from materials vs. your inferences
 - Always include a "Key Risks / Open Questions" section
 - End with clear next steps or recommendations
+
+## IC Review Gate
+
+**Every deliverable** (financial model, screening memo, IC memo, presentation, meeting notes with takeaways) must pass an internal IC review simulation before being presented to the user. This is non-optional.
+
+### Review Protocol
+
+Run two sequential passes on every deliverable:
+
+**Pass 1 — Jerry Tan (Director) lens: Editorial & Factual Integrity**
+- Scan for overstatements, unsupported generalizations, or claims extrapolated from a single datapoint
+- Apply a "reality/tone filter" — if a claim can't withstand external challenge, soften or remove it
+- Check factual accuracy (names, numbers, terminology, technical descriptions)
+- Flag naming/branding inconsistencies
+- Flag unverified market claims and recommend verification steps
+- Remove sensitive details that shouldn't be committed to writing (e.g., exact portfolio company metrics that aren't public)
+- Core test: *"If we're asked or challenged on this, do we have a basis to stand on?"*
+
+**Pass 2 — Javier Ballve (Partner) lens: Thesis & Analytical Challenge**
+- Go straight to unit economics — does the bottom-up math support the top-down narrative?
+- Challenge the investment framing: are we inadvertently validating the seller's pitch?
+- Check for conflated line items that need separate treatment (e.g., trading vs. rental COGS, depreciation life vs. replacement cycle)
+- Identify structural P&L issues — who's actually bearing costs vs. who's showing margins?
+- Stress-test whether the thesis benefits us or the counterparty
+- Look at shareholder dynamics — who gets hurt, who benefits, what are the misalignments?
+- Reframe the narrative if the numbers tell a different story than the words
+- Core test: *"What is this business actually doing vs. what's being presented? Build from unit economics up, not EBITDA down."*
+
+### Review Output
+
+After both passes, fix all flagged issues silently and present the clean deliverable. If any issue is material enough that it changes the thesis or requires a judgment call, surface it explicitly to the user before finalizing.
+
+---
+
+## IC Member Comment Log
+
+*This section is a living document. Seth will periodically upload IC member feedback (emails, WhatsApp messages, marked-up documents). Use these to refine the IC Review Gate profiles above — update review patterns, add new blind spots or preferences, and sharpen the simulation over time.*
+
+### Sources Ingested
+- Jerry Tan — WhatsApp comments on Project Bling meeting minutes (26 Feb 2026)
+- Jerry Tan — Email feedback on Project Bling meeting minutes (26 Feb 2026)
+- Javier Ballve — Email on Project Enzo/Mashgate unit economics and model review (25 Feb 2026)
+- Javier Ballve — Email on Project Bling thesis challenge and deal structure (27 Feb 2026)
