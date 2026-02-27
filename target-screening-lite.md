@@ -433,24 +433,48 @@ Close with 2-3 sentences: what the spread between scenarios tells you (i.e. the 
 
 ---
 
-## 11. Consolidated Questions / Info Required
+## 11. Due Diligence Requests
 
-Present all DD asks as a single prioritised table. This table should be comprehensive enough to serve as a Day 1 management meeting agenda or CDD request list.
+Split into two sub-sections: questions to discuss with management, and documents/data to obtain.
 
-| Topic | Question | Rationale |
-|---|---|---|
+### 11A. Additional Questions
+
+These are discussion items for management meetings and calls — things that require explanation, context, or judgement from the seller/management team. Frame as open-ended questions that cannot be answered by a document alone.
+
+| # | Topic | Question | Rationale | Priority |
+|---|---|---|---|---|
 
 **Formatting guidance:**
-- Questions can and should be multi-part where a single topic requires several data points. Write the full ask — don't split one topic across three rows when a single detailed question is clearer. Example: "Provide revenue, GP, and EBITDA breakdown for each BU for FY22–FY25. Within [BU], split between [sub-segments]."
+- Questions should require management explanation, not just data. If a question can be answered by sending a file, it belongs in 11B.
+- Questions can and should be multi-part where a single topic requires several angles. Write the full ask — don't split one topic across three rows when a single detailed question is clearer.
 - Rationale should be opinionated — not just "why we're asking" but what the bull vs. bear answer looks like and what it means for the deal. Example: "If multi-BU stacking is rare, the three units are a conglomerate, not an integrated platform."
-- Include "To follow-up" or "To ask in physical meeting" action tags in the question column where appropriate.
+- Mark questions intended for physical meetings with **[In-Person]** tag.
 
 **Priority ordering (group rows in this sequence):**
-1. **Seller alignment & governance** — equity splits, decision-maker, BU coordination
-2. **Financial data & revenue quality** — BU-level P&L, recurring revenue, pipeline, product mix
-3. **Contracts & CoC** — key contract terms, landlord agreements, transferability
-4. **Operations & capacity** — fabrication, supply chain, team structure, pricing sophistication
-5. **Strategic / tech** — programmatic readiness, cross-sell data, capex allocation
-6. **Balance sheet** — audited financials, working capital, debt, related-party balances
+1. **Seller alignment & governance** — equity splits, decision-maker, post-close involvement
+2. **Revenue quality & commercial** — pipeline, competitive dynamics, margin drivers
+3. **Operations & capability** — manufacturing process, key-man, team structure
+4. **Strategic** — product roadmap, regional strategy, market positioning
 
-Target 15-20 specific, actionable questions across these groups.
+Target 8-12 focused discussion questions.
+
+### 11B. Further Information / Files Required
+
+These are specific documents, schedules, and data sets to request from the seller, broker, or VDR. Frame as concrete deliverables with clear descriptions of what is needed.
+
+| # | Topic | Document / Data Required | Purpose | Priority |
+|---|---|---|---|---|
+
+**Formatting guidance:**
+- Each row should be a specific, named deliverable — not a vague request. Example: "BU-level P&L for FY2022-FY2025 (revenue, GP, EBITDA by service line)" not "financial data."
+- Purpose should state what the document validates or disproves in the investment thesis.
+- Include format preference where relevant (e.g., "Excel preferred," "PDF copies of executed agreements").
+
+**Priority ordering (group rows in this sequence):**
+1. **Financial data** — BU-level P&Ls, restated figures, audited accounts
+2. **Contracts & legal** — lease documents, client agreements, CoC clauses
+3. **Operational data** — org chart, headcount, asset schedules, supplier lists
+4. **Balance sheet & WC** — related-party schedules, FX exposure, depreciation detail
+5. **Strategic** — product roadmaps, R&D budgets, distributor agreements
+
+Target 10-15 specific document requests.
