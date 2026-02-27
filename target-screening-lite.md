@@ -24,14 +24,21 @@ If the target has multiple BUs or service lines, explain how they interrelate. D
 - What is the reinforcing loop — how does each BU feed the next?
 - What is the limitation — where does the loop break or fail to scale?
 
-### Bottom-Line
+### Key Takeaways
 
-Provide **4-5 punchy bullets** — the key takeaways a reader needs before going deeper. These should be opinionated and include the "so what." Think of these as the bullets you'd put on the first slide of an IC deck. Each bullet should be a distinct angle:
+Provide **5-6 punchy bullets** — the key takeaways a reader needs before going deeper. These should be opinionated and include the "so what." Think of these as the bullets you'd put on the first slide of an IC deck. Each bullet should be a distinct angle:
 - The core strength / structural advantage
 - The valuation or multiple arbitrage opportunity
 - The growth signal (why demand exists)
+- The market context & timing (1-2 macro trends that make *now* the right time to buy — why this market is attractive for the specific thesis)
 - The primary risk / "poison pill"
 - The execution or governance risk
+
+### Recommended Action
+
+State one of three postures: **Accelerate** (pursue aggressively — prioritise resourcing and timeline), **Hold** (proceed at normal pace but flag key concerns to resolve before committing further), or **Pass** (walk away — thesis does not hold or risk-reward is unfavourable).
+
+Write **one dense paragraph** (4-6 sentences) synthesising the key takeaways into a cohesive recommendation. This paragraph must reference specific findings from across the memo — financial profile, market positioning, deal structure, risks, and returns — not generic statements. Factor in the **availability of information at this stage**: if key data points are missing or unverified (e.g., no audited BU-level P&L, no confirmed contract terms, unaudited management figures), this should temper the recommendation toward Hold until those gaps are closed, even if the thesis is otherwise compelling. The reader should be able to read the Key Takeaways + Recommended Action and have a clear preliminary view before reading the full document. Lead with the posture, then explain why.
 
 ---
 
@@ -90,50 +97,62 @@ Add a **"So what"** paragraph after the table: What does the project portfolio r
 
 ## 6. Market Overview
 
-### 6.1 Executive Summary
+### 6.1 Market Size
 
-3 bullet points on why this market is attractive for the specific investment thesis. Include one point on 2-3 macro trends that make *now* the right time to buy. Punchy — this is the IC hook.
+Present as a single table. Every row must end with a VP-level observation — not a description, but an *investment implication.*
 
-### 6.2 Market Size
+**Single-methodology rule:**
+- Each row must use ONE measurement basis. Do not mix data sources that measure the same market differently (e.g. "contracts awarded" vs. "construction output," or "revenue" vs. "billings"). Pick the metric most relevant to how the target wins work, and state the basis explicitly (e.g. "contracts awarded basis," "output basis," "revenue basis"). If a cross-reference from a second source is useful, relegate it to the derivation note below the table — never put two figures measuring the same thing in the same cell.
 
-Present as a single table. Every row must end with a VP-level observation — not a description, but an *investment implication.* Include source citations in format: "Source, Year" with links where available.
+**Source citation rules:**
+- Add a **Source** column to the table. Every row must have a source.
+- Format: `[Source Name, Year](URL)` — always include the hyperlink, not just the name.
+- If a figure is a published number (e.g. market research report), cite the report with a direct link.
+- If a figure is derived/estimated (e.g. SOM where no published data exists), mark as `[ASSUMPTION]` and include a **derivation note** below the table explaining the methodology (e.g. "TAM × segment share × fee-as-%-of-contract-value"). Cross-reference with at least one published data point.
+- SOM should cite the target's own financials (e.g. "AFS FY2025").
 
-| Level | Market Segment | Size | CAGR | Observations |
-|---|---|---|---|---|
-| **TAM** | [Broadest relevant market] | | | *Why does this matter for exit / strategic interest?* |
-| **SAM** | [Segments the company competes in] | | | *What does this growth rate mean for the platform thesis?* |
-| **SOM** | [Realistic near-term capture] | | | *Current share % — can we double through organic + M&A?* |
+| Level | Market Segment | Size | CAGR | Observations | Source |
+|---|---|---|---|---|---|
+| **TAM** | [Broadest relevant market] | | | *Why does this matter for exit / strategic interest?* | [Report, Year](URL) |
+| **SAM** | [Segments the company competes in] | | | *What does this growth rate mean for the platform thesis?* | [ASSUMPTION] — see derivation below |
+| **SOM** | [Realistic near-term capture] | | | *Current share % — can we double through organic + M&A?* | AFS [Year] |
+
+**SAM derivation note** (required if SAM is estimated):
+> State the methodology: e.g. "Total construction demand × public infra share × supervision fee as % of contract value." Show the calculation with ranges. Cite the data inputs. Flag what needs to be validated in DD.
 
 Follow with a **Segment-Level Breakdown** table mapping each segment to the relevant BU and its implied strategic priority (cash cow, growth engine, multiple driver).
 
 Include regional or macro growth context where relevant — construction market size, smart city trends, regulatory catalysts.
 
-### 6.3 Right to Play & Right to Win
+### 6.2 Right to Play & Right to Win
 
 - **Right to Play:** What gives this company permission to compete (licences, certifications, track record, relationships)?
 - **Right to Win:** What gives this company an edge over competitors (proprietary capability, cost advantage, regulatory moat, installed base)?
 - **What They Lack:** What capability gaps or structural weaknesses limit their ability to capture more of the SAM?
 
-### 6.4 Competitor Analysis
+### 6.3 Competitive Landscape & Structural Moat
 
-Structure in tiers. For each tier, write a single dense paragraph that names 2-4 specific competitors and explains: (a) what they do that overlaps with the target, (b) what they lack vs. the target's integrated model, and (c) what the target lacks vs. them. The goal is to surface where the target wins, where it loses, and where competitive dynamics could shift.
+Present as a **single table** covering all three tiers. Use tier headers as row separators. The columns are designed to surface the key IC questions in one scan: who competes, who can be acquired, who can bundle/integrate, where they overlap, and how dangerous they are.
 
-- **Tier 1 (Direct):** Same capability, same market. Name the top 2-3 competitors. For each: founding year, core capability, key client overlap, and what they can't do that the target can.
-- **Tier 2 (Adjacent):** Partial overlap — different geography, partial capability, or different business model. Explain specifically which part of the target's value chain they compete with and why they can't replicate the full model.
-- **Tier 3 (Substitutes):** New entrants, technology platforms, or disintermediation threats. These are often the most dangerous — explain the mechanism by which they could bypass or unbundle the target's model.
+| Tier | Competitor | Owner (Acquirable?) | Can Bundle [Key Capability]? | Project / Client Overlap | Threat to [Target] |
+|---|---|---|---|---|---|
+| **Tier 1 — Direct** | | | | | |
+| | [Name] | [Parent] — **Yes/No** | **Yes/No.** [What they can bundle.] | [Specific mandates, clients, segments] | **HIGH/MOD/LOW.** [One-line: why they're dangerous or not.] |
+| **Tier 2 — Adjacent** | | | | | |
+| | [Name] | [Parent] — **Yes/No** | **Yes/No/Partial.** [Scope.] | [Where overlap occurs] | **HIGH/MOD/LOW.** [One-line.] |
+| **Tier 3 — Substitutes** | | | | | |
+| | [Name / category] | [Owner type] — **Yes/No** | **No.** [Why not.] | [Segment] | **NIL/LOW.** [Structural risk if applicable.] |
 
-### 6.5 Structural Moat & Vulnerability
+**Column guidance:**
+- **Owner (Acquirable?):** State the parent entity and whether the competitor could realistically be acquired by a PE buyer. If most competitors are subsidiaries of listed/GLC groups, this drives scarcity value for an independent target — state explicitly.
+- **Can Bundle [Key Capability]?:** Adapt the column header to the deal's key competitive risk. For QPS: "Can Bundle D+S?" (design + supervise). For media: "Can Replicate 3-BU Model?" For tech: "Has Proprietary Platform?" The column should capture whether the competitor can offer the integrated/bundled package that threatens the target's standalone positioning.
+- **Threat to [Target]:** Rate as HIGH / MODERATE / LOW / NIL. One sentence explaining the mechanism: *why* they are (or aren't) a threat. Not generic — specific to the target's client base, geography, or procurement dynamics.
 
-**The Moat:** Name the moat archetype (e.g. "Vertical Integration," "Regulatory Lock-In," "Network Effects"). Then assess across three core dimensions, rating each as **HIGH**, **MODERATE**, or **LOW** with a one-sentence justification:
-- **Switching Costs (rating):** Is the product embedded or easily ripped out? Higher when the target serves a client across multiple touchpoints. Explain what a client would need to replace if they left — one vendor or multiple?
-- **Pricing Power (rating):** Can we raise prices without losing clients? Strongest where target has near-monopoly positioning or mission-critical product. Note where pricing power differs by BU or segment.
-- **Operational Alpha (rating):** Does the target have a proprietary process, lower cost-to-serve, or cost advantage used as a customer acquisition weapon? Quantify where possible (e.g. "~20-30% lower install costs").
+**After the table, write a combined Observations & Moat paragraph** (one dense paragraph) that covers: (1) defensibility today, (2) the moat archetype and its key dimension — switching costs, pricing power, or operational alpha (rate the strongest one as HIGH/MOD/LOW with one-sentence justification), (3) the structural vulnerability — what is inherently wrong with the business model (not external threats — internal structural issues), and (4) scarcity — is the target one of few acquirable assets at this scale?
 
-**The Vulnerability:** What is inherently wrong with the business model? Not external threats — internal structural issues (inventory concentration, market ceiling, key-person risk, competitive unbundling, interdependent moat components). Be specific about the failure mechanism.
+Close with **DD asks** for management: *"Who do you lose to, and why?"* plus any data gaps.
 
-**Next Step:** One specific DD action to test the moat.
-
-### 6.6 Preliminary Risks & Mitigants
+### 6.4 Preliminary Risks & Mitigants
 
 **Thesis Killers:** The 3 things that would make us walk away. Frame as: *"It's 5 years from now and the deal failed — why?"* Write each as a two-sentence outcome statement: (1) what specifically went wrong, and (2) the consequence for what we actually bought. Example format: "[Risk event happened]. [Consequence — what the business became vs. what we paid for]."
 
@@ -146,40 +165,116 @@ Structure in tiers. For each tier, write a single dense paragraph that names 2-4
 
 ## 7. Financial Profile
 
-Present **two tables** — historical actuals and management projections (if available from CIM). If projections are not available, note this as a data gap.
+All figures in S$'000 (or local currency equivalent). Every number must cite its source.
 
-**Historical:**
+### Historical (Audited):
 
-| Metric | FY [Year-2] | FY [Year-1] | FY [Current] |
-|---|---|---|---|
+Present a **single integrated table** covering P&L, EBITDA build-up, and normalisation adjustments. Revenue must be broken down by service line / BU — do not present a single consolidated revenue line without the underlying split.
 
-**Management Projections (from CIM):**
+| Metric (S$'000) | FY [Year-2] | FY [Year-1] | FY [Current] | Source |
+|---|---|---|---|---|
+| **Revenue** | | | | AFS P&L |
+| *[Service Line 1]* | | | | AFS Note [X] |
+| *[Service Line 2]* | | | | AFS Note [X] |
+| *[Service Line 3]* | | | | AFS Note [X] |
+| **Cost of Services** | | | | **AFS P&L** |
+| *Employee COS* | | | | AFS Note [X] (Employee benefits → COS allocation) |
+| *Non-employee COS (derived)* | | | | **= Total COS − Employee COS** ¹ |
+| *Employee % of COS* | | | | |
+| *Non-employee % of COS* | | | | |
+| **Gross Profit** | | | | AFS P&L |
+| **Gross Margin %** | | | | |
+| Other Income & Gains | | | | AFS P&L (incl. disposal gains) |
+| **Profit Before Tax** | | | | AFS P&L |
+| Tax | | | | AFS P&L |
+| **Net Profit** | | | | AFS P&L |
+| **Net Margin %** | | | | |
+| *EBITDA build-up:* | | | | |
+| Net Profit | | | | |
+| (+) Tax | | | | AFS P&L |
+| (+) Finance Costs | | | | AFS P&L (lease interest) |
+| (+) Depreciation (PPE) | | | | AFS Note [X] |
+| (+) Depreciation (ROU) | | | | AFS Note [X] |
+| **= Adjusted EBITDA** | | | | |
+| **EBITDA Margin %** | | | | |
+| (-) Disposal gains on PPE | | | | AFS P&L (within Other Income) |
+| (-) Impairment reversal | | | | AFS P&L |
+| **= EBITDA excl. gains** | | | | |
+| *Margin excl. gains* | | | | |
+| Dividends Paid | | | | AFS Cash Flow / Note [X] |
+| *[Capacity metric, e.g. Fleet Size, Headcount]* | | | | |
+| *Revenue per unit* | | | | |
+| *EBITDA per unit* | | | | |
 
-| Metric | FY [Year+1] | FY [Year+2] | FY [Year+3] | FY [Year+4] | FY [Year+5] |
-|---|---|---|---|---|---|
+**Key rules for this table:**
+- Revenue must be split by service line. If the AFS or CIM does not break revenue by service line — flag this as a **Day 1 DD ask**. Do not proceed without this data.
+- Flag any single service line >80% of revenue — this is a single-product business regardless of how many "service lines" are listed.
+- The EBITDA build-up walks from Net Profit → EBITDA (bottom-up). Every add-back must cite its AFS source note.
+- "EBITDA excl. gains" strips out non-recurring / non-operating items (disposal gains, impairment reversals, government grants, FX gains). This is the **clean operating EBITDA** used for valuation.
+- Normalisation adjustments (related party charges, owner comp, one-offs) should be presented **separately in the Adjusted EBITDA section of the deep dive**, not lumped into this table. This table shows audited figures only.
+- Include a capacity/efficiency metric at the bottom (fleet size, headcount, branch count — whatever is the operational driver). Revenue per unit and EBITDA per unit reveal operating leverage trends.
+- **COS structure is mandatory.** Break total COS into employee COS (from the employee benefits note — look for the COS vs. admin allocation split) and non-employee COS (derived as Total COS minus Employee COS). Show both as % of total COS. This reveals the employed-vs-outsourced delivery mix and whether the ratio is shifting — a critical margin compression and value creation signal. Add a **footnote (¹)** below the table explaining the derivation: which AFS notes were used, what the non-employee bucket includes (subcontractors, materials, insurance), and any cross-reference to management accounts that confirm the breakdown.
 
-Include rows for: Revenue, Gross Profit, Gross Margin %, Operating Expenses, EBITDA, EBITDA Margin %.
+### P&L Observations
 
-Then provide **3-5 concise bullet observations** — not a narrative. Each bullet should flag something that matters for the deal: margin trends, mix effects, opex leverage, margin credibility, data gaps.
+After the historical table, provide **3-5 concise bullet observations** covering:
+
+1. **Margin trajectory:** Is GP / EBITDA / NP margin expanding, stable, or compressing? Quantify the trend (e.g. "GP margin declined 420bps over 2 years from X% to Y%"). Identify the driver — is it revenue mix, cost inflation, pricing pressure, or operational leverage? If compressing, state whether this is cyclical (project mix, one-off costs) or structural (subcontractor reliance, pricing ceiling).
+2. **Revenue quality:** Is growth real or flat? What is the underlying driver — volume, pricing, or mix? Flag if revenue is concentrated in a single service line (>80%) or client (>30%).
+3. **EBITDA build-up cleanliness:** How many add-back items are in the PAT-to-EBITDA walk? Are they small and auditable, or large and subjective? What is EBITDA-to-OCF conversion — does EBITDA translate to cash?
+4. **Cost structure signal:** What is the split between employee costs and subcontractor/outsourced costs? Is the ratio shifting? If subcontractor reliance is increasing, this is a margin compression driver *and* a value creation opportunity (in-sourcing).
+5. **Owner extraction:** Dividend payout ratio, related party charges, director compensation — what is being extracted pre-sale, and what flows back to EBITDA post-acquisition?
+
+### Management Projections (from CIM, if available):
+
+| Metric (S$'000) | FY [Year+1] | FY [Year+2] | FY [Year+3] | FY [Year+4] | FY [Year+5] | Source |
+|---|---|---|---|---|---|---|
+
+If projections are not available, note this as a data gap.
 
 ---
 
-## 8. Bull Case / Base Case / Bear Case
+## 8. Balance Sheet & Working Capital
 
-Present three scenarios. Each should be 3-5 bullets maximum. Be specific — not "strong growth" but "15% revenue CAGR driven by X and Y."
+Present **two tables** — a balance sheet summary and a working capital efficiency table. All figures from audited AFS.
 
-### Bull Case
-- What does the upside look like? What specific catalysts drive it?
-- What exit multiple and MoIC does this support?
+### Balance Sheet:
 
-### Base Case
-- What is the most likely outcome assuming no major surprises?
-- What does steady-state look like?
+| Metric (S$'000) | FY [Year-2] | FY [Year-1] | FY [Current] | Source |
+|---|---|---|---|---|
+| **Cash & FD** | | | | AFS Note [X] |
+| *of which: Fixed Deposits* | | | | AFS Note [X] |
+| **Trade Receivables (net)** | | | | AFS Note [X] |
+| **Inventory** | | | | AFS Note [X] |
+| **Trade Payables** | | | | AFS Note [X] |
+| **PPE / [Key Asset]** | | | | AFS Note [X] |
+| **Total Equity** | | | | AFS BS |
+| **External Debt** | | | | AFS BS |
+| **Capex** | | | | AFS Cash Flow / Note [X] |
+| **Operating Cash Flow** | | | | AFS Cash Flow |
+| **Free Cash Flow (post-capex)** | | | | OCF less Capex |
 
-### Bear Case
-- What breaks the thesis? What specific risks materialise?
-- Is this a walk-away scenario or a price-adjustment scenario?
-- Can the downside be mitigated structurally (earn-outs, warranties, hold-backs)?
+Adapt rows to the business — use PPE (Fleet) for asset-heavy, Contract Assets / WIP for project-based, Intangibles for IP-driven. Include any line item that is material (>5% of total assets) or deal-relevant (pledged assets, restricted cash, related-party balances).
+
+### Working Capital & Efficiency:
+
+| Metric | FY [Year-2] | FY [Year-1] | FY [Current] |
+|---|---|---|---|
+| DSO (days) | | | |
+| DPO (days) | | | |
+| DIO (days) | | | |
+| **Cash Conversion Cycle** | | | |
+| Equity Ratio | | | |
+
+**Formulas:** DSO = (Trade Receivables / Revenue) × 365. DPO = (Trade Payables / COS) × 365. DIO = (Inventory / COS) × 365. CCC = DSO + DIO - DPO. Equity Ratio = Total Equity / Total Assets.
+
+### Balance Sheet Observations
+
+After the WC table, provide **2-3 concise bullet observations** covering the most deal-relevant angles:
+
+1. **Working capital & cash conversion:** Is the CCC improving or deteriorating? Quantify the move and state the cash impact. Include OCF/EBITDA conversion — does EBITDA translate to cash, or is it trapped in receivables / inventory?
+2. **Leverage & financing capacity:** Debt/EBITDA and whether the BS can support acquisition debt. Flag excess cash above operating requirements, embedded value (freehold property at cost, sale-and-leaseback potential), or pledged assets that constrain flexibility.
+3. **Extraction & reinvestment:** Dividend payout ratio, related party charges — what is being extracted pre-sale vs. reinvested (capex)? What flows back post-acquisition?
 
 ---
 
@@ -192,7 +287,7 @@ Before listing levers, revert to first principles. Present as a table:
 | Service | Market Growth | Margin Profile | Current Priority (Assumed) | Strategic Priority |
 |---|---|---|---|---|
 
-Ask: Is the target underweighting a higher-value, higher-margin service? Reference the TAM/SAM/SOM analysis from Section 6.2. State the VCP reorientation thesis.
+Ask: Is the target underweighting a higher-value, higher-margin service? Reference the TAM/SAM/SOM analysis from Section 6.1. State the VCP reorientation thesis.
 
 ### Organic Levers
 
@@ -220,55 +315,109 @@ For each lever: state the specific action, explain the mechanism (how it creates
 
 ## 10. LBO Sketch
 
-High-level returns check. This is a sketch, not a model — no detailed P&L build. Use CIM projections as the base case. Clarify key assumptions with the user before generating (entry multiple, leverage, interest rate, hold period, exit scenarios).
+High-level returns check. Clarify key assumptions with the user before generating (entry multiple, leverage, interest rate, hold period, exit scenarios, revenue growth, EBITDA margin, capex, D&A, NWC).
+
+**LBO Excel Model:** After generating the LBO sketch tables below, ask the user: *"Do you also want me to generate a standalone LBO Excel model (.xlsx)?"* If yes, generate a single-tab Excel file following the format below. Use the RJC LBO Sketch Excel as the formatting template (clone it, swap deal-specific values only). Key formatting rules: blue font (FF0000FF) on light yellow fill (FFFFFFCC) for all input cells, dark header rows (FF1A2332) with white text, light blue fill (FFDCE6F1) for totals/summary rows, Arial throughout, merged section headers B:H, column A as 3.0-width spacer, column B=36, C=14, D-H=13, I=30 for notes. All computed cells must use formulas referencing the input block — no hardcoded values. Include a sensitivity table showing Sponsor MoIC across entry/exit multiple combinations.
+
+### Key Assumptions Block (20 inputs)
+
+All in Column C with blue font on yellow fill. Column I for source notes.
+
+| Row | Input | Format | Notes |
+|---|---|---|---|
+| EBITDA (entry year) | S$'000 | Currency | Source reference |
+| Entry Multiple | X.0x | Multiple | [ASSUMPTION] |
+| Sponsor Stake (%) | X.0% | Percentage | State deal structure (100% acq, secondary, etc.) |
+| Leverage (x EBITDA) | X.0x | Multiple | [ASSUMPTION] |
+| Interest Rate (p.a.) | X.0% | Percentage | State collateral basis |
+| Amortisation (years) | N | Integer | Straight-line |
+| Hold Period (years) | N | Integer | [ASSUMPTION] |
+| Tax Rate | X.0% | Percentage | SG corporate rate |
+| Excess Cash (extractable) | S$'000 | Currency | Source: AFS/Mgmt BS. Net of operating minimum if applicable. |
+| Existing Debt (to refinance) | S$'000 | Currency | Source: AFS/Mgmt BS |
+| Operating Cash Minimum | S$'000 | Currency | If already netted in excess cash, set to 0 |
+| Transaction Cost (% of EV) | X.0% | Percentage | [ASSUMPTION] |
+| Exit Multiple — Scenario 1 | X.0x | Multiple | Flat |
+| Exit Multiple — Scenario 2 | X.0x | Multiple | Re-rating thesis |
+| Base Revenue (entry year) | S$'000 | Currency | Source reference |
+| Revenue CAGR | X.0% | Percentage | State basis (conservative vs CIM) |
+| EBITDA Margin | X.0% | Percentage | Should cross-check to EBITDA input |
+| Capex (annual) | S$'000 | Currency | State basis |
+| D&A (annual) | S$'000 | Currency | Entry year actual |
+| NWC (% of Revenue) | X.0% | Percentage | Incremental drag on growth |
 
 ### A. Entry Valuation
 
 | Metric | Value | Notes |
 |---|---|---|
-| Entry EV (Xx on EBITDA) | S$XM | CIM FY[Year] EBITDA |
-| (-) Acquisition Debt (Yx EBITDA) | (S$XM) | Secured term loan on existing assets. State collateral basis and interest rate. |
-| **Sponsor Equity Cheque** | **S$XM** | |
+| EBITDA | =C5 | Entry year basis |
+| Entry Multiple | =C6 | |
+| **Enterprise Value** | =EBITDA × Multiple | |
+| (-) Net Debt / (+) Net Cash | =Cash − Debt | |
+| **Equity Value (100%)** | =EV + Net Cash | Blue-band total row |
 
-### B. Net Debt Bridge
+Then show Ownership & Capital Structure: Sponsor X% and Family/Seller Y% of equity value.
 
-| Metric | Value | Notes |
-|---|---|---|
-| **Start: Pro Forma Net Debt** | **(S$XM)** | Existing debt + new acquisition financing |
-| (+) 5-Year Operating FCF | +S$XM | Show cumulative EBITDA, less interest (on declining balance), less tax. One-line-per-component in the notes. |
-| (-) Debt Principal Repayment | (S$XM) | Amortisation schedule (e.g. straight-line over N years) |
-| **End: Exit Net Position** | **+/-S$XM** | State ending leverage. |
+### B. Sources & Uses
 
-**FCF Schedule (supporting detail):**
+Two-column layout side by side (Uses left, Sources right):
+
+**Uses:** equity acquisition + debt refinancing + transaction costs = Total Uses.
+**Sources:** acquisition debt (Xx EBITDA) + excess cash extraction + total equity required (residual) = Total Sources. Sources must equal Uses.
+
+State debt terms in a note row below: "Debt: Secured term loan, X% p.a. fixed, Nyr straight-line amort. Secured against [collateral]."
+
+### C. FCF Schedule (expanded — full Revenue-to-FCF build)
 
 | | Yr 1 | Yr 2 | Yr 3 | Yr 4 | Yr 5 | Cumulative |
 |---|---|---|---|---|---|---|
-| EBITDA | | | | | | |
-| Less: Interest | | | | | | |
-| Pre-Tax Income | | | | | | |
-| Less: Tax | | | | | | |
-| **FCF** | | | | | | |
+| Revenue | =Base × (1+CAGR)^N | | | | | |
+| EBITDA | =Revenue × Margin | | | | | |
+| (-) D&A | | | | | | |
+| **EBIT** | | | | | | |
+| | | | | | | |
+| Opening Debt | | | | | | |
+| Less: Interest | =Opening × Rate | | | | | |
+| (-) Principal Repayment | =AcqDebt / Amort | | | | | |
 | Closing Debt | | | | | | |
-| **Excess Cash (cumulative)** | | | | | | |
+| | | | | | | |
+| Pre-tax Income | =EBIT + Interest | | | | | |
+| Less: Tax | | | | | | |
+| (+) D&A Addback | | | | | | |
+| (-) Capex | | | | | | |
+| (-) Change in NWC | =-(ΔRevenue) × NWC% | | | | | |
+| **Unlevered FCF** | | | | | | |
+| **Levered FCF** | =UFCF + Interest + Principal | | | | | |
+| **Cumulative Excess Cash** | Running total | | | | | |
+| DSCR | =UFCF / (Interest + Principal) | | | | | |
 
-### C. Exit Valuation
+Then show Net Debt Bridge Summary: remaining debt at exit, cash on hand, net cash position, exit leverage.
 
-Present two scenarios side by side:
+### D. Exit Valuation
+
+Present two scenarios side by side. **Use Year 5 computed EBITDA (growing), not entry EBITDA.**
 
 | Metric | Scenario 1: Flat Multiple | Scenario 2: Re-Rating |
 |---|---|---|
+| Exit EBITDA (Year 5) | =Yr5 EBITDA from FCF schedule | Same |
 | Exit Multiple | Xx (same as entry) | Yx (platform / recurring re-rating) |
-| Exit EBITDA | S$XM | S$XM |
-| Enterprise Value | S$XM | S$XM |
-| (+/-) Net Cash / (Debt) | S$XM | S$XM |
-| **Exit Equity Value** | **S$XM** | **S$XM** |
+| Enterprise Value | | |
+| (+) Net Cash at Exit | | |
+| Exit Equity Value (100%) | | |
+| **Sponsor's X% Share** | | |
 
-### D. Returns
+### E. Returns
 
 | Metric | Scenario 1 | Scenario 2 |
 |---|---|---|
-| **MoIC** (on S$XM equity) | X.Xx | X.Xx |
-| **IRR** (N-year hold) | ~X% | ~X% |
+| Sponsor equity invested | =Total equity required × Sponsor% | Same |
+| Sponsor exit proceeds | =Sponsor's share from exit | Same |
+| **MoIC** | X.Xx | X.Xx |
+| **IRR** (N-year hold) | =MoIC^(1/N)−1 | |
+
+### F. Sensitivity Table
+
+3×4 matrix: Entry multiples (rows) × Exit multiples (columns). Show Sponsor MoIC in each cell, with a "Sponsor Eq." column showing how the equity cheque changes by entry multiple. Highlight the base case cell (entry = C6, exit = C17) with blue fill.
 
 Close with 2-3 sentences: what the spread between scenarios tells you (i.e. the value of proving the platform thesis), whether the floor return is acceptable, and what the key assumption risk is.
 
