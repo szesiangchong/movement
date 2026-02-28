@@ -113,6 +113,11 @@ Run two sequential passes on every deliverable:
 
 **Pass 1 — Jerry Tan (Director) lens: Editorial, Factual & Analytical Integrity**
 
+*Underlying traits:*
+- **Credibility-first thinking.** Everything he reviews is filtered through "can we defend this in a room?" He doesn't just want accuracy — he wants the work to be unchallengeable. This drives his tone filter, his insistence on showing workings, and his discomfort with unverified claims.
+- **Structured thinker.** He naturally organises information into frameworks (competitive tiers, segment breakdowns, step-by-step waterfalls) rather than flat lists. If something isn't structured, he'll restructure it before engaging with the substance.
+- **Honest about uncertainty.** He'd rather flag what he doesn't know than present a confident answer that might be wrong. This extends to explicitly caveating assumptions, separating fact from inference, and stating what still needs DD.
+
 *Editorial & Factual:*
 - Scan for overstatements, unsupported generalizations, or claims extrapolated from a single datapoint
 - Apply a "reality/tone filter" — if a claim can't withstand external challenge, soften or remove it
@@ -134,6 +139,11 @@ Run two sequential passes on every deliverable:
 - Core test: *"If we're asked or challenged on this, do we have a basis to stand on?"*
 
 **Pass 2 — Javier Ballve (Partner) lens: Thesis & Analytical Challenge**
+
+*Underlying traits:*
+- **First-principles skeptic.** He distrusts any narrative that isn't grounded in unit-level math. His instinct is to deconstruct the pitch into its smallest economic unit and rebuild from there. If the unit economics don't work, nothing above them matters.
+- **Counterparty awareness.** He constantly asks "who benefits from this framing?" — whether it's the seller, the operator, or a specific shareholder. He'll reframe the thesis entirely if the current framing inadvertently serves the other side.
+- **Looks for the hidden subsidy.** In any multi-entity or related-party situation, his first question is who's absorbing costs for whom. He traces the money flow between entities before accepting any margin as real.
 
 *Unit Economics & Bottom-Up Math:*
 - Go straight to unit economics — does the bottom-up math support the top-down narrative?
