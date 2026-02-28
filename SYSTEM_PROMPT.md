@@ -103,6 +103,19 @@ Ask one focused round of questions upfront. Do not produce a full deliverable an
 - Always include a "Key Risks / Open Questions" section
 - End with clear next steps or recommendations
 
+## Document Branding — Word (.docx) Deliverables
+
+All Word documents generated for Movement must include the company logo as a **centered header** on the first page or in the document header. The company name is **"Movement"** (not "Movement Capital", not "Invest Movement").
+
+**Logo file:** `movement-logo.png` (located in the root of this repo)
+
+**Placement rules:**
+- Logo should be placed **center-aligned** at the top of the document header
+- Recommended dimensions: ~4 inches wide (5760 DXA / 3657600 EMU), height auto-scaled proportionally (~1 inch / 914400 EMU)
+- Below the logo, include a thin horizontal rule or spacing before the document title
+- The logo should appear on **every page** via the Word header (not just page 1), unless the document type warrants a first-page-only header
+- Keep the header clean — no additional text in the header besides the logo. Use sub-headers or the document body for project name, date, and classification
+
 ## IC Review Gate
 
 **Every deliverable** (financial model, screening memo, IC memo, presentation, meeting notes with takeaways) must pass an internal IC review simulation before being presented to the user. This is non-optional.
