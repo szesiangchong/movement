@@ -95,12 +95,27 @@ Specific documents, schedules, and data sets to request.
 
 - Dark header row: background #1A2332, white text, bold
 - Alternating row shading: white / light grey (#F5F5F5)
-- Tag column: bold, ALL CAPS
-- Priority column: bold
 - Status column: ☐ (unchecked checkbox)
 - Table width: full page width (landscape if needed for readability)
 - Cell padding: comfortable (80 top/bottom, 120 left/right in DXA)
 - Font: 9pt body, 8pt for rationale column
+
+**Tag column — colored text, bold, ALL CAPS:**
+
+| Tag | Text Color | Hex |
+|---|---|---|
+| PUSHBACK | Red | #C00000 |
+| NEW | Blue | #1F4E79 |
+| FOLLOW-UP | Amber | #BF8F00 |
+| IN-PERSON | Dark grey | #404040 |
+
+**Priority column — colored cell fill + bold text:**
+
+| Priority | Cell Fill | Fill Hex | Text Color | Text Hex |
+|---|---|---|---|---|
+| P0 | Pink | #FADBD8 | Red | #C00000 |
+| P1 | Yellow | #FEF9E7 | Dark gold | #7D6608 |
+| P2 | Green | #D5F5E3 | Dark green | #1E8449 |
 
 ---
 
