@@ -439,50 +439,6 @@ Present two scenarios side by side. **Use Year 5 computed EBITDA (growing), not 
 
 Close with 2-3 sentences: what the spread between scenarios tells you (i.e. the value of proving the platform thesis), whether the floor return is acceptable, and what the key assumption risk is.
 
----
 
-## 11. Due Diligence Requests
 
-Split into two sub-sections: questions to discuss with management, and documents/data to obtain.
-
-### 11A. Additional Questions
-
-These are discussion items for management meetings and calls — things that require explanation, context, or judgement from the seller/management team. Frame as open-ended questions that cannot be answered by a document alone.
-
-| # | Topic | Question | Rationale | Priority |
-|---|---|---|---|---|
-
-**Formatting guidance:**
-- Questions should require management explanation, not just data. If a question can be answered by sending a file, it belongs in 11B.
-- Questions can and should be multi-part where a single topic requires several angles. Write the full ask — don't split one topic across three rows when a single detailed question is clearer.
-- Rationale should be opinionated — not just "why we're asking" but what the bull vs. bear answer looks like and what it means for the deal. Example: "If multi-BU stacking is rare, the three units are a conglomerate, not an integrated platform."
-- Mark questions intended for physical meetings with **[In-Person]** tag.
-
-**Priority ordering (group rows in this sequence):**
-1. **Seller alignment & governance** — equity splits, decision-maker, post-close involvement
-2. **Revenue quality & commercial** — pipeline, competitive dynamics, margin drivers
-3. **Operations & capability** — manufacturing process, key-man, team structure
-4. **Strategic** — product roadmap, regional strategy, market positioning
-
-Target 8-12 focused discussion questions.
-
-### 11B. Further Information / Files Required
-
-These are specific documents, schedules, and data sets to request from the seller, broker, or VDR. Frame as concrete deliverables with clear descriptions of what is needed.
-
-| # | Topic | Document / Data Required | Purpose | Priority |
-|---|---|---|---|---|
-
-**Formatting guidance:**
-- Each row should be a specific, named deliverable — not a vague request. Example: "BU-level P&L for FY2022-FY2025 (revenue, GP, EBITDA by service line)" not "financial data."
-- Purpose should state what the document validates or disproves in the investment thesis.
-- Include format preference where relevant (e.g., "Excel preferred," "PDF copies of executed agreements").
-
-**Priority ordering (group rows in this sequence):**
-1. **Financial data** — BU-level P&Ls, restated figures, audited accounts
-2. **Contracts & legal** — lease documents, client agreements, CoC clauses
-3. **Operational data** — org chart, headcount, asset schedules, supplier lists
-4. **Balance sheet & WC** — related-party schedules, FX exposure, depreciation detail
-5. **Strategic** — product roadmaps, R&D budgets, distributor agreements
-
-Target 10-15 specific document requests.
+> **Note:** Due diligence questions and information requests are no longer part of this memo. They are generated as a separate Annex document using `annex-ddq-irl.md`. This keeps the screening memo focused on thesis and analysis, and produces a standalone DDQ/IRL deliverable in Word format suitable for sending to the seller/broker.
