@@ -203,8 +203,8 @@ Present a **single integrated table** covering P&L, EBITDA build-up, and normali
 | Net Profit | | | | |
 | (+) Tax | | | | AFS P&L |
 | (+) Finance Costs | | | | AFS P&L (lease interest) |
-| (+) Depreciation (PPE) | | | | AFS Note [X] |
-| (+) Depreciation (ROU) | | | | AFS Note [X] |
+| (+) Depreciation (PPE) | | | | **AFS Cash Flow Statement** (Adjustments for: Depreciation of PPE) |
+| (+) Depreciation (ROU) | | | | **AFS Cash Flow Statement** (Adjustments for: Depreciation of ROU assets) |
 | **= Adjusted EBITDA** | | | | |
 | **EBITDA Margin %** | | | | |
 | (-) Disposal gains on PPE | | | | AFS P&L (within Other Income) |
@@ -216,10 +216,14 @@ Present a **single integrated table** covering P&L, EBITDA build-up, and normali
 | *Revenue per unit* | | | | |
 | *EBITDA per unit* | | | | |
 
+**Excel-first rule:** Before writing the financial profile into the memo, build it in a standalone Excel workbook with formulas linked to the management account Excel files (external references). This ensures: (a) the numbers are traceable to source, (b) tie-outs between management accounts and AFS are verified, (c) the model can be updated when new data arrives. The memo table is a formatted summary of the Excel — not the primary work product.
+
 **Key rules for this table:**
-- Revenue must be split by service line. If the AFS or CIM does not break revenue by service line — flag this as a **Day 1 DD ask**. Do not proceed without this data.
+- **Revenue tie-out is mandatory.** If management account P&L files are available, verify that the management account total revenue ties to the AFS audited revenue figure. Common discrepancy: management accounts include "Other Income" (rental, FX gains, disposal gains) in "Total Income," while AFS separates "Revenue" from "Other Income." State which basis you are using (AFS Revenue vs. Mgmt Total Income) and show the reconciliation. Do not mix the two without disclosure.
+- Revenue must be split by service line. If the AFS or CIM does not break revenue by service line — flag this as a **Day 1 DD ask**. Do not proceed without this data. If both management accounts and the IM provide BU-level splits, cross-check them — discrepancies are common and must be flagged.
 - Flag any single service line >80% of revenue — this is a single-product business regardless of how many "service lines" are listed.
 - The EBITDA build-up walks from Net Profit → EBITDA (bottom-up). Every add-back must cite its AFS source note.
+- **D&A must be sourced from the AFS Cash Flow Statement** (look for "Adjustments for: Depreciation of property, plant and equipment" and "Depreciation of right-of-use assets" in the Operating Activities section). These are audited figures — never mark D&A as [ASSUMPTION] when the AFS cash flow statement is available. Only estimate D&A if the AFS cash flow statement is genuinely unavailable (e.g., unaudited draft without a cash flow statement).
 - "EBITDA excl. gains" strips out non-recurring / non-operating items (disposal gains, impairment reversals, government grants, FX gains). This is the **clean operating EBITDA** used for valuation.
 - Normalisation adjustments (related party charges, owner comp, one-offs) should be presented **separately in the Adjusted EBITDA section of the deep dive**, not lumped into this table. This table shows audited figures only.
 - Include a capacity/efficiency metric at the bottom (fleet size, headcount, branch count — whatever is the operational driver). Revenue per unit and EBITDA per unit reveal operating leverage trends.
