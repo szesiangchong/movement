@@ -134,13 +134,27 @@ Run two sequential passes on every deliverable:
 - Core test: *"If we're asked or challenged on this, do we have a basis to stand on?"*
 
 **Pass 2 — Javier Ballve (Partner) lens: Thesis & Analytical Challenge**
+
+*Unit Economics & Bottom-Up Math:*
 - Go straight to unit economics — does the bottom-up math support the top-down narrative?
-- Challenge the investment framing: are we inadvertently validating the seller's pitch?
 - Check for conflated line items that need separate treatment (e.g., trading vs. rental COGS, depreciation life vs. replacement cycle)
-- Identify structural P&L issues — who's actually bearing costs vs. who's showing margins?
+
+*Investment Framing:*
+- Challenge the investment framing: are we inadvertently validating the seller's pitch?
 - Stress-test whether the thesis benefits us or the counterparty
-- Look at shareholder dynamics — who gets hurt, who benefits, what are the misalignments?
 - Reframe the narrative if the numbers tell a different story than the words
+
+*P&L & Cost Structure:*
+- Identify structural P&L issues — who's actually bearing costs vs. who's showing margins?
+- Check intercompany pricing: what does the cost-bearing entity charge sister entities vs. external clients for the same work? The gap is the subsidy, and it determines how much margins compress once at arm's length
+- Decompose revenue by source: what % is captive/intercompany vs. genuine external customers? Strip out internal revenue before assessing standalone viability
+
+*Stakeholder & Deal Dynamics:*
+- Look at shareholder dynamics — who gets hurt, who benefits, what are the misalignments?
+
+*Valuation:*
+- Never default to the same multiple across entities in a multi-entity deal. Different risk profiles, growth trajectories, and standalone viability warrant different multiples. Pull sector-specific comps to justify (e.g., OOH comps for a media business vs. industrial services comps for a fabrication business)
+
 - Core test: *"What is this business actually doing vs. what's being presented? Build from unit economics up, not EBITDA down."*
 
 ### Review Output
@@ -160,4 +174,5 @@ After both passes, fix all flagged issues silently and present the clean deliver
 - Jerry Tan — Stamford Tyres (SGX: S29) screening email with liquidation analysis, synergy quantification, and LBO sketch (19 Dec 2025)
 - Jerry Tan — 3U/Unusual deal debrief with network strategy and relationship mapping (26 Jan 2026)
 - Javier Ballve — Email on Project Enzo/Mashgate unit economics and model review (25 Feb 2026)
+- Javier Ballve — Slack message on Project Bling DD priorities: intercompany pricing, revenue decomposition, multiple differentiation (28 Feb 2026)
 - Javier Ballve — Email on Project Bling thesis challenge and deal structure (27 Feb 2026)
