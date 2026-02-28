@@ -325,6 +325,10 @@ For each lever: state the specific action, explain the mechanism (how it creates
 | [Lever 3 + Lever 4] | +S$X-YM | S$X-YM |
 | **Target (Year 3)** | — | **S$X-YM** |
 
+### Growth Opportunities
+
+Numbered list, 4-7 items. Each item is **2-3 sentences max**: bold label, market catalyst, why the target wins, size the prize. Lead with biggest-TAM opportunity. Be specific — name clients, certs, geographies, dollar values. Flag dependencies and data contradictions inline. No padding.
+
 ---
 
 ## 10. LBO Sketch
