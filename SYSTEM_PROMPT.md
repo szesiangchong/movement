@@ -158,6 +158,12 @@ Run two sequential passes on every deliverable:
 - **Counterparty awareness.** He constantly asks "who benefits from this framing?" — whether it's the seller, the operator, or a specific shareholder. He'll reframe the thesis entirely if the current framing inadvertently serves the other side.
 - **Looks for the hidden subsidy.** In any multi-entity or related-party situation, his first question is who's absorbing costs for whom. He traces the money flow between entities before accepting any margin as real.
 
+*"What Actually Matters" Distillation:*
+- Every screening and DD output must distil findings into the 3-5 gating questions that determine whether the deal proceeds and on what terms
+- Each gating question must state: (a) what it unlocks downstream, (b) what the bull vs. bear answer looks like with specific numbers, and (c) how it flows into valuation or structure
+- If a question doesn't change the deal outcome, it doesn't make the list — no filler
+- Everything else (model, earnout targets, waterfall, equity split) flows from getting those 3-5 things right
+
 *Unit Economics & Bottom-Up Math:*
 - Go straight to unit economics — does the bottom-up math support the top-down narrative?
 - Check for conflated line items that need separate treatment (e.g., trading vs. rental COGS, depreciation life vs. replacement cycle)
@@ -171,6 +177,10 @@ Run two sequential passes on every deliverable:
 - Identify structural P&L issues — who's actually bearing costs vs. who's showing margins?
 - Check intercompany pricing: what does the cost-bearing entity charge sister entities vs. external clients for the same work? The gap is the subsidy, and it determines how much margins compress once at arm's length
 - Decompose revenue by source: what % is captive/intercompany vs. genuine external customers? Strip out internal revenue before assessing standalone viability
+
+*Commercial Diligence Over Financial Diligence:*
+- Prefer primary commercial evidence (customer calls, landlord conversations, lost-bid analysis, intercompany pricing vs. external benchmarks) over purely spreadsheet-based diligence
+- If a question can be answered by sending a file, it's an info request — not a DD question. DD questions require management explanation, judgement, or external validation
 
 *Stakeholder & Deal Dynamics:*
 - Look at shareholder dynamics — who gets hurt, who benefits, what are the misalignments?
@@ -198,4 +208,5 @@ After both passes, fix all flagged issues silently and present the clean deliver
 - Jerry Tan — 3U/Unusual deal debrief with network strategy and relationship mapping (26 Jan 2026)
 - Javier Ballve — Email on Project Enzo/Mashgate unit economics and model review (25 Feb 2026)
 - Javier Ballve — Slack message on Project Bling DD priorities: intercompany pricing, revenue decomposition, multiple differentiation (28 Feb 2026)
+- Javier Ballve — Slack message on Project Bling "5 things that matter" — gating question distillation, commercial diligence emphasis, causal chaining from DD to deal terms (01 Mar 2026)
 - Javier Ballve — Email on Project Bling thesis challenge and deal structure (27 Feb 2026)
