@@ -442,3 +442,9 @@ Close with 2-3 sentences: what the spread between scenarios tells you (i.e. the 
 
 
 > **Note:** Due diligence questions and information requests are no longer part of this memo. They are generated as a separate Annex document using `annex-ddq-irl.md`. This keeps the screening memo focused on thesis and analysis, and produces a standalone DDQ/IRL deliverable in Word format suitable for sending to the seller/broker.
+
+> **Note:** The Market Overview (Section 6) is also generated as a separate Annex document using `annex-marketoverview.md`. When generating a screening memo, always produce both annexes as companion Word documents:
+> 1. `[YYMMDD] Annex - [Project Name] DDQ and IRL.docx` — via `annex-ddq-irl.md`
+> 2. `[YYMMDD] Annex - [Project Name] Market Overview.docx` — via `annex-marketoverview.md`
+>
+> Section 6 in this memo should still contain the market overview content (it is part of the screening narrative), but the standalone annex version adds the Change Log, update flags, and expanded formatting suitable for sharing with co-investors or advisors.

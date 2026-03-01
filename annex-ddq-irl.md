@@ -1,10 +1,12 @@
-# Annex Generator — DDQ/IRL & Market Overview
+# Annex Generator — DDQ & Information Request List
 
-> **Trigger:** After completing a target screening memo using `target-screening-lite.md`, run this prompt to generate two standalone Word documents as annexes. These are external-facing deliverables — suitable for sending to the seller, broker, or VDR.
+> **Trigger:** After completing a target screening memo using `target-screening-lite.md`, run this prompt to generate a standalone DDQ & IRL Word document as an annex. This is an external-facing deliverable — suitable for sending to the seller, broker, or VDR.
+
+> **Companion templates:** `target-screening-lite.md` (screening memo), `annex-marketoverview.md` (market overview annex)
 
 ---
 
-## Document 1: DDQ & IRL
+## DDQ & IRL
 
 **Filename:** `[YYMMDD] Annex - [Project Name] DDQ and IRL.docx`
 
@@ -119,46 +121,9 @@ Specific documents, schedules, and data sets to request.
 
 ---
 
-## Document 2: Market Overview
-
-**Filename:** `[YYMMDD] Annex - [Project Name] Market Overview.docx`
-
-Extract and expand Section 6 (Market Overview) from the screening memo into a standalone Word document. This is a reference annex — not a summary, but the full market context with all tables, sources, and analysis.
-
-### Document Format
-
-**Header (every page):**
-- Movement logo (`movement-logo.png`), centered
-- Below logo: `[PROJECT NAME]  |  Market Overview  |  [Sector]` — same styling as DDQ
-
-**Footer (every page):**
-- `Movement  |  CONFIDENTIAL  |  Page [X]` — centered, 7pt, grey (#999999)
-
-**Title block:**
-- Title: `[Project Name] — Market Overview`
-- Subtitle: `[Sector / Industry]  |  [Geography]`
-- Date line: `Prepared: [DD Month YYYY]  |  Movement`
-
-### Content (extract from screening memo Section 6)
-
-Transfer the following sub-sections in full, preserving all tables, source citations, and analysis:
-
-1. **Market Size** — TAM/SAM/SOM table with source column, segment-level breakdown, derivation notes
-2. **Right to Play & Right to Win** — licences, certifications, competitive edge, capability gaps
-3. **Competitive Landscape & Structural Moat** — three-tier competitor table, combined observations paragraph
-4. **Preliminary Risks & Mitigants** — thesis killers, commercial diligence roadmap table
-
-### Formatting
-
-- All tables should use the same dark header row style (#1A2332, white text)
-- Source citations must be preserved as hyperlinks
-- [ASSUMPTION] tags must be preserved with derivation notes
-- Section headers: Heading 1 for main sections, Heading 2 for sub-sections
-- Professional, clean — suitable for sharing with co-investors or advisors
-
----
-
 ## Execution Notes
+
+> **Market Overview:** The Market Overview annex is now a separate template. See `annex-marketoverview.md` for the standalone market overview generator.
 
 - Both documents must pass the IC Review Gate (SYSTEM_PROMPT.md) before delivery.
 - Both documents must use the Movement logo from `movement-logo.png` in this repo.
