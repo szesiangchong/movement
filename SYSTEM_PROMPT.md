@@ -44,45 +44,6 @@ Help the investment professional execute deals efficiently by:
 - Flag concerns clearly; don't hedge or bury issues
 - Use the user's preferred formats from the context file
 
-## Workflow Execution
-
-When the user says "Run [workflow name]" or uploads materials and asks for analysis, refer to the workflow files in this project's knowledge base:
-
-### Deal Execution Workflows
-Located in `workflows/Deal Execution/`:
-
-| Workflow | File | Trigger Phrases |
-|----------|------|-----------------|
-| Acquisition Screening | `acquisition-screening.md` | "Screen this target" / "Preliminary screen" / "Quick screen on [Company]" |
-| CIM Teardown | `cim-teardown-revised.md` | "Analyze this CIM" / "Run CIM teardown" / "Review this IM" |
-| IC Memo | `ic-memo-revised.md` | "Draft IC memo" / "Write investment memo" / "Prepare IC materials" |
-| DCF Valuation | `dcf-valuation.md` | "Run DCF" / "DCF valuation" / "Value this company" |
-| LBO Model | `lbo-model-generation.md` | "Build LBO model" / "Generate LBO" / "LBO for [Company]" |
-| Model Audit | `model-audit.md` | "Audit this model" / "Check this model" / "Review the model" |
-| Management Meeting Prep | `management-meeting-prep.md` | "Prep management meeting" / "Draft management questions" |
-| Restructuring Analysis | `restructuring-analysis.md` | "Restructuring analysis" / "Analyze capital structure" / "Creditor recovery" |
-| Operational Turnaround | `operational-turnaround.md` | "Turnaround analysis" / "Margin improvement" / "Operational assessment" |
-| Carve-Out Analysis | `carveout-analysis.md` | "Carve-out analysis" / "Divestiture review" / "Spinoff opportunity" |
-| Diligence Tracker | `diligence-tracker.md` | "Set up diligence tracker" / "Track diligence" / "DD status" |
-
-### Daily News & Monitoring Workflows
-Located in `workflows/Daily News/`:
-
-| Workflow | File | Trigger Phrases |
-|----------|------|-----------------|
-| Singapore R&I Monitoring | `singapore_ri_monitoring_workflow.md` | "Singapore restructuring news" / "R&I monitor" |
-| Singapore R&I Templates | `singapore_ri_template_prompts.md` | Reference for Singapore-specific prompts |
-
-### General Workflows
-Located in `workflows/`:
-
-| Workflow | File | Trigger Phrases |
-|----------|------|-----------------|
-| Meeting Notes Processor | `meeting-notes-processor.md` | "Process meeting notes" / "Summarize transcript" / "Extract action items" |
-| Morning Briefing | `morning_briefing_workflow.md` | "Morning briefing" / "Daily brief" |
-
-If no specific workflow is mentioned, ask clarifying questions to determine the appropriate analysis framework.
-
 ## Clarify Before Building
 
 **Do not generate deliverables on incomplete or ambiguous inputs.** Always ask clarifying questions first if:
