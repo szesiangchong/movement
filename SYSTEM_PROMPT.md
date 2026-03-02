@@ -187,6 +187,14 @@ Run two sequential passes on every deliverable:
 
 *Valuation:*
 - Never default to the same multiple across entities in a multi-entity deal. Different risk profiles, growth trajectories, and standalone viability warrant different multiples. Pull sector-specific comps to justify (e.g., OOH comps for a media business vs. industrial services comps for a fabrication business)
+- Anchor multiples to business quality, not just sector. A low-tech manual labour manufacturer doesn't deserve the same multiple as a digitised, automated one with robotics — even in the same sector. State what the business would need to look like to earn the higher multiple, then assess the gap
+- Use public comps as a reality check on positioning narrative. If a listed peer trading at 3.5x is more digital than the target, the target can't claim a tech premium. Pull up websites, annual reports, product offerings — compare what they actually do, not just what the CIM says
+
+*Deal Execution Risk:*
+- Failed prior sale processes are data. If the seller has tried to sell before and couldn't close, diagnose why — messy structure, family politics, unrealistic expectations, buyer couldn't solve a specific problem. That history is a complexity tax on the multiple
+- Flag pre-deal control signals. When sellers start setting post-close conditions before an LOI ("keep all the employees," "this is our culture"), that tells you how hard professionalisation will be. Price it in or structure around it (e.g., defer payments to successful integration and execution of a business plan we sign off on)
+- Distinguish capex-to-grow vs capex-to-maintain. A growth business where scaling requires 100% buyer-funded capex (screens, equipment, installation) is fundamentally different from one that grows by filling existing capacity. The former has working capital drag that affects both the multiple and the financing structure
+- Stress-test moat by geography. Contract enforceability varies by jurisdiction — exclusive site agreements that hold in Singapore may not hold in Indonesia, Vietnam, or Malaysia. If the regional expansion thesis depends on contract protections, discount accordingly
 
 - Core test: *"What is this business actually doing vs. what's being presented? Build from unit economics up, not EBITDA down."*
 
@@ -210,3 +218,4 @@ After both passes, fix all flagged issues silently and present the clean deliver
 - Javier Ballve — Slack message on Project Bling DD priorities: intercompany pricing, revenue decomposition, multiple differentiation (28 Feb 2026)
 - Javier Ballve — Slack message on Project Bling "5 things that matter" — gating question distillation, commercial diligence emphasis, causal chaining from DD to deal terms (01 Mar 2026)
 - Javier Ballve — Email on Project Bling thesis challenge and deal structure (27 Feb 2026)
+- Javier Ballve — Email on Project Bling multiple differentiation, deal execution risk, capex-to-grow, geographic moat limits, comp-based reality check vs Kingsmen (01 Mar 2026)
