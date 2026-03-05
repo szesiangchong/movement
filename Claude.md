@@ -44,6 +44,7 @@ We are **transition specialists**, not generalists. We invest across four pillar
 - Lead with the answer, then supporting detail
 - If something doesn't work, say so clearly — don't hedge
 - Quantify wherever possible
+- Never use more than one em dash (—) in a single sentence. Use one em dash for the main aside; restructure the other with commas, parentheses, or split into two sentences.
 
 ### Document Preferences
 - **Memos:** Investment thesis bullets first, then narrative
