@@ -234,8 +234,8 @@ function EarnoutTab() {
   const [yr2Actual, setYr2Actual] = useState(8500);
   const yr1Hurdle = 7500;
   const yr2Hurdle = 8000;
-  const yr1MgmtForecast = 9396; // Management case Yr1
-  const yr2MgmtForecast = 10780; // Management case Yr2
+  const yr1MgmtForecast = 7890; // Management case Yr1
+  const yr2MgmtForecast = 8522; // Management case Yr2
 
   const c = useMemo(() => {
     const yr1Tranche = 0.3 * DEFERRED_TOTAL;
