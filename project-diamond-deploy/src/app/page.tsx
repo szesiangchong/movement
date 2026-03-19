@@ -7,7 +7,7 @@ import {
 
 const fmt = (n: number) => "S$" + (Math.abs(n) >= 1000 ? (n / 1000).toFixed(1) + "M" : n.toFixed(0) + "K");
 const fmtK = (n: number) => "S$" + Math.round(n).toLocaleString("en-SG");
-const TABS = ["Value to Shareholders", "Performance-Based Consideration", "Group Structure", "Proposed Timeline"];
+const TABS = ["Value to Shareholders", "Performance-Based Consideration", "Group Structure", "Timeline & Key DD Topics"];
 
 // Hard-coded assumptions (not shown to family)
 const EV = 40000;
@@ -548,13 +548,15 @@ function TimelineTab() {
         </div>
       </div>
 
-      {/* DD cards */}
+      {/* Key DD Topics */}
+      <h3 className="text-sm font-bold text-gray-700 mt-2">Key DD Topics</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {[
           { num: 1, title: "Business Unit Review", desc: "Understand the economics of each business unit independently, including how they work together and the value of the integrated platform.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
-          { num: 2, title: "Adjusted Earnings Review", desc: "Review compensation structure, one-off items, and the ongoing cost base to understand the true recurring earnings of the group.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
-          { num: 3, title: "Working Capital & Balance Sheet", desc: "Review receivables, payables, and cash requirements to agree on the working capital baseline for the transaction.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
-          { num: 4, title: "Leadership Continuity & Team Alignment", desc: "Runs alongside the agreement drafting. Ensure the right people are in the right roles and aligned on the growth plan going forward.", bg: "#eef2ff", border: "#c7d2fe", accent: "#4f46e5" },
+          { num: 2, title: "Revenue Pipeline & Sustainability", desc: "Review the order book depth and new business pipeline across all three BUs. Understand the sustainability of each revenue stream — contracted vs recurring vs project-based — and the pipeline of opportunities for FY2026-2027.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
+          { num: 3, title: "Adjusted Earnings Review", desc: "Review compensation structure, one-off items, and the ongoing cost base to understand the true recurring earnings of the group.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
+          { num: 4, title: "Working Capital & Balance Sheet", desc: "Review receivables, payables, and cash requirements to agree on the working capital baseline for the transaction.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
+          { num: 5, title: "Leadership Continuity & Team Alignment", desc: "Runs alongside the agreement drafting. Ensure the right people are in the right roles and aligned on the growth plan going forward.", bg: "#eef2ff", border: "#c7d2fe", accent: "#4f46e5" },
         ].map(card => (
           <div key={card.num} className="rounded-xl p-4 border" style={{ backgroundColor: card.bg, borderColor: card.border }}>
             <div className="flex items-center gap-2 mb-1">
