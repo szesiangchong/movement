@@ -7,130 +7,98 @@ import {
 
 const fmt = (n: number) => "S$" + (Math.abs(n) >= 1000 ? (n / 1000).toFixed(1) + "M" : n.toFixed(0) + "K");
 const fmtK = (n: number) => "S$" + Math.round(n).toLocaleString("en-SG");
-const TABS = ["Value to Shareholders", "Earnout Calculator", "HoldCo Structure", "Transaction Timeline"];
+const TABS = ["Value to Shareholders", "Performance-Based Consideration", "Group Structure", "Proposed Timeline"];
+
+// Hard-coded assumptions (not shown to family)
+const EV = 40000;
+const EBITDA_2026 = 7900;
+const MOVEMENT_PCT = 70;
+const MGMT_PCT = 30;
+const EARNOUT_PCT = 20;
+const EBITDA_MARGIN = 26;
+const REV_CAGR = 5;
+const HOLD_YEARS = 5;
+const REVENUE_2025 = 28100;
+const DEBT = 2701;
+const TOTAL_CASH = 10395;
+const OP_MIN = 2000;
+const NWC_PCT = 10;
+const ENTRY_MULT = EV / EBITDA_2026;
+const NWC_RESERVE = (NWC_PCT / 100) * REVENUE_2025;
+const NET_CASH = Math.max(0, TOTAL_CASH - DEBT - NWC_RESERVE - OP_MIN);
+const EQUITY_VALUE = EV + NET_CASH;
+const DEFERRED_TOTAL = (EARNOUT_PCT / 100) * EV;
+const UPFRONT_EV = EV - DEFERRED_TOTAL;
 
 // ════════════════════════════════════════════════════════════════════════
 // TAB 1 — VALUE TO SHAREHOLDERS
 // ════════════════════════════════════════════════════════════════════════
 function ValueTab() {
-  const [entryEV, setEntryEV] = useState(40000);
-  const [ebitda2026, setEbitda2026] = useState(7900);
-  const [totalCash, setTotalCash] = useState(10395);
-  const [existDebt, setExistDebt] = useState(2701);
-  const [opMin, setOpMin] = useState(2000);
-  const [nwcPct, setNwcPct] = useState(10);
-  const [revenue2025, setRevenue2025] = useState(28100);
-  const [earnoutPct, setEarnoutPct] = useState(20);
-  const [sponsorPct, setSponsorPct] = useState(70);
-  const [revCAGR, setRevCAGR] = useState(5);
-  const [ebitdaMargin, setEbitdaMargin] = useState(26);
-  const [holdYears, setHoldYears] = useState(5);
-  const [selectedExitMult, setSelectedExitMult] = useState<number | null>(null);
+  const [selectedMult, setSelectedMult] = useState<number | null>(null);
 
   const c = useMemo(() => {
-    const mgmtPct = 100 - sponsorPct;
-    const entryMult = entryEV / ebitda2026;
-    const nwcReserve = (nwcPct / 100) * revenue2025;
-    const netCash = Math.max(0, totalCash - existDebt - nwcReserve - opMin);
-    const equityValue = entryEV + netCash;
-    const deferredTotal = (earnoutPct / 100) * entryEV;
-    const upfrontEV = entryEV - deferredTotal;
-    const exit70_upfront = (sponsorPct / 100) * (upfrontEV + netCash);
-    const exit70_earnout = (sponsorPct / 100) * deferredTotal;
+    const exit70_upfront = (MOVEMENT_PCT / 100) * (UPFRONT_EV + NET_CASH);
+    const exit70_earnout = (MOVEMENT_PCT / 100) * DEFERRED_TOTAL;
     const exit70_total = exit70_upfront + exit70_earnout;
-    const rollover30 = (mgmtPct / 100) * equityValue;
+    const rollover30 = (MGMT_PCT / 100) * EQUITY_VALUE;
 
-    // Projections — management case revenue, then apply EBITDA margin
-    const mgmtRevenue = [28100, 34300, 37450, 41600, 46700, 52350]; // FY25, Yr1-5
+    const mgmtRevenue = [28100, 34300, 37450, 41600, 46700, 52350];
     const projections = [];
-    for (let y = 0; y <= holdYears; y++) {
-      const rev = y < mgmtRevenue.length ? mgmtRevenue[y] : mgmtRevenue[mgmtRevenue.length - 1] * Math.pow(1 + revCAGR / 100, y - mgmtRevenue.length + 1);
-      const ebitda = rev * (ebitdaMargin / 100);
+    for (let y = 0; y <= HOLD_YEARS; y++) {
+      const rev = y < mgmtRevenue.length ? mgmtRevenue[y] : mgmtRevenue[mgmtRevenue.length - 1] * Math.pow(1 + REV_CAGR / 100, y - mgmtRevenue.length + 1);
+      const ebitda = rev * (EBITDA_MARGIN / 100);
       projections.push({ year: y === 0 ? "FY25" : `Yr ${y}`, revenue: Math.round(rev), ebitda: Math.round(ebitda) });
     }
-    const exitEbitda = projections[holdYears].ebitda;
-    const revCagr = Math.pow(projections[holdYears].revenue / projections[0].revenue, 1 / holdYears) - 1;
+    const futureEbitda = projections[HOLD_YEARS].ebitda;
+    const revCagr = Math.pow(projections[HOLD_YEARS].revenue / projections[0].revenue, 1 / HOLD_YEARS) - 1;
 
-    // Sensitivity multiples
-    const multiples = [entryMult, 6, 7, 8];
-    // dedupe and sort
-    const uniqueMults = Array.from(new Set(multiples.map(m => Math.round(m * 10) / 10))).sort((a, b) => a - b);
+    const multiples = Array.from(new Set([ENTRY_MULT, 6, 7, 8].map(m => Math.round(m * 10) / 10))).sort((a, b) => a - b);
+    const annualFCF = futureEbitda * 0.83 * 0.55;
+    const cumFCF = annualFCF * HOLD_YEARS * 0.7;
+    const futureNetCash = NET_CASH + cumFCF;
 
-    const annualFCF = exitEbitda * 0.83 * 0.55;
-    const cumFCF = annualFCF * holdYears * 0.7;
-    const exitNetCash = netCash + cumFCF;
-
-    const sensitivity = uniqueMults.map(mult => {
-      const exitEV = exitEbitda * mult;
-      const exitEquity = exitEV + exitNetCash;
-      const exitRoll = (mgmtPct / 100) * exitEquity;
-      const moic = exitRoll / rollover30;
-      const irr = Math.pow(moic, 1 / holdYears) - 1;
-      return { mult, exitEV, exitEquity, exitRoll, moic, irr };
+    const sensitivity = multiples.map(mult => {
+      const futureEV = futureEbitda * mult;
+      const futureEquity = futureEV + futureNetCash;
+      const futureRoll = (MGMT_PCT / 100) * futureEquity;
+      const returnMult = futureRoll / rollover30;
+      return { mult, futureEV, futureEquity, futureRoll, returnMult };
     });
 
-    const activeSens = selectedExitMult !== null
-      ? sensitivity.find(s => s.mult === selectedExitMult) || sensitivity[0]
+    const active = selectedMult !== null
+      ? sensitivity.find(s => s.mult === selectedMult) || sensitivity[0]
       : sensitivity[0];
 
     return {
-      entryMult, nwcReserve, netCash, equityValue, deferredTotal, upfrontEV,
       exit70_upfront, exit70_earnout, exit70_total,
-      rollover30, mgmtPct, projections, exitEbitda, exitNetCash,
-      sensitivity, activeSens, revCagr,
+      rollover30, projections, futureEbitda, futureNetCash,
+      sensitivity, active, revCagr,
     };
-  }, [entryEV, ebitda2026, totalCash, existDebt, opMin, nwcPct, revenue2025, earnoutPct, sponsorPct, revCAGR, ebitdaMargin, holdYears, selectedExitMult]);
-
-  const Inp = ({ label, value, set, step = 100, suffix = "" }: any) => (
-    <div className="flex flex-col gap-0.5">
-      <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">{label}</label>
-      <div className="flex items-center gap-1">
-        <input type="number" value={value} onChange={e => set(+e.target.value)} step={step}
-          className="w-20 px-1.5 py-1 text-sm border border-gray-200 rounded bg-white focus:ring-1 focus:ring-blue-400" />
-        <span className="text-[10px] text-gray-400">{suffix}</span>
-      </div>
-    </div>
-  );
+  }, [selectedMult]);
 
   const chart1Data = [
-    { name: `${sponsorPct}% Exit - Upfront`, value: c.exit70_upfront / 1000, fill: "#1e40af" },
-    { name: `${sponsorPct}% of ${fmtK(c.deferredTotal)} Earnout`, value: c.exit70_earnout / 1000, fill: "#93c5fd" },
-    { name: `${c.mgmtPct}% Rollover Equity`, value: c.rollover30 / 1000, fill: "#059669" },
+    { name: `${MOVEMENT_PCT}% Upfront Payment`, value: c.exit70_upfront / 1000, fill: "#1e40af" },
+    { name: `${MOVEMENT_PCT}% of ${fmtK(DEFERRED_TOTAL)} Earnout`, value: c.exit70_earnout / 1000, fill: "#93c5fd" },
+    { name: `${MGMT_PCT}% Continuing Equity`, value: c.rollover30 / 1000, fill: "#059669" },
   ];
   const chart2Data = [
-    { name: "Entry (Today)", value: c.rollover30 / 1000, fill: "#d1d5db" },
-    { name: `Exit (Year ${holdYears})`, value: c.activeSens.exitRoll / 1000, fill: "#059669" },
+    { name: "Today", value: c.rollover30 / 1000, fill: "#d1d5db" },
+    { name: `Year ${HOLD_YEARS} (Projected)`, value: c.active.futureRoll / 1000, fill: "#059669" },
   ];
 
   return (
     <div className="space-y-6">
-      {/* Inputs */}
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
-        <Inp label="Entry EV" value={entryEV} set={setEntryEV} step={1000} suffix="S$K" />
-        <Inp label="EBITDA 2026E" value={ebitda2026} set={setEbitda2026} step={100} suffix="S$K" />
-        <Inp label="Earnout %" value={earnoutPct} set={setEarnoutPct} step={5} suffix="%" />
-        <Inp label="Sponsor %" value={sponsorPct} set={setSponsorPct} step={5} suffix="%" />
-        <Inp label="Total Cash" value={totalCash} set={setTotalCash} step={100} suffix="S$K" />
-        <Inp label="Debt" value={existDebt} set={setExistDebt} step={100} suffix="S$K" />
-        <Inp label="NWC % Rev" value={nwcPct} set={setNwcPct} step={1} suffix="%" />
-        <Inp label="Op. Min" value={opMin} set={setOpMin} step={100} suffix="S$K" />
-        <Inp label="Revenue" value={revenue2025} set={setRevenue2025} step={100} suffix="S$K" />
-        <Inp label="Rev CAGR" value={revCAGR} set={setRevCAGR} step={1} suffix="%" />
-        <Inp label="EBITDA Mgn" value={ebitdaMargin} set={setEbitdaMargin} step={1} suffix="%" />
-        <Inp label="Hold Yrs" value={holdYears} set={setHoldYears} step={1} suffix="yrs" />
-      </div>
-
       {/* EV to Equity Bridge */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-bold text-gray-700 mb-3">Enterprise Value to Equity Value Bridge</h3>
+        <h3 className="text-sm font-bold text-gray-700 mb-3">Proposed Valuation to Equity Value</h3>
         <div className="flex items-center gap-0 overflow-x-auto text-center text-xs">
           {[
-            { label: "Enterprise\nValue", value: entryEV, color: "bg-blue-600 text-white" },
-            { label: "(-) Debt", value: -existDebt, color: "bg-red-100 text-red-700", sign: "" },
-            { label: `(-) NWC\n${nwcPct}% Rev`, value: -c.nwcReserve, color: "bg-red-100 text-red-700", sign: "" },
-            { label: "(-) Op.\nMinimum", value: -opMin, color: "bg-red-100 text-red-700", sign: "" },
-            { label: "(+) Cash\non BS", value: totalCash, color: "bg-green-100 text-green-700", sign: "+" },
-            { label: "Equity\nValue", value: c.equityValue, color: "bg-blue-800 text-white", sign: "=" },
+            { label: "Enterprise\nValue", value: EV, color: "bg-blue-600 text-white" },
+            { label: "(-) Debt", value: -DEBT, color: "bg-red-100 text-red-700", sign: "" },
+            { label: `(-) Working\nCapital (${NWC_PCT}%)`, value: -NWC_RESERVE, color: "bg-red-100 text-red-700", sign: "" },
+            { label: "(-) Operating\nReserve", value: -OP_MIN, color: "bg-red-100 text-red-700", sign: "" },
+            { label: "(+) Cash\non Balance Sheet", value: TOTAL_CASH, color: "bg-green-100 text-green-700", sign: "+" },
+            { label: "Equity\nValue", value: EQUITY_VALUE, color: "bg-blue-800 text-white", sign: "=" },
           ].map((item, i) => (
             <div key={i} className="flex items-center">
               {i > 0 && i < 5 && <div className="text-gray-300 text-lg px-1.5 font-light">{item.sign || ""}</div>}
@@ -142,18 +110,18 @@ function ValueTab() {
             </div>
           ))}
         </div>
-        <p className="text-[11px] text-gray-400 mt-2">Entry: {c.entryMult.toFixed(1)}x FY2026E EBITDA | Net cash: {fmtK(c.netCash)}</p>
+        <p className="text-[11px] text-gray-400 mt-2">Proposed valuation: {ENTRY_MULT.toFixed(1)}x estimated FY2026 EBITDA of {fmtK(EBITDA_2026)}</p>
       </div>
 
       {/* Day-1 Chart */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value Split (S$M)</h3>
-          <p className="text-[11px] text-gray-400 mb-3">{sponsorPct}% receives upfront equity + pro-rata net cash. Earnout = {sponsorPct}% of {fmtK(c.deferredTotal)} total deferred ({fmtK(c.exit70_earnout)}).</p>
+          <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders (S$M)</h3>
+          <p className="text-[11px] text-gray-400 mb-3">{MOVEMENT_PCT}% receives upfront payment including share of net cash. Performance-based consideration paid over 2 years if EBITDA targets are achieved.</p>
           <ResponsiveContainer width="100%" height={170}>
             <BarChart layout="vertical" data={chart1Data} margin={{ left: 5, right: 55 }}>
               <XAxis type="number" tickFormatter={v => `${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
-              <YAxis type="category" dataKey="name" width={170} tick={{ fontSize: 10 }} />
+              <YAxis type="category" dataKey="name" width={185} tick={{ fontSize: 10 }} />
               <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
               <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                 {chart1Data.map((d, i) => <Cell key={i} fill={d.fill} />)}
@@ -162,42 +130,40 @@ function ValueTab() {
             </BarChart>
           </ResponsiveContainer>
           <div className="mt-2 space-y-1 text-xs">
-            <div className="flex justify-between"><span className="text-gray-500">{sponsorPct}% upfront (incl. net cash)</span><span className="font-mono font-bold text-blue-800">{fmtK(c.exit70_upfront)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">{sponsorPct}% of {fmtK(c.deferredTotal)} earnout (if met)</span><span className="font-mono text-blue-400">{fmtK(c.exit70_earnout)}</span></div>
-            <div className="flex justify-between border-t pt-1"><span className="font-semibold">{sponsorPct}% total (max)</span><span className="font-mono font-bold">{fmtK(c.exit70_total)}</span></div>
-            <div className="text-[10px] text-gray-400 mt-1 italic">Total deal earnout: {fmtK(c.deferredTotal)} ({earnoutPct}% of EV). {sponsorPct}% share = {fmtK(c.exit70_earnout)}. {c.mgmtPct}% ({fmtK(c.deferredTotal - c.exit70_earnout)}) reinvested into rollover equity.</div>
-            <div className="flex justify-between mt-1"><span className="text-green-700">{c.mgmtPct}% rollover</span><span className="font-mono font-bold text-green-700">{fmtK(c.rollover30)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">{MOVEMENT_PCT}% upfront (incl. net cash)</span><span className="font-mono font-bold text-blue-800">{fmtK(c.exit70_upfront)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">{MOVEMENT_PCT}% of {fmtK(DEFERRED_TOTAL)} performance consideration</span><span className="font-mono text-blue-400">{fmtK(c.exit70_earnout)}</span></div>
+            <div className="flex justify-between border-t pt-1"><span className="font-semibold">{MOVEMENT_PCT}% total (if all targets met)</span><span className="font-mono font-bold">{fmtK(c.exit70_total)}</span></div>
+            <div className="text-[10px] text-gray-400 mt-1 italic">Total performance consideration: {fmtK(DEFERRED_TOTAL)} ({EARNOUT_PCT}% of valuation). {MOVEMENT_PCT}% share = {fmtK(c.exit70_earnout)}. {MGMT_PCT}% ({fmtK(DEFERRED_TOTAL - c.exit70_earnout)}) adds to continuing equity value.</div>
+            <div className="flex justify-between mt-1"><span className="text-green-700">{MGMT_PCT}% continuing equity</span><span className="font-mono font-bold text-green-700">{fmtK(c.rollover30)}</span></div>
           </div>
         </div>
 
         {/* Sensitivity Table */}
         <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h3 className="text-sm font-bold text-gray-700 mb-1">{c.mgmtPct}% Rollover Sensitivity</h3>
-          <p className="text-[11px] text-gray-400 mb-3">Click a row to update the rollover chart and projections below.</p>
+          <h3 className="text-sm font-bold text-gray-700 mb-1">{MGMT_PCT}% Continuing Stake &mdash; Projected Growth</h3>
+          <p className="text-[11px] text-gray-400 mb-3">Select a scenario to see how the {MGMT_PCT}% stake could grow over {HOLD_YEARS} years.</p>
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-gray-50 text-gray-500">
-                <th className="py-1.5 px-2 text-left font-semibold">Exit Multiple</th>
-                <th className="py-1.5 px-2 text-right font-semibold">Exit EV</th>
-                <th className="py-1.5 px-2 text-right font-semibold">{c.mgmtPct}% Value</th>
-                <th className="py-1.5 px-2 text-right font-semibold">MoIC</th>
-                <th className="py-1.5 px-2 text-right font-semibold">IRR</th>
+                <th className="py-1.5 px-2 text-left font-semibold">Future Multiple</th>
+                <th className="py-1.5 px-2 text-right font-semibold">Projected Value</th>
+                <th className="py-1.5 px-2 text-right font-semibold">{MGMT_PCT}% Share</th>
+                <th className="py-1.5 px-2 text-right font-semibold">Return Multiple</th>
               </tr>
             </thead>
             <tbody>
               {c.sensitivity.map((s, i) => {
-                const isActive = s.mult === c.activeSens.mult;
-                const isEntry = Math.abs(s.mult - c.entryMult) < 0.05;
+                const isActive = s.mult === c.active.mult;
+                const isEntry = Math.abs(s.mult - ENTRY_MULT) < 0.05;
                 return (
-                  <tr key={i} onClick={() => setSelectedExitMult(s.mult)}
+                  <tr key={i} onClick={() => setSelectedMult(s.mult)}
                     className={`cursor-pointer transition-all ${isActive ? 'bg-green-50 border-l-4 border-green-500' : 'hover:bg-gray-50'}`}>
                     <td className="py-2 px-2 font-mono font-bold">
-                      {s.mult.toFixed(1)}x {isEntry && <span className="text-[9px] font-normal text-gray-400 ml-1">(entry)</span>}
+                      {s.mult.toFixed(1)}x {isEntry && <span className="text-[9px] font-normal text-gray-400 ml-1">(today)</span>}
                     </td>
-                    <td className="py-2 px-2 text-right font-mono">{fmt(s.exitEV)}</td>
-                    <td className="py-2 px-2 text-right font-mono font-bold text-green-700">{fmt(s.exitRoll)}</td>
-                    <td className="py-2 px-2 text-right font-mono font-bold">{s.moic.toFixed(1)}x</td>
-                    <td className="py-2 px-2 text-right font-mono font-bold">{(s.irr * 100).toFixed(0)}%</td>
+                    <td className="py-2 px-2 text-right font-mono">{fmt(s.futureEV)}</td>
+                    <td className="py-2 px-2 text-right font-mono font-bold text-green-700">{fmt(s.futureRoll)}</td>
+                    <td className="py-2 px-2 text-right font-mono font-bold">{s.returnMult.toFixed(1)}x</td>
                   </tr>
                 );
               })}
@@ -208,12 +174,12 @@ function ValueTab() {
 
       {/* Rollover chart */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-bold text-gray-700 mb-1">{c.mgmtPct}% Rollover &mdash; Entry vs Exit at {c.activeSens.mult.toFixed(1)}x</h3>
+        <h3 className="text-sm font-bold text-gray-700 mb-1">{MGMT_PCT}% Continuing Stake &mdash; Today vs Year {HOLD_YEARS} ({c.active.mult.toFixed(1)}x)</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
           <ResponsiveContainer width="100%" height={120}>
             <BarChart layout="vertical" data={chart2Data} margin={{ left: 5, right: 55 }}>
               <XAxis type="number" tickFormatter={v => `${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
-              <YAxis type="category" dataKey="name" width={110} tick={{ fontSize: 10 }} />
+              <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 10 }} />
               <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
               <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                 {chart2Data.map((d, i) => <Cell key={i} fill={d.fill} />)}
@@ -222,16 +188,15 @@ function ValueTab() {
             </BarChart>
           </ResponsiveContainer>
           <div className="text-center">
-            <div className="text-3xl font-bold text-green-700">{c.activeSens.moic.toFixed(1)}x</div>
-            <div className="text-xs text-gray-500">MoIC over {holdYears} years</div>
-            <div className="text-xl font-bold text-green-600 mt-1">{(c.activeSens.irr * 100).toFixed(0)}% IRR</div>
+            <div className="text-3xl font-bold text-green-700">{c.active.returnMult.toFixed(1)}x</div>
+            <div className="text-xs text-gray-500">Potential return over {HOLD_YEARS} years</div>
           </div>
         </div>
       </div>
 
       {/* Projections Table */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-bold text-gray-700 mb-3">Business Projections &amp; Exit Valuation ({c.activeSens.mult.toFixed(1)}x exit) &mdash; <span className="text-blue-600">Management Case</span></h3>
+        <h3 className="text-sm font-bold text-gray-700 mb-3">Business Projections &amp; Estimated Future Value ({c.active.mult.toFixed(1)}x) &mdash; <span className="text-blue-600">Management Case</span></h3>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
@@ -240,51 +205,51 @@ function ValueTab() {
                 {c.projections.map((p, i) => (
                   <th key={i} className={`text-right py-2 px-2 font-semibold ${i === 0 ? 'text-gray-400' : 'text-gray-700'}`}>{p.year}</th>
                 ))}
-                <th className="text-right py-2 px-2 font-semibold text-blue-700 border-l-2 border-blue-200">Exit</th>
-                <th className="text-right py-2 px-2 font-semibold text-gray-500">CAGR</th>
+                <th className="text-right py-2 px-2 font-semibold text-blue-700 border-l-2 border-blue-200">Year {HOLD_YEARS}</th>
+                <th className="text-right py-2 px-2 font-semibold text-gray-500">Growth</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="py-1.5 px-2 text-gray-600">Revenue <span className="text-[10px] text-blue-500">(Mgmt)</span></td>
+                <td className="py-1.5 px-2 text-gray-600">Revenue <span className="text-[10px] text-blue-500">(Mgmt Case)</span></td>
                 {c.projections.map((p, i) => <td key={i} className="text-right py-1.5 px-2 font-mono">{(p.revenue / 1000).toFixed(1)}M</td>)}
                 <td className="text-right py-1.5 px-2 border-l-2 border-blue-200"></td>
-                <td className="text-right py-1.5 px-2 font-mono text-gray-500">{(c.revCagr * 100).toFixed(1)}%</td>
+                <td className="text-right py-1.5 px-2 font-mono text-gray-500">{(c.revCagr * 100).toFixed(1)}% p.a.</td>
               </tr>
               <tr className="bg-gray-50">
-                <td className="py-1.5 px-2 text-gray-600">EBITDA ({ebitdaMargin}%)</td>
+                <td className="py-1.5 px-2 text-gray-600">EBITDA ({EBITDA_MARGIN}% margin)</td>
                 {c.projections.map((p, i) => <td key={i} className="text-right py-1.5 px-2 font-mono font-semibold">{(p.ebitda / 1000).toFixed(1)}M</td>)}
                 <td className="text-right py-1.5 px-2 border-l-2 border-blue-200"></td>
-                <td className="text-right py-1.5 px-2 font-mono text-gray-500">{(c.revCagr * 100).toFixed(1)}%</td>
+                <td className="text-right py-1.5 px-2 font-mono text-gray-500">{(c.revCagr * 100).toFixed(1)}% p.a.</td>
               </tr>
               <tr className="border-t-2 border-gray-200">
-                <td className="py-1.5 px-2 font-semibold text-blue-800">Exit EV ({c.activeSens.mult.toFixed(1)}x)</td>
+                <td className="py-1.5 px-2 font-semibold text-blue-800">Projected Value ({c.active.mult.toFixed(1)}x)</td>
                 {c.projections.map((_, i) => <td key={i}></td>)}
-                <td className="text-right py-1.5 px-2 font-mono font-bold text-blue-800 border-l-2 border-blue-200">{fmt(c.activeSens.exitEV)}</td>
+                <td className="text-right py-1.5 px-2 font-mono font-bold text-blue-800 border-l-2 border-blue-200">{fmt(c.active.futureEV)}</td>
                 <td></td>
               </tr>
               <tr>
                 <td className="py-1.5 px-2 text-gray-600">(+) Est. Net Cash</td>
                 {c.projections.map((_, i) => <td key={i}></td>)}
-                <td className="text-right py-1.5 px-2 font-mono border-l-2 border-blue-200">{fmt(c.exitNetCash)}</td>
+                <td className="text-right py-1.5 px-2 font-mono border-l-2 border-blue-200">{fmt(c.futureNetCash)}</td>
                 <td></td>
               </tr>
               <tr className="bg-blue-50">
-                <td className="py-1.5 px-2 font-bold text-blue-900">Exit Equity (100%)</td>
+                <td className="py-1.5 px-2 font-bold text-blue-900">Total Equity Value (100%)</td>
                 {c.projections.map((_, i) => <td key={i}></td>)}
-                <td className="text-right py-1.5 px-2 font-mono font-bold text-blue-900 border-l-2 border-blue-200">{fmt(c.activeSens.exitEquity)}</td>
+                <td className="text-right py-1.5 px-2 font-mono font-bold text-blue-900 border-l-2 border-blue-200">{fmt(c.active.futureEquity)}</td>
                 <td></td>
               </tr>
               <tr>
-                <td className="py-1.5 px-2 text-green-700 font-semibold">{c.mgmtPct}% Share</td>
+                <td className="py-1.5 px-2 text-green-700 font-semibold">{MGMT_PCT}% Continuing Share</td>
                 {c.projections.map((_, i) => <td key={i}></td>)}
-                <td className="text-right py-1.5 px-2 font-mono font-bold text-green-700 border-l-2 border-blue-200">{fmt(c.activeSens.exitRoll)}</td>
+                <td className="text-right py-1.5 px-2 font-mono font-bold text-green-700 border-l-2 border-blue-200">{fmt(c.active.futureRoll)}</td>
                 <td></td>
               </tr>
               <tr className="bg-green-50">
-                <td className="py-1.5 px-2 font-bold text-green-800">MoIC / IRR</td>
+                <td className="py-1.5 px-2 font-bold text-green-800">Return Multiple</td>
                 {c.projections.map((_, i) => <td key={i}></td>)}
-                <td className="text-right py-1.5 px-2 font-mono font-bold text-green-800 border-l-2 border-blue-200">{c.activeSens.moic.toFixed(1)}x / {(c.activeSens.irr * 100).toFixed(0)}%</td>
+                <td className="text-right py-1.5 px-2 font-mono font-bold text-green-800 border-l-2 border-blue-200">{c.active.returnMult.toFixed(1)}x</td>
                 <td></td>
               </tr>
             </tbody>
@@ -296,20 +261,17 @@ function ValueTab() {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// TAB 2 — EARNOUT CALCULATOR (with sliders)
+// TAB 2 — PERFORMANCE-BASED CONSIDERATION (Earnout)
 // ════════════════════════════════════════════════════════════════════════
 function EarnoutTab() {
-  const [entryEV, setEntryEV] = useState(40000);
-  const [earnoutPct, setEarnoutPct] = useState(20);
-  const [yr1Hurdle, setYr1Hurdle] = useState(7500);
-  const [yr2Hurdle, setYr2Hurdle] = useState(8000);
   const [yr1Actual, setYr1Actual] = useState(7900);
   const [yr2Actual, setYr2Actual] = useState(8500);
+  const yr1Hurdle = 7500;
+  const yr2Hurdle = 8000;
 
   const c = useMemo(() => {
-    const deferredTotal = (earnoutPct / 100) * entryEV;
-    const yr1Tranche = 0.3 * deferredTotal;
-    const yr2Tranche = 0.7 * deferredTotal;
+    const yr1Tranche = 0.3 * DEFERRED_TOTAL;
+    const yr2Tranche = 0.7 * DEFERRED_TOTAL;
     const yr1Floor = yr1Hurdle * 0.8;
     const yr2Floor = yr2Hurdle * 0.8;
     const yr1Pay = yr1Actual >= yr1Hurdle ? yr1Tranche : yr1Actual >= yr1Floor ? yr1Tranche * ((yr1Actual - yr1Floor) / (yr1Hurdle - yr1Floor)) : 0;
@@ -317,23 +279,13 @@ function EarnoutTab() {
     const yr2Pool = yr2Tranche + yr1Carry;
     const yr2Pay = yr2Actual >= yr2Hurdle ? yr2Pool : yr2Actual >= yr2Floor ? yr2Pool * ((yr2Actual - yr2Floor) / (yr2Hurdle - yr2Floor)) : 0;
     const totalPaid = yr1Pay + yr2Pay;
-    const totalSaved = deferredTotal - totalPaid;
     const yr1Status = yr1Actual >= yr1Hurdle ? "met" : yr1Actual >= yr1Floor ? "partial" : "missed";
     const yr2Status = yr2Actual >= yr2Hurdle ? "met" : yr2Actual >= yr2Floor ? "partial" : "missed";
-    return { deferredTotal, yr1Tranche, yr2Tranche, yr1Floor, yr2Floor, yr1Pay, yr1Carry, yr2Pool, yr2Pay, totalPaid, totalSaved, yr1Status, yr2Status };
-  }, [entryEV, earnoutPct, yr1Hurdle, yr2Hurdle, yr1Actual, yr2Actual]);
-
-  const Inp = ({ label, value, set, step = 100, suffix = "" }: any) => (
-    <div className="flex flex-col gap-0.5">
-      <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">{label}</label>
-      <input type="number" value={value} onChange={e => set(+e.target.value)} step={step}
-        className="w-24 px-2 py-1 text-sm border border-gray-200 rounded bg-white" />
-      <span className="text-[10px] text-gray-400">{suffix}</span>
-    </div>
-  );
+    return { yr1Tranche, yr2Tranche, yr1Floor, yr2Floor, yr1Pay, yr1Carry, yr2Pool, yr2Pay, totalPaid, yr1Status, yr2Status };
+  }, [yr1Actual, yr2Actual]);
 
   const statusColors = { met: "bg-green-500", partial: "bg-yellow-500", missed: "bg-red-500" };
-  const statusLabels = { met: "MET", partial: "PARTIAL", missed: "MISSED" };
+  const statusLabels = { met: "ACHIEVED", partial: "PARTIAL", missed: "BELOW TARGET" };
 
   const Slider = ({ label, value, set, min, max, hurdle, floor, status }: any) => {
     const pctPos = ((value - min) / (max - min)) * 100;
@@ -346,17 +298,13 @@ function EarnoutTab() {
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold text-white ${statusColors[status as keyof typeof statusColors]}`}>{statusLabels[status as keyof typeof statusLabels]}</span>
         </div>
         <div className="relative mb-2">
-          {/* Track background */}
           <div className="h-3 rounded-full bg-gray-200 relative overflow-visible">
-            {/* Floor marker */}
             <div className="absolute top-0 bottom-0 w-0.5 bg-red-400 z-10" style={{ left: `${floorPct}%` }}>
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] text-red-500 whitespace-nowrap">Floor {fmtK(floor)}</div>
             </div>
-            {/* Hurdle marker */}
             <div className="absolute top-0 bottom-0 w-0.5 bg-green-600 z-10" style={{ left: `${hurdlePct}%` }}>
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] text-green-600 whitespace-nowrap">Target {fmtK(hurdle)}</div>
             </div>
-            {/* Fill */}
             <div className={`absolute top-0 left-0 bottom-0 rounded-full transition-all ${status === 'met' ? 'bg-green-400' : status === 'partial' ? 'bg-yellow-400' : 'bg-red-300'}`}
               style={{ width: `${Math.min(100, pctPos)}%` }} />
           </div>
@@ -375,90 +323,83 @@ function EarnoutTab() {
 
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
-        <Inp label="Entry EV" value={entryEV} set={setEntryEV} step={1000} suffix="S$K" />
-        <Inp label="Earnout %" value={earnoutPct} set={setEarnoutPct} step={5} suffix="% of EV" />
-        <Inp label="Yr1 Hurdle" value={yr1Hurdle} set={setYr1Hurdle} step={100} suffix="S$K EBITDA" />
-        <Inp label="Yr2 Hurdle" value={yr2Hurdle} set={setYr2Hurdle} step={100} suffix="S$K EBITDA" />
-      </div>
+      <p className="text-sm text-gray-600">The performance-based consideration aligns the interests of both parties. {EARNOUT_PCT}% of the enterprise value ({fmtK(DEFERRED_TOTAL)}) is linked to EBITDA performance over the first two years, paid in two tranches.</p>
 
       {/* Structure boxes */}
       <div className="grid grid-cols-3 gap-4 text-center">
         <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-          <div className="text-2xl font-bold text-blue-800">{fmtK(c.deferredTotal)}</div>
-          <div className="text-xs text-gray-500 mt-1">Total Deferred<br />({earnoutPct}% of {fmtK(entryEV)})</div>
+          <div className="text-2xl font-bold text-blue-800">{fmtK(DEFERRED_TOTAL)}</div>
+          <div className="text-xs text-gray-500 mt-1">Total Performance<br />Consideration</div>
         </div>
         <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
           <div className="text-2xl font-bold text-blue-800">{fmtK(c.yr1Tranche)}</div>
-          <div className="text-xs text-gray-500 mt-1">Yr 1 Tranche<br />(30% of deferred)</div>
+          <div className="text-xs text-gray-500 mt-1">Year 1<br />(30% of total)</div>
         </div>
         <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
           <div className="text-2xl font-bold text-blue-800">{fmtK(c.yr2Tranche)}</div>
-          <div className="text-xs text-gray-500 mt-1">Yr 2 Tranche<br />(70% of deferred)</div>
+          <div className="text-xs text-gray-500 mt-1">Year 2<br />(70% of total)</div>
         </div>
       </div>
 
       {/* Sliders */}
       <div className="space-y-6">
-        <Slider label="Year 1 Actual EBITDA" value={yr1Actual} set={setYr1Actual}
+        <Slider label="Year 1 EBITDA Performance" value={yr1Actual} set={setYr1Actual}
           min={5000} max={12000} hurdle={yr1Hurdle} floor={c.yr1Floor} status={c.yr1Status} />
-        <Slider label="Year 2 Actual EBITDA" value={yr2Actual} set={setYr2Actual}
+        <Slider label="Year 2 EBITDA Performance" value={yr2Actual} set={setYr2Actual}
           min={5000} max={12000} hurdle={yr2Hurdle} floor={c.yr2Floor} status={c.yr2Status} />
       </div>
 
       {/* Payout details */}
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-gray-50 rounded-xl p-4">
-          <h4 className="font-semibold text-sm mb-2">Year 1 Payout</h4>
+          <h4 className="font-semibold text-sm mb-2">Year 1 Payment</h4>
           <div className="text-xs space-y-1">
-            <div className="flex justify-between"><span>Tranche</span><span className="font-mono">{fmtK(c.yr1Tranche)}</span></div>
-            <div className="flex justify-between font-bold text-green-700"><span>Paid</span><span className="font-mono">{fmtK(c.yr1Pay)}</span></div>
-            {c.yr1Carry > 0 && <div className="flex justify-between text-orange-600"><span>Carries to Yr2</span><span className="font-mono">{fmtK(c.yr1Carry)}</span></div>}
+            <div className="flex justify-between"><span>Available</span><span className="font-mono">{fmtK(c.yr1Tranche)}</span></div>
+            <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtK(c.yr1Pay)}</span></div>
+            {c.yr1Carry > 0 && <div className="flex justify-between text-orange-600"><span>Carries to Year 2</span><span className="font-mono">{fmtK(c.yr1Carry)}</span></div>}
           </div>
         </div>
         <div className="bg-gray-50 rounded-xl p-4">
-          <h4 className="font-semibold text-sm mb-2">Year 2 Payout</h4>
+          <h4 className="font-semibold text-sm mb-2">Year 2 Payment</h4>
           <div className="text-xs space-y-1">
-            <div className="flex justify-between"><span>Tranche + Carry</span><span className="font-mono">{fmtK(c.yr2Pool)}</span></div>
-            <div className="flex justify-between font-bold text-green-700"><span>Paid</span><span className="font-mono">{fmtK(c.yr2Pay)}</span></div>
+            <div className="flex justify-between"><span>Available (incl. carry)</span><span className="font-mono">{fmtK(c.yr2Pool)}</span></div>
+            <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtK(c.yr2Pay)}</span></div>
           </div>
         </div>
       </div>
 
-      {/* Total — dynamic */}
+      {/* Total */}
       <div className="flex items-center justify-between bg-blue-900 text-white rounded-xl p-5">
         <div>
-          <div className="text-sm font-bold">Total Earnout Paid</div>
-          <div className="text-xs opacity-70">of {fmtK(c.deferredTotal)} deferred</div>
+          <div className="text-sm font-bold">Total Performance Consideration Payable</div>
+          <div className="text-xs opacity-70">of {fmtK(DEFERRED_TOTAL)} total</div>
         </div>
         <div className="text-3xl font-bold">{fmtK(c.totalPaid)}</div>
       </div>
-      {c.totalSaved > 0 && <p className="text-xs text-green-700 font-semibold text-center">Sponsor saves {fmtK(c.totalSaved)} vs paying full deferred consideration</p>}
     </div>
   );
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// TAB 3 — HOLDCO STRUCTURE
+// TAB 3 — GROUP STRUCTURE
 // ════════════════════════════════════════════════════════════════════════
 function HoldcoTab() {
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Current */}
-        <div className="bg-white rounded-xl border-2 border-red-200 p-5">
+        <div className="bg-white rounded-xl border-2 border-gray-200 p-5">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <h3 className="font-bold text-sm text-red-800">CURRENT STRUCTURE</h3>
+            <div className="w-3 h-3 rounded-full bg-gray-400"></div>
+            <h3 className="font-bold text-sm text-gray-700">TODAY&apos;S STRUCTURE</h3>
           </div>
-          {/* Three separate boxes side by side */}
           <div className="space-y-3">
             {[
-              { name: "Carats & Co", rev: "S$20M", desc: "Signage Design & Build", color: "from-red-500 to-red-600",
+              { name: "Carats & Co", rev: "S$20M", desc: "Signage Design & Build", color: "from-slate-500 to-slate-600",
                 holders: ["Albert 23.3%", "Raymond 23.3%", "Charlie 20%", "Ann 17.1%", "TH 8.7%", "Min Min 7.7%"] },
-              { name: "Gleamedia", rev: "S$6M", desc: "OOH Media", color: "from-orange-500 to-orange-600",
+              { name: "Gleamedia", rev: "S$6M", desc: "OOH Media", color: "from-slate-400 to-slate-500",
                 holders: ["Geng Hao 30%", "Raymond 22%", "Ann 22%", "TH 22%", "Keith 4%"] },
-              { name: "Adactive", rev: "S$2M", desc: "Digital Kiosks / Software", color: "from-amber-500 to-amber-600",
+              { name: "Adactive", rev: "S$2M", desc: "Digital Kiosks / Software", color: "from-slate-400 to-slate-500",
                 holders: ["Yu Hang 50%", "Ann 25%", "TH 12.5%", "Geng Hao 12.5%"] },
             ].map(entity => (
               <div key={entity.name} className="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
@@ -474,11 +415,11 @@ function HoldcoTab() {
               </div>
             ))}
           </div>
-          <div className="mt-4 space-y-1.5 text-xs text-red-700">
-            <p className="flex items-start gap-1.5"><span className="text-red-400 mt-0.5">&#x2718;</span> No holding company &mdash; 3 separate legal entities</p>
-            <p className="flex items-start gap-1.5"><span className="text-red-400 mt-0.5">&#x2718;</span> Different shareholders and % across all 3 entities</p>
-            <p className="flex items-start gap-1.5"><span className="text-red-400 mt-0.5">&#x2718;</span> Below-market intercompany pricing (Carats subsidises both)</p>
-            <p className="flex items-start gap-1.5"><span className="text-red-400 mt-0.5">&#x2718;</span> Complex dividend/cash extraction across 3 shareholder registers</p>
+          <div className="mt-4 space-y-1.5 text-xs text-gray-600">
+            <p>&bull; Three separate legal entities, each with its own shareholders</p>
+            <p>&bull; Shareholding percentages vary across entities</p>
+            <p>&bull; Transfer pricing to be formalised under new structure</p>
+            <p>&bull; Separate dividend policies across entities</p>
           </div>
         </div>
 
@@ -489,16 +430,14 @@ function HoldcoTab() {
             <h3 className="font-bold text-sm text-green-800">PROPOSED STRUCTURE</h3>
           </div>
 
-          {/* HoldCo */}
           <div className="border-2 border-green-400 rounded-xl p-4 bg-gradient-to-b from-green-50 to-emerald-50 text-center">
             <div className="font-bold text-lg text-green-900">NewCo HoldCo</div>
             <div className="flex justify-center gap-3 mt-2">
-              <span className="px-3 py-1 bg-blue-600 text-white text-xs rounded-full font-bold">Sponsor 70%</span>
+              <span className="px-3 py-1 bg-blue-600 text-white text-xs rounded-full font-bold">Movement 70%</span>
               <span className="px-3 py-1 bg-green-600 text-white text-xs rounded-full font-bold">Management 30%</span>
             </div>
           </div>
 
-          {/* Two branches */}
           <div className="flex justify-center gap-16 mt-1">
             <div className="w-px h-4 bg-green-300"></div>
             <div className="w-px h-4 bg-green-300"></div>
@@ -512,7 +451,6 @@ function HoldcoTab() {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            {/* Carats branch with Adactive nested */}
             <div className="space-y-0">
               <div className="border-2 border-green-300 rounded-xl overflow-hidden">
                 <div className="bg-gradient-to-r from-green-500 to-green-600 px-3 py-2">
@@ -533,8 +471,6 @@ function HoldcoTab() {
                 </div>
               </div>
             </div>
-
-            {/* Gleamedia branch */}
             <div className="border-2 border-green-300 rounded-xl overflow-hidden self-start">
               <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-3 py-2">
                 <div className="text-white font-bold text-sm">Gleamedia</div>
@@ -547,12 +483,12 @@ function HoldcoTab() {
           </div>
 
           <div className="mt-4 space-y-1.5 text-xs text-green-700">
-            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Single cap table &mdash; clean 70/30 at HoldCo</p>
-            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Minority buyout at agreed valuation (pre-completion)</p>
-            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Adactive under Carats (operational integration)</p>
-            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Arm&apos;s-length transfer pricing policy</p>
-            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Centralised treasury, single board, unified strategy</p>
-            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Clean exit path &mdash; single entity sale or IPO-ready</p>
+            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Single ownership structure &mdash; 70/30 at HoldCo level</p>
+            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> All shareholders treated fairly at agreed group valuation</p>
+            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Adactive integrated under Carats for operational efficiency</p>
+            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Formalised transfer pricing across all entities</p>
+            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Unified cash management, governance, and strategy</p>
+            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Future-ready structure for continued growth</p>
           </div>
         </div>
       </div>
@@ -561,19 +497,19 @@ function HoldcoTab() {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// TAB 4 — TIMELINE (left-aligned labels)
+// TAB 4 — PROPOSED TIMELINE
 // ════════════════════════════════════════════════════════════════════════
 function TimelineTab() {
   const phases = [
     { task: "Submit Draft LOI", start: 1, dur: 2, color: "#1e40af", group: "LOI" },
-    { task: "LOI Negotiation & Signing", start: 2, dur: 2, color: "#3b82f6", group: "LOI" },
-    { task: "Standalone BU Margins", start: 4, dur: 4, color: "#8b5cf6", group: "DD" },
-    { task: "Normalised EBITDA", start: 5, dur: 5, color: "#a78bfa", group: "DD" },
-    { task: "NWC Peg & Completion Mechanism", start: 6, dur: 4, color: "#c4b5fd", group: "DD" },
-    { task: "Legal & Structural DD", start: 4, dur: 8, color: "#ddd6fe", group: "DD" },
-    { task: "SPA Drafting", start: 10, dur: 4, color: "#059669", group: "SPA" },
-    { task: "Key-Man & Gen-2 Transition", start: 10, dur: 4, color: "#7c3aed", group: "SPA" },
-    { task: "Completion & Close", start: 14, dur: 2, color: "#10b981", group: "Close" },
+    { task: "LOI Discussion & Agreement", start: 2, dur: 2, color: "#3b82f6", group: "LOI" },
+    { task: "Business Unit Review", start: 4, dur: 4, color: "#8b5cf6", group: "DD" },
+    { task: "Adjusted Earnings Review", start: 5, dur: 5, color: "#a78bfa", group: "DD" },
+    { task: "Working Capital & Balance Sheet Review", start: 6, dur: 4, color: "#c4b5fd", group: "DD" },
+    { task: "Legal & Structural Review", start: 4, dur: 8, color: "#ddd6fe", group: "DD" },
+    { task: "Agreement Drafting", start: 10, dur: 4, color: "#059669", group: "SPA" },
+    { task: "Leadership Continuity & Team Alignment", start: 10, dur: 4, color: "#7c3aed", group: "SPA" },
+    { task: "Completion", start: 14, dur: 2, color: "#10b981", group: "Close" },
   ];
   const maxW = 16;
   const gc = { LOI: "bg-blue-100 text-blue-700", DD: "bg-purple-100 text-purple-700", SPA: "bg-green-100 text-green-700", Close: "bg-emerald-100 text-emerald-700" };
@@ -583,15 +519,14 @@ function TimelineTab() {
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <div className="overflow-x-auto">
           <div style={{ minWidth: 700 }}>
-            {/* Month headers */}
             <div className="flex mb-1">
-              <div style={{ width: 240, flexShrink: 0 }} />
+              <div style={{ width: 260, flexShrink: 0 }} />
               {Array.from({ length: maxW }, (_, i) => (
                 <div key={i} className="flex-1 text-center text-gray-400" style={{ fontSize: 9, borderLeft: '1px solid #f3f4f6' }}>W{i + 1}</div>
               ))}
             </div>
             <div className="flex mb-3">
-              <div style={{ width: 240, flexShrink: 0 }} />
+              <div style={{ width: 260, flexShrink: 0 }} />
               {["Month 1", "Month 2", "Month 3", "Month 4"].map((m, i) => (
                 <div key={i} className="text-center text-xs font-semibold text-gray-500" style={{ flex: 4, borderLeft: '1px solid #e5e7eb' }}>{m}</div>
               ))}
@@ -599,8 +534,7 @@ function TimelineTab() {
 
             {phases.map((p, i) => (
               <div key={i} className="flex items-center mb-2">
-                {/* LEFT-ALIGNED labels */}
-                <div style={{ width: 240, flexShrink: 0, paddingLeft: 4, paddingRight: 8 }} className="flex items-center gap-1.5">
+                <div style={{ width: 260, flexShrink: 0, paddingLeft: 4, paddingRight: 8 }} className="flex items-center gap-1.5">
                   <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold shrink-0 ${gc[p.group as keyof typeof gc]}`}>{p.group}</span>
                   <span className="text-xs font-medium text-left">{p.task}</span>
                 </div>
@@ -625,10 +559,10 @@ function TimelineTab() {
       {/* DD cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {[
-          { num: 1, title: "Standalone BU Margins", desc: "Strip inter-BU expenses and subsidised installation. Carats does 100% of installations at below-market. Validate true standalone GP and EBITDA for SOTP.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
-          { num: 2, title: "Normalised EBITDA", desc: "Adjust for family compensation (S$2.0M across 6 members), one-off stamp duty (S$985K in FY22), property-related items, post-transaction cost structure.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
-          { num: 3, title: "NWC Peg & Completion", desc: "NWC swung from 2.8% (FY24) to 13.1% (FY25). Other Payables dropped S$1.5M. Aged AR/AP analysis needed. Set normalised peg for SPA completion mechanism.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
-          { num: 4, title: "Key-Man & Gen-2 Transition", desc: "Parallel with SPA. Map which leaders own which client relationships. Design retention/incentive for Yu Hang (80% pipeline origination), Albert, Raymond.", bg: "#eef2ff", border: "#c7d2fe", accent: "#4f46e5" },
+          { num: 1, title: "Business Unit Review", desc: "Understand the economics of each business unit independently, including how they work together and the value of the integrated platform.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
+          { num: 2, title: "Adjusted Earnings Review", desc: "Review compensation structure, one-off items, and the ongoing cost base to understand the true recurring earnings of the group.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
+          { num: 3, title: "Working Capital & Balance Sheet", desc: "Review receivables, payables, and cash requirements to agree on the working capital baseline for the transaction.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
+          { num: 4, title: "Leadership Continuity & Team Alignment", desc: "Runs alongside the agreement drafting. Ensure the right people are in the right roles and aligned on the growth plan going forward.", bg: "#eef2ff", border: "#c7d2fe", accent: "#4f46e5" },
         ].map(card => (
           <div key={card.num} className="rounded-xl p-4 border" style={{ backgroundColor: card.bg, borderColor: card.border }}>
             <div className="flex items-center gap-2 mb-1">
@@ -646,7 +580,7 @@ function TimelineTab() {
 // ════════════════════════════════════════════════════════════════════════
 // PASSWORD GATE
 // ════════════════════════════════════════════════════════════════════════
-const PASS_HASH = "8e1e3e1c88e04ede7c0a4a449e44f2ab1e877f60c17b2193c8914aecd11f196f"; // SHA-256 of "diamond2026"
+const PASS_HASH = "8e1e3e1c88e04ede7c0a4a449e44f2ab1e877f60c17b2193c8914aecd11f196f";
 
 async function sha256(message: string): Promise<string> {
   const msgBuffer = new TextEncoder().encode(message);
@@ -661,7 +595,6 @@ function PasswordGate({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Check session on mount
   useState(() => {
     if (typeof window !== "undefined") {
       const stored = sessionStorage.getItem("pd_auth");
@@ -696,23 +629,18 @@ function PasswordGate({ children }: { children: React.ReactNode }) {
             </svg>
           </div>
           <h1 className="text-xl font-bold text-blue-900 mb-1">PROJECT DIAMOND</h1>
-          <p className="text-xs text-gray-400 mb-6">Strictly Confidential</p>
+          <p className="text-xs text-gray-400 mb-6">Confidential</p>
           <form onSubmit={handleSubmit}>
-            <input
-              type="password"
-              value={password}
+            <input type="password" value={password}
               onChange={e => { setPassword(e.target.value); setError(false); }}
-              placeholder="Enter access code"
-              autoFocus
-              className={`w-full px-4 py-3 text-sm border rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${error ? "border-red-400 bg-red-50" : "border-gray-200"}`}
-            />
+              placeholder="Enter access code" autoFocus
+              className={`w-full px-4 py-3 text-sm border rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${error ? "border-red-400 bg-red-50" : "border-gray-200"}`} />
             {error && <p className="text-xs text-red-500 mt-2">Incorrect access code</p>}
-            <button type="submit"
-              className="w-full mt-4 py-3 bg-blue-900 text-white text-sm font-semibold rounded-xl hover:bg-blue-800 transition-colors">
-              Access Tool
+            <button type="submit" className="w-full mt-4 py-3 bg-blue-900 text-white text-sm font-semibold rounded-xl hover:bg-blue-800 transition-colors">
+              Access
             </button>
           </form>
-          <p className="text-[10px] text-gray-300 mt-6">Movement Capital &mdash; Authorised Access Only</p>
+          <p className="text-[10px] text-gray-300 mt-6">Movement &mdash; Authorised Access Only</p>
         </div>
       </div>
     </div>
@@ -730,7 +658,7 @@ function Dashboard() {
     <div className="max-w-5xl mx-auto p-4 bg-gray-50 min-h-screen">
       <header className="text-center py-3 mb-4">
         <h1 className="text-2xl font-bold text-blue-900 tracking-tight">PROJECT DIAMOND</h1>
-        <p className="text-xs text-gray-400 mt-0.5">Preliminary LOI Discussion Tool &mdash; Strictly Confidential</p>
+        <p className="text-xs text-gray-400 mt-0.5">Preliminary Discussion &mdash; Confidential</p>
       </header>
       <div className="flex gap-1 mb-5 bg-white rounded-xl p-1 shadow-sm border border-gray-200">
         {TABS.map((t, i) => (
@@ -741,7 +669,7 @@ function Dashboard() {
         ))}
       </div>
       {content[tab]}
-      <footer className="text-center text-[10px] text-gray-300 py-6 mt-8">Movement &mdash; Project Diamond &mdash; March 2026</footer>
+      <footer className="text-center text-[10px] text-gray-300 py-6 mt-8">Movement &mdash; March 2026</footer>
     </div>
   );
 }
