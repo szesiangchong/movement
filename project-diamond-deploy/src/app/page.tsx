@@ -35,6 +35,7 @@ const UPFRONT_EV = EV - DEFERRED_TOTAL;
 // ════════════════════════════════════════════════════════════════════════
 function ValueTab() {
   const [selectedMult, setSelectedMult] = useState<number | null>(null);
+  const [yr5Ebitda, setYr5Ebitda] = useState(13611);
 
   const c = useMemo(() => {
     const exit70_upfront = (MOVEMENT_PCT / 100) * (UPFRONT_EV + NET_CASH);
@@ -42,23 +43,13 @@ function ValueTab() {
     const exit70_total = exit70_upfront + exit70_earnout;
     const rollover30 = (MGMT_PCT / 100) * EQUITY_VALUE;
 
-    const mgmtRevenue = [28100, 34300, 37450, 41600, 46700, 52350];
-    const projections = [];
-    for (let y = 0; y <= HOLD_YEARS; y++) {
-      const rev = y < mgmtRevenue.length ? mgmtRevenue[y] : mgmtRevenue[mgmtRevenue.length - 1] * Math.pow(1 + REV_CAGR / 100, y - mgmtRevenue.length + 1);
-      const ebitda = rev * (EBITDA_MARGIN / 100);
-      projections.push({ year: y === 0 ? "FY25" : `Yr ${y}`, revenue: Math.round(rev), ebitda: Math.round(ebitda) });
-    }
-    const futureEbitda = projections[HOLD_YEARS].ebitda;
-    const revCagr = Math.pow(projections[HOLD_YEARS].revenue / projections[0].revenue, 1 / HOLD_YEARS) - 1;
-
     const multiples = Array.from(new Set([ENTRY_MULT, 6, 7, 8].map(m => Math.round(m * 10) / 10))).sort((a, b) => a - b);
-    const annualFCF = futureEbitda * 0.83 * 0.55;
+    const annualFCF = yr5Ebitda * 0.83 * 0.55;
     const cumFCF = annualFCF * HOLD_YEARS * 0.7;
     const futureNetCash = NET_CASH + cumFCF;
 
     const sensitivity = multiples.map(mult => {
-      const futureEV = futureEbitda * mult;
+      const futureEV = yr5Ebitda * mult;
       const futureEquity = futureEV + futureNetCash;
       const futureRoll = (MGMT_PCT / 100) * futureEquity;
       const returnMult = futureRoll / rollover30;
@@ -71,10 +62,10 @@ function ValueTab() {
 
     return {
       exit70_upfront, exit70_earnout, exit70_total,
-      rollover30, projections, futureEbitda, futureNetCash,
-      sensitivity, active, revCagr,
+      rollover30, yr5Ebitda, futureNetCash,
+      sensitivity, active,
     };
-  }, [selectedMult]);
+  }, [selectedMult, yr5Ebitda]);
 
   const chart1Data = [
     { name: `${MOVEMENT_PCT}% Upfront Payment`, value: c.exit70_upfront / 1000, fill: "#1e40af" },
@@ -194,67 +185,42 @@ function ValueTab() {
         </div>
       </div>
 
-      {/* Projections Table */}
+      {/* Year 5 EBITDA Slider + Valuation */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-bold text-gray-700 mb-3">Business Projections &amp; Estimated Future Value ({c.active.mult.toFixed(1)}x) &mdash; <span className="text-blue-600">Management Case</span></h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="text-left py-2 px-2 font-semibold text-gray-500">S$&apos;000</th>
-                {c.projections.map((p, i) => (
-                  <th key={i} className={`text-right py-2 px-2 font-semibold ${i === 0 ? 'text-gray-400' : 'text-gray-700'}`}>{p.year}</th>
-                ))}
-                <th className="text-right py-2 px-2 font-semibold text-blue-700 border-l-2 border-blue-200">Year {HOLD_YEARS}</th>
-                <th className="text-right py-2 px-2 font-semibold text-gray-500">Growth</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="py-1.5 px-2 text-gray-600">Revenue <span className="text-[10px] text-blue-500">(Mgmt Case)</span></td>
-                {c.projections.map((p, i) => <td key={i} className="text-right py-1.5 px-2 font-mono">{(p.revenue / 1000).toFixed(1)}M</td>)}
-                <td className="text-right py-1.5 px-2 border-l-2 border-blue-200"></td>
-                <td className="text-right py-1.5 px-2 font-mono text-gray-500">{(c.revCagr * 100).toFixed(1)}% p.a.</td>
-              </tr>
-              <tr className="bg-gray-50">
-                <td className="py-1.5 px-2 text-gray-600">EBITDA ({EBITDA_MARGIN}% margin)</td>
-                {c.projections.map((p, i) => <td key={i} className="text-right py-1.5 px-2 font-mono font-semibold">{(p.ebitda / 1000).toFixed(1)}M</td>)}
-                <td className="text-right py-1.5 px-2 border-l-2 border-blue-200"></td>
-                <td className="text-right py-1.5 px-2 font-mono text-gray-500">{(c.revCagr * 100).toFixed(1)}% p.a.</td>
-              </tr>
-              <tr className="border-t-2 border-gray-200">
-                <td className="py-1.5 px-2 font-semibold text-blue-800">Projected Value ({c.active.mult.toFixed(1)}x)</td>
-                {c.projections.map((_, i) => <td key={i}></td>)}
-                <td className="text-right py-1.5 px-2 font-mono font-bold text-blue-800 border-l-2 border-blue-200">{fmt(c.active.futureEV)}</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td className="py-1.5 px-2 text-gray-600">(+) Est. Net Cash</td>
-                {c.projections.map((_, i) => <td key={i}></td>)}
-                <td className="text-right py-1.5 px-2 font-mono border-l-2 border-blue-200">{fmt(c.futureNetCash)}</td>
-                <td></td>
-              </tr>
-              <tr className="bg-blue-50">
-                <td className="py-1.5 px-2 font-bold text-blue-900">Total Equity Value (100%)</td>
-                {c.projections.map((_, i) => <td key={i}></td>)}
-                <td className="text-right py-1.5 px-2 font-mono font-bold text-blue-900 border-l-2 border-blue-200">{fmt(c.active.futureEquity)}</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td className="py-1.5 px-2 text-green-700 font-semibold">{MGMT_PCT}% Continuing Share</td>
-                {c.projections.map((_, i) => <td key={i}></td>)}
-                <td className="text-right py-1.5 px-2 font-mono font-bold text-green-700 border-l-2 border-blue-200">{fmt(c.active.futureRoll)}</td>
-                <td></td>
-              </tr>
-              <tr className="bg-green-50">
-                <td className="py-1.5 px-2 font-bold text-green-800">Return Multiple</td>
-                {c.projections.map((_, i) => <td key={i}></td>)}
-                <td className="text-right py-1.5 px-2 font-mono font-bold text-green-800 border-l-2 border-blue-200">{c.active.returnMult.toFixed(1)}x</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+        <h3 className="text-sm font-bold text-gray-700 mb-1">Estimated Future Value at Year {HOLD_YEARS}</h3>
+        <p className="text-[11px] text-gray-400 mb-4">Adjust the estimated Year {HOLD_YEARS} EBITDA to see how the {MGMT_PCT}% continuing stake could grow.</p>
+
+        {/* EBITDA Slider */}
+        <div className="bg-gray-50 rounded-xl p-4 mb-5">
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-semibold text-sm">Estimated Year {HOLD_YEARS} EBITDA</span>
+          </div>
+          <input type="range" min={7000} max={20000} step={100} value={yr5Ebitda} onChange={e => setYr5Ebitda(+e.target.value)}
+            className="w-full appearance-none bg-transparent cursor-pointer h-5" />
+          <div className="flex justify-between text-xs mt-1">
+            <span className="text-gray-400">S$7,000</span>
+            <span className="font-mono font-bold text-xl text-blue-800">{fmtK(yr5Ebitda)}</span>
+            <span className="text-gray-400">S$20,000</span>
+          </div>
         </div>
+
+        {/* Valuation table */}
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-gray-50">
+              <th className="text-left py-2 px-3 font-semibold text-gray-500">S$&apos;000</th>
+              <th className="text-right py-2 px-3 font-semibold text-blue-700">Year {HOLD_YEARS} Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td className="py-1.5 px-3 text-gray-600">Year {HOLD_YEARS} EBITDA</td><td className="text-right py-1.5 px-3 font-mono">{fmtK(yr5Ebitda)}</td></tr>
+            <tr className="bg-gray-50"><td className="py-1.5 px-3 font-semibold text-blue-800">Projected Value ({c.active.mult.toFixed(1)}x)</td><td className="text-right py-1.5 px-3 font-mono font-bold text-blue-800">{fmt(c.active.futureEV)}</td></tr>
+            <tr><td className="py-1.5 px-3 text-gray-600">(+) Est. Net Cash</td><td className="text-right py-1.5 px-3 font-mono">{fmt(c.futureNetCash)}</td></tr>
+            <tr className="bg-blue-50"><td className="py-1.5 px-3 font-bold text-blue-900">Total Equity Value (100%)</td><td className="text-right py-1.5 px-3 font-mono font-bold text-blue-900">{fmt(c.active.futureEquity)}</td></tr>
+            <tr><td className="py-1.5 px-3 text-green-700 font-semibold">{MGMT_PCT}% Continuing Share</td><td className="text-right py-1.5 px-3 font-mono font-bold text-green-700">{fmt(c.active.futureRoll)}</td></tr>
+            <tr className="bg-green-50"><td className="py-1.5 px-3 font-bold text-green-800">Return Multiple</td><td className="text-right py-1.5 px-3 font-mono font-bold text-green-800">{c.active.returnMult.toFixed(1)}x</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );
@@ -268,42 +234,65 @@ function EarnoutTab() {
   const [yr2Actual, setYr2Actual] = useState(8500);
   const yr1Hurdle = 7500;
   const yr2Hurdle = 8000;
+  const yr1MgmtForecast = 9396; // Management case Yr1
+  const yr2MgmtForecast = 10780; // Management case Yr2
 
   const c = useMemo(() => {
     const yr1Tranche = 0.3 * DEFERRED_TOTAL;
     const yr2Tranche = 0.7 * DEFERRED_TOTAL;
     const yr1Floor = yr1Hurdle * 0.8;
     const yr2Floor = yr2Hurdle * 0.8;
-    const yr1Pay = yr1Actual >= yr1Hurdle ? yr1Tranche : yr1Actual >= yr1Floor ? yr1Tranche * ((yr1Actual - yr1Floor) / (yr1Hurdle - yr1Floor)) : 0;
-    const yr1Carry = yr1Tranche - yr1Pay;
-    const yr2Pool = yr2Tranche + yr1Carry;
-    const yr2Pay = yr2Actual >= yr2Hurdle ? yr2Pool : yr2Actual >= yr2Floor ? yr2Pool * ((yr2Actual - yr2Floor) / (yr2Hurdle - yr2Floor)) : 0;
+
+    // Year 1: pro-rata between floor (80%) and target (100%). Below floor = zero.
+    const yr1Ratio = Math.min(1, Math.max(0, (yr1Actual - yr1Floor) / (yr1Hurdle - yr1Floor)));
+    const yr1Pay = yr1Actual >= yr1Floor ? yr1Tranche * yr1Ratio : 0;
+    const yr1Shortfall = yr1Tranche - yr1Pay; // carries forward to Year 2
+
+    // Year 2: must hit at least 80% of target. Below 80% = zero, everything forfeited.
+    // If Year 2 hits target, pays Yr2 tranche + Yr1 carry (backward catch-up).
+    // If Year 2 is partial (80-100%), pays pro-rata of (Yr2 tranche + Yr1 carry).
+    let yr2Pay = 0;
+    if (yr2Actual >= yr2Floor) {
+      const yr2Pool = yr2Tranche + yr1Shortfall; // full pool including carry
+      const yr2Ratio = Math.min(1, (yr2Actual - yr2Floor) / (yr2Hurdle - yr2Floor));
+      yr2Pay = yr2Pool * yr2Ratio;
+    }
+    // Below 80% in Year 2 = everything remaining is forfeited permanently
+
     const totalPaid = yr1Pay + yr2Pay;
+    const totalForfeited = DEFERRED_TOTAL - totalPaid;
     const yr1Status = yr1Actual >= yr1Hurdle ? "met" : yr1Actual >= yr1Floor ? "partial" : "missed";
     const yr2Status = yr2Actual >= yr2Hurdle ? "met" : yr2Actual >= yr2Floor ? "partial" : "missed";
-    return { yr1Tranche, yr2Tranche, yr1Floor, yr2Floor, yr1Pay, yr1Carry, yr2Pool, yr2Pay, totalPaid, yr1Status, yr2Status };
+    return { yr1Tranche, yr2Tranche, yr1Floor, yr2Floor, yr1Pay, yr1Shortfall, yr2Pay, totalPaid, totalForfeited, yr1Status, yr2Status };
   }, [yr1Actual, yr2Actual]);
 
   const statusColors = { met: "bg-green-500", partial: "bg-yellow-500", missed: "bg-red-500" };
   const statusLabels = { met: "ACHIEVED", partial: "PARTIAL", missed: "BELOW TARGET" };
 
-  const Slider = ({ label, value, set, min, max, hurdle, floor, status }: any) => {
+  const Slider = ({ label, value, set, min, max, hurdle, floor, status, mgmtForecast }: any) => {
     const pctPos = ((value - min) / (max - min)) * 100;
     const hurdlePct = ((hurdle - min) / (max - min)) * 100;
     const floorPct = ((floor - min) / (max - min)) * 100;
+    const mgmtPct = ((mgmtForecast - min) / (max - min)) * 100;
     return (
-      <div className="bg-gray-50 rounded-xl p-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="font-semibold text-sm">{label}</span>
+      <div className="bg-gray-50 rounded-xl p-5">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <span className="font-semibold text-sm">{label}</span>
+            <span className="text-[10px] text-gray-400 ml-2">Target: {fmtK(hurdle)} (vs Mgmt forecast of {fmtK(mgmtForecast)})</span>
+          </div>
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold text-white ${statusColors[status as keyof typeof statusColors]}`}>{statusLabels[status as keyof typeof statusLabels]}</span>
         </div>
-        <div className="relative mb-2">
+        <div className="relative mb-3">
           <div className="h-3 rounded-full bg-gray-200 relative overflow-visible">
             <div className="absolute top-0 bottom-0 w-0.5 bg-red-400 z-10" style={{ left: `${floorPct}%` }}>
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] text-red-500 whitespace-nowrap">Floor {fmtK(floor)}</div>
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-red-500 whitespace-nowrap">Floor {fmtK(floor)}</div>
             </div>
             <div className="absolute top-0 bottom-0 w-0.5 bg-green-600 z-10" style={{ left: `${hurdlePct}%` }}>
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] text-green-600 whitespace-nowrap">Target {fmtK(hurdle)}</div>
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-green-600 whitespace-nowrap">Target {fmtK(hurdle)}</div>
+            </div>
+            <div className="absolute top-0 bottom-0 w-0.5 bg-blue-400 z-10 border-dashed" style={{ left: `${mgmtPct}%` }}>
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[8px] text-blue-400 whitespace-nowrap">Mgmt {fmtK(mgmtForecast)}</div>
             </div>
             <div className={`absolute top-0 left-0 bottom-0 rounded-full transition-all ${status === 'met' ? 'bg-green-400' : status === 'partial' ? 'bg-yellow-400' : 'bg-red-300'}`}
               style={{ width: `${Math.min(100, pctPos)}%` }} />
@@ -312,7 +301,7 @@ function EarnoutTab() {
             className="w-full -mt-2.5 relative z-20 appearance-none bg-transparent cursor-pointer"
             style={{ height: 20 }} />
         </div>
-        <div className="flex justify-between text-xs">
+        <div className="flex justify-between text-xs mt-2">
           <span className="text-gray-400">{fmtK(min)}</span>
           <span className="font-mono font-bold text-lg">{fmtK(value)}</span>
           <span className="text-gray-400">{fmtK(max)}</span>
@@ -342,11 +331,11 @@ function EarnoutTab() {
       </div>
 
       {/* Sliders */}
-      <div className="space-y-6">
+      <div className="space-y-8">
         <Slider label="Year 1 EBITDA Performance" value={yr1Actual} set={setYr1Actual}
-          min={5000} max={12000} hurdle={yr1Hurdle} floor={c.yr1Floor} status={c.yr1Status} />
+          min={5000} max={12000} hurdle={yr1Hurdle} floor={c.yr1Floor} status={c.yr1Status} mgmtForecast={yr1MgmtForecast} />
         <Slider label="Year 2 EBITDA Performance" value={yr2Actual} set={setYr2Actual}
-          min={5000} max={12000} hurdle={yr2Hurdle} floor={c.yr2Floor} status={c.yr2Status} />
+          min={5000} max={12000} hurdle={yr2Hurdle} floor={c.yr2Floor} status={c.yr2Status} mgmtForecast={yr2MgmtForecast} />
       </div>
 
       {/* Payout details */}
@@ -354,17 +343,20 @@ function EarnoutTab() {
         <div className="bg-gray-50 rounded-xl p-4">
           <h4 className="font-semibold text-sm mb-2">Year 1 Payment</h4>
           <div className="text-xs space-y-1">
-            <div className="flex justify-between"><span>Available</span><span className="font-mono">{fmtK(c.yr1Tranche)}</span></div>
+            <div className="flex justify-between"><span>Available (30% tranche)</span><span className="font-mono">{fmtK(c.yr1Tranche)}</span></div>
             <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtK(c.yr1Pay)}</span></div>
-            {c.yr1Carry > 0 && <div className="flex justify-between text-orange-600"><span>Carries to Year 2</span><span className="font-mono">{fmtK(c.yr1Carry)}</span></div>}
+            {c.yr1Shortfall > 0 && <div className="flex justify-between text-orange-600"><span>Shortfall carries to Year 2</span><span className="font-mono">{fmtK(c.yr1Shortfall)}</span></div>}
           </div>
+          <p className="text-[10px] text-gray-400 mt-2 italic">Pro-rata between 80-100% of target. Below 80% ({fmtK(c.yr1Floor)}) = zero.</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-4">
           <h4 className="font-semibold text-sm mb-2">Year 2 Payment</h4>
           <div className="text-xs space-y-1">
-            <div className="flex justify-between"><span>Available (incl. carry)</span><span className="font-mono">{fmtK(c.yr2Pool)}</span></div>
+            <div className="flex justify-between"><span>Available (70% tranche{c.yr1Shortfall > 0 ? " + carry" : ""})</span><span className="font-mono">{fmtK(c.yr2Tranche + c.yr1Shortfall)}</span></div>
             <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtK(c.yr2Pay)}</span></div>
+            {c.yr2Status === 'missed' && c.yr1Shortfall > 0 && <div className="text-red-600 text-[10px] mt-1 font-semibold">Year 2 below 80% floor &mdash; all remaining consideration forfeited</div>}
           </div>
+          <p className="text-[10px] text-gray-400 mt-2 italic">Must achieve at least 80% ({fmtK(c.yr2Floor)}). Below floor = all remaining forfeited permanently. Above target can recover Year 1 shortfall.</p>
         </div>
       </div>
 
