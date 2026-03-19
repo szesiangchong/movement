@@ -646,7 +646,7 @@ function TimelineTab() {
 // ════════════════════════════════════════════════════════════════════════
 // PASSWORD GATE
 // ════════════════════════════════════════════════════════════════════════
-const PASS_HASH = "d404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b"; // SHA-256 of "diamond2026"
+const PASS_HASH = "8e1e3e1c88e04ede7c0a4a449e44f2ab1e877f60c17b2193c8914aecd11f196f"; // SHA-256 of "diamond2026"
 
 async function sha256(message: string): Promise<string> {
   const msgBuffer = new TextEncoder().encode(message);
