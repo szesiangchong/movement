@@ -644,9 +644,85 @@ function TimelineTab() {
 }
 
 // ════════════════════════════════════════════════════════════════════════
+// PASSWORD GATE
+// ════════════════════════════════════════════════════════════════════════
+const PASS_HASH = "d404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b"; // SHA-256 of "diamond2026"
+
+async function sha256(message: string): Promise<string> {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function PasswordGate({ children }: { children: React.ReactNode }) {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Check session on mount
+  useState(() => {
+    if (typeof window !== "undefined") {
+      const stored = sessionStorage.getItem("pd_auth");
+      if (stored === "1") setAuthenticated(true);
+    }
+    setLoading(false);
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const hash = await sha256(password.trim());
+    if (hash === PASS_HASH) {
+      sessionStorage.setItem("pd_auth", "1");
+      setAuthenticated(true);
+      setError(false);
+    } else {
+      setError(true);
+      setPassword("");
+    }
+  };
+
+  if (loading) return null;
+  if (authenticated) return <>{children}</>;
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-sm">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 text-center">
+          <div className="w-14 h-14 bg-blue-900 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+          </div>
+          <h1 className="text-xl font-bold text-blue-900 mb-1">PROJECT DIAMOND</h1>
+          <p className="text-xs text-gray-400 mb-6">Strictly Confidential</p>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="password"
+              value={password}
+              onChange={e => { setPassword(e.target.value); setError(false); }}
+              placeholder="Enter access code"
+              autoFocus
+              className={`w-full px-4 py-3 text-sm border rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${error ? "border-red-400 bg-red-50" : "border-gray-200"}`}
+            />
+            {error && <p className="text-xs text-red-500 mt-2">Incorrect access code</p>}
+            <button type="submit"
+              className="w-full mt-4 py-3 bg-blue-900 text-white text-sm font-semibold rounded-xl hover:bg-blue-800 transition-colors">
+              Access Tool
+            </button>
+          </form>
+          <p className="text-[10px] text-gray-300 mt-6">Movement Capital &mdash; Authorised Access Only</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
 // MAIN
 // ════════════════════════════════════════════════════════════════════════
-export default function Home() {
+function Dashboard() {
   const [tab, setTab] = useState(0);
   const content = [<ValueTab key={0} />, <EarnoutTab key={1} />, <HoldcoTab key={2} />, <TimelineTab key={3} />];
 
@@ -667,5 +743,13 @@ export default function Home() {
       {content[tab]}
       <footer className="text-center text-[10px] text-gray-300 py-6 mt-8">Movement &mdash; Project Diamond &mdash; March 2026</footer>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <PasswordGate>
+      <Dashboard />
+    </PasswordGate>
   );
 }
