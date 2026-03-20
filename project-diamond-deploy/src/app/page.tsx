@@ -111,29 +111,30 @@ function ValueTab() {
         <p className="text-[11px] italic text-gray-400 mt-1">Subject to independent financial due diligence</p>
       </div>
 
-      {/* Day-1 Chart — full width */}
+      {/* Day-1 Chart — full width, same dimensions as bridge */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
         <p className="text-[11px] text-gray-400 mb-3">Total equity value: {fmtFull(EQUITY_VALUE)}. Earnout paid over 2 years if EBITDA targets are achieved.</p>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
-        <div className="md:col-span-3">
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 140 }} barSize={44}>
-              <XAxis type="number" tickFormatter={v => `S$${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
-              <YAxis type="category" dataKey="name" width={180} tick={{ fontSize: 12, fontWeight: 600 }} />
-              <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
-              <Bar dataKey="upfront" stackId="a" fill="#1e40af" radius={[0, 0, 0, 0]}>
-                <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 12, fontWeight: 800, fill: '#ffffff' }} />
-              </Bar>
-              <Bar dataKey="earnout" stackId="a" fill="#93c5fd" radius={[0, 6, 6, 0]}>
-                <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 11, fontWeight: 800, fill: '#1e3a5f' }} />
-                <LabelList dataKey="total" position="right" formatter={(v: any) => `S$${Math.round(Number(v))}M`} style={{ fontSize: 13, fontWeight: 900, fill: '#000000' }} />
-              </Bar>
-              <Legend formatter={(value: any) => value === 'upfront' ? 'Upfront Payment' : 'Earnout (if targets met)'} wrapperStyle={{ fontSize: 10 }} />
-            </BarChart>
-          </ResponsiveContainer>
-          {/* Breakdown table — matches bar chart display values */}
-          <div className="mt-3 space-y-1 text-xs">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 140 }} barSize={44}>
+                <XAxis type="number" tickFormatter={v => `S$${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
+                <YAxis type="category" dataKey="name" width={180} tick={{ fontSize: 12, fontWeight: 600 }} />
+                <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
+                <Bar dataKey="upfront" stackId="a" fill="#1e40af" radius={[0, 0, 0, 0]}>
+                  <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 12, fontWeight: 800, fill: '#ffffff' }} />
+                </Bar>
+                <Bar dataKey="earnout" stackId="a" fill="#93c5fd" radius={[0, 6, 6, 0]}>
+                  <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 11, fontWeight: 800, fill: '#1e3a5f' }} />
+                  <LabelList dataKey="total" position="right" formatter={(v: any) => `S$${Math.round(Number(v))}M`} style={{ fontSize: 13, fontWeight: 900, fill: '#000000' }} />
+                </Bar>
+                <Legend formatter={(value: any) => value === 'upfront' ? 'Upfront Payment' : 'Earnout (if targets met)'} wrapperStyle={{ fontSize: 10 }} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          {/* Breakdown table */}
+          <div className="space-y-1 text-xs">
             <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Movement ({MOVEMENT_PCT}%)</div>
             <div className="flex justify-between ml-3"><span className="text-gray-500">Upfront (incl. net cash)</span><span className="font-mono font-bold text-blue-800">{fmtFull(mvmtUpfrontDisplay)}</span></div>
             <div className="flex justify-between ml-3"><span className="text-gray-500">Earnout (if all targets met)</span><span className="font-mono text-blue-400">{fmtFull(DEFERRED_TOTAL)}</span></div>
@@ -143,40 +144,39 @@ function ValueTab() {
             <div className="flex justify-between mt-2 pt-2 border-t-2 border-gray-300"><span className="font-bold">Total Equity Value (100%)</span><span className="font-mono font-bold text-blue-900">{fmtFull(EQUITY_VALUE)}</span></div>
           </div>
         </div>
+      </div>
 
-        {/* Sensitivity Table */}
-        <div className="md:col-span-2">
-          <h3 className="text-sm font-bold text-gray-700 mb-1">{MGMT_PCT}% Continuing Stake &mdash; Projected Growth</h3>
-          <p className="text-[11px] text-gray-400 mb-3">Select a scenario to see how the {MGMT_PCT}% stake could grow over {HOLD_YEARS} years.</p>
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-gray-50 text-gray-500">
-                <th className="py-1.5 px-2 text-left font-semibold">Future Multiple</th>
-                <th className="py-1.5 px-2 text-right font-semibold">Projected Value</th>
-                <th className="py-1.5 px-2 text-right font-semibold">{MGMT_PCT}% Share</th>
-                <th className="py-1.5 px-2 text-right font-semibold">Return Multiple</th>
-              </tr>
-            </thead>
-            <tbody>
-              {c.sensitivity.map((s, i) => {
-                const isActive = s.mult === c.active.mult;
-                const isEntry = Math.abs(s.mult - ENTRY_MULT) < 0.05;
-                return (
-                  <tr key={i} onClick={() => setSelectedMult(s.mult)}
-                    className={`cursor-pointer transition-all ${isActive ? 'bg-green-50 border-l-4 border-green-500' : 'hover:bg-gray-50'}`}>
-                    <td className="py-2 px-2 font-mono font-bold">
-                      {s.mult.toFixed(1)}x {isEntry && <span className="text-[9px] font-normal text-gray-400 ml-1">(today)</span>}
-                    </td>
-                    <td className="py-2 px-2 text-right font-mono">{fmt(s.futureEV)}</td>
-                    <td className="py-2 px-2 text-right font-mono font-bold text-green-700">{fmt(s.futureRoll)}</td>
-                    <td className="py-2 px-2 text-right font-mono font-bold">{s.returnMult.toFixed(1)}x</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        </div>
+      {/* Sensitivity Table — separate full-width card */}
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-700 mb-1">{MGMT_PCT}% Continuing Stake &mdash; Projected Growth</h3>
+        <p className="text-[11px] text-gray-400 mb-3">Select a scenario to see how the {MGMT_PCT}% stake could grow over {HOLD_YEARS} years.</p>
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-gray-50 text-gray-500">
+              <th className="py-1.5 px-2 text-left font-semibold">Future Multiple</th>
+              <th className="py-1.5 px-2 text-right font-semibold">Projected Value</th>
+              <th className="py-1.5 px-2 text-right font-semibold">{MGMT_PCT}% Share</th>
+              <th className="py-1.5 px-2 text-right font-semibold">Return Multiple</th>
+            </tr>
+          </thead>
+          <tbody>
+            {c.sensitivity.map((s, i) => {
+              const isActive = s.mult === c.active.mult;
+              const isEntry = Math.abs(s.mult - ENTRY_MULT) < 0.05;
+              return (
+                <tr key={i} onClick={() => setSelectedMult(s.mult)}
+                  className={`cursor-pointer transition-all ${isActive ? 'bg-green-50 border-l-4 border-green-500' : 'hover:bg-gray-50'}`}>
+                  <td className="py-2 px-2 font-mono font-bold">
+                    {s.mult.toFixed(1)}x {isEntry && <span className="text-[9px] font-normal text-gray-400 ml-1">(today)</span>}
+                  </td>
+                  <td className="py-2 px-2 text-right font-mono">{fmt(s.futureEV)}</td>
+                  <td className="py-2 px-2 text-right font-mono font-bold text-green-700">{fmt(s.futureRoll)}</td>
+                  <td className="py-2 px-2 text-right font-mono font-bold">{s.returnMult.toFixed(1)}x</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
 
       {/* Rollover chart */}
