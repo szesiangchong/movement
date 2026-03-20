@@ -83,46 +83,26 @@ function ValueTab() {
     <div className="space-y-6">
       {/* EV to Equity Bridge */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-bold text-gray-700 mb-3">Indicative Offer Valuation</h3>
+        <h3 className="text-sm font-bold text-gray-700 mb-1">Indicative Offer Valuation</h3>
+        <p className="text-[11px] italic text-gray-400 mb-3">Subject to independent financial review</p>
         <div className="flex items-center gap-0 overflow-x-auto text-center text-xs">
-          {/* EV */}
-          <div className="rounded-lg px-3 py-2.5 min-w-[85px] bg-blue-600 text-white shadow-sm">
-            <div className="font-bold text-sm">{fmtFull(EV)}</div>
-            <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{"Enterprise\nValue"}</div>
-          </div>
-
-          {/* Subject to DD box — dotted border around debt, NWC, op reserve */}
-          <div className="mx-2 border-2 border-dashed border-amber-400 rounded-lg px-1 py-1.5 relative">
-            <div className="absolute -top-2.5 left-2 bg-white px-1.5 text-[8px] font-semibold text-amber-600 whitespace-nowrap">Subject to Financial DD</div>
-            <div className="flex items-center gap-0">
-              {[
-                { label: "(-) Debt", value: -DEBT, color: "bg-red-100 text-red-700" },
-                { label: `(-) Working\nCapital (${NWC_PCT}%)`, value: -NWC_RESERVE, color: "bg-red-100 text-red-700" },
-                { label: "(-) Operating\nReserve", value: -OP_MIN, color: "bg-red-100 text-red-700" },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center">
-                  <div className={`rounded-lg px-2.5 py-2 min-w-[78px] ${item.color} shadow-sm mx-0.5`}>
-                    <div className="font-bold text-sm">{fmtFull(Math.abs(item.value))}</div>
-                    <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:9}}>{item.label}</div>
-                  </div>
-                </div>
-              ))}
+          {[
+            { label: "Enterprise\nValue", value: EV, color: "bg-blue-600 text-white" },
+            { label: "(-) Debt", value: -DEBT, color: "bg-red-100 text-red-700", sign: "" },
+            { label: `(-) Working\nCapital (${NWC_PCT}%)`, value: -NWC_RESERVE, color: "bg-red-100 text-red-700", sign: "" },
+            { label: "(-) Operating\nReserve", value: -OP_MIN, color: "bg-red-100 text-red-700", sign: "" },
+            { label: "(+) Cash\non Balance Sheet", value: TOTAL_CASH, color: "bg-green-100 text-green-700", sign: "+" },
+            { label: "Equity\nValue", value: EQUITY_VALUE, color: "bg-blue-800 text-white", sign: "=" },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center">
+              {i > 0 && i < 5 && <div className="text-gray-300 text-lg px-1.5 font-light">{item.sign || ""}</div>}
+              {i === 5 && <div className="text-gray-400 text-xl px-2 font-bold">=</div>}
+              <div className={`rounded-lg px-3 py-2.5 min-w-[85px] ${item.color} shadow-sm`}>
+                <div className="font-bold text-sm">{fmtFull(Math.abs(item.value))}</div>
+                <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{item.label}</div>
+              </div>
             </div>
-          </div>
-
-          {/* + Cash */}
-          <div className="text-gray-300 text-lg px-1.5 font-light">+</div>
-          <div className="rounded-lg px-3 py-2.5 min-w-[85px] bg-green-100 text-green-700 shadow-sm">
-            <div className="font-bold text-sm">{fmtFull(TOTAL_CASH)}</div>
-            <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{"(+) Cash\non Balance Sheet"}</div>
-          </div>
-
-          {/* = Equity Value */}
-          <div className="text-gray-400 text-xl px-2 font-bold">=</div>
-          <div className="rounded-lg px-3 py-2.5 min-w-[85px] bg-blue-800 text-white shadow-sm">
-            <div className="font-bold text-sm">{fmtFull(EQUITY_VALUE)}</div>
-            <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{"Equity\nValue"}</div>
-          </div>
+          ))}
         </div>
         <p className="text-[11px] text-gray-400 mt-2">Indicative valuation: <span className="font-bold text-gray-600">{ENTRY_MULT.toFixed(1)}x</span> unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)}</p>
       </div>
@@ -132,16 +112,19 @@ function ValueTab() {
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
           <p className="text-[11px] text-gray-400 mb-3">Total equity value: {fmtFull(EQUITY_VALUE)}. Earnout paid over 2 years if EBITDA targets are achieved.</p>
-          <ResponsiveContainer width="100%" height={140}>
-            <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 80 }}>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 100 }} barSize={40}>
               <XAxis type="number" tickFormatter={v => `S$${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
-              <YAxis type="category" dataKey="name" width={230} tick={{ fontSize: 10 }} />
+              <YAxis type="category" dataKey="name" width={240} tick={{ fontSize: 11, fontWeight: 500 }} />
               <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
               <Bar dataKey="upfront" stackId="a" fill="#1e40af" radius={[0, 0, 0, 0]}>
-                <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 10, fontWeight: 600, fill: '#fff' }} />
+                <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 11, fontWeight: 700, fill: '#fff' }} />
               </Bar>
               <Bar dataKey="earnout" stackId="a" fill="#93c5fd" radius={[0, 6, 6, 0]}>
-                <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 10, fontWeight: 600, fill: '#1e40af' }} />
+                <LabelList dataKey="earnout" position="right" formatter={(v: any, entry: any) => {
+                  if (entry && entry.upfront > 0 && Number(v) > 0) return `Total: ${fmtFull(c.exit70_total)}`;
+                  return '';
+                }} style={{ fontSize: 10, fontWeight: 700, fill: '#1e40af' }} />
               </Bar>
               <Legend formatter={(value: any) => value === 'upfront' ? 'Upfront Payment' : 'Earnout (if targets met)'} wrapperStyle={{ fontSize: 10 }} />
             </BarChart>
@@ -683,6 +666,7 @@ function Dashboard() {
       <header className="text-center py-3 mb-4">
         <h1 className="text-2xl font-bold text-blue-900 tracking-tight">PROJECT DIAMOND</h1>
         <p className="text-xs text-gray-400 mt-0.5">Preliminary Discussion &mdash; Confidential</p>
+        <p className="text-[11px] text-gray-500 mt-3 max-w-2xl mx-auto leading-relaxed italic">Movement is pleased to present this Partnership Proposal, reflecting our commitment to a lasting partnership with both generations of the Carats family to drive the Group&apos;s next chapter of growth.</p>
       </header>
       <div className="flex gap-1 mb-5 bg-white rounded-xl p-1 shadow-sm border border-gray-200">
         {TABS.map((t, i) => (
