@@ -7,11 +7,13 @@ import {
 
 const fmt = (n: number) => "S$" + (Math.abs(n) >= 1000 ? (n / 1000).toFixed(1) + "M" : n.toFixed(0) + "K");
 const fmtK = (n: number) => "S$" + Math.round(n).toLocaleString("en-SG");
-const TABS = ["Value to Shareholders", "Performance-Based Consideration", "Group Structure", "Timeline & Key DD Topics"];
+// Full dollar formatter: converts S$'000 to full dollars (e.g. 8000 -> "S$8,000,000")
+const fmtFull = (n: number) => "S$" + (n * 1000).toLocaleString("en-SG", { maximumFractionDigits: 0 });
+const TABS = ["Value to Shareholders", "Earnout", "Group Structure", "Timeline & Key DD Topics"];
 
 // Hard-coded assumptions (not shown to family)
 const EV = 40000;
-const EBITDA_2026 = 7900;
+const EBITDA_2025 = 7172; // FY2025 unaudited
 const MOVEMENT_PCT = 70;
 const MGMT_PCT = 30;
 const EARNOUT_PCT = 20;
@@ -23,7 +25,7 @@ const DEBT = 2701;
 const TOTAL_CASH = 10395;
 const OP_MIN = 2000;
 const NWC_PCT = 10;
-const ENTRY_MULT = EV / EBITDA_2026;
+const ENTRY_MULT = EV / EBITDA_2025;
 const NWC_RESERVE = (NWC_PCT / 100) * REVENUE_2025;
 const NET_CASH = Math.max(0, TOTAL_CASH - DEBT - NWC_RESERVE - OP_MIN);
 const EQUITY_VALUE = EV + NET_CASH;
@@ -69,7 +71,7 @@ function ValueTab() {
 
   const chart1Data = [
     { name: `${MOVEMENT_PCT}% Upfront Payment`, value: c.exit70_upfront / 1000, fill: "#1e40af" },
-    { name: `${MOVEMENT_PCT}% of ${fmtK(DEFERRED_TOTAL)} Earnout`, value: c.exit70_earnout / 1000, fill: "#93c5fd" },
+    { name: `${MOVEMENT_PCT}% of ${fmtFull(DEFERRED_TOTAL)} Earnout`, value: c.exit70_earnout / 1000, fill: "#93c5fd" },
     { name: `${MGMT_PCT}% Continuing Equity`, value: c.rollover30 / 1000, fill: "#059669" },
   ];
   const chart2Data = [
@@ -81,7 +83,7 @@ function ValueTab() {
     <div className="space-y-6">
       {/* EV to Equity Bridge */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-bold text-gray-700 mb-3">Proposed Valuation to Equity Value</h3>
+        <h3 className="text-sm font-bold text-gray-700 mb-3">Indicative Offer Valuation</h3>
         <div className="flex items-center gap-0 overflow-x-auto text-center text-xs">
           {[
             { label: "Enterprise\nValue", value: EV, color: "bg-blue-600 text-white" },
@@ -101,18 +103,18 @@ function ValueTab() {
             </div>
           ))}
         </div>
-        <p className="text-[11px] text-gray-400 mt-2">Proposed valuation: {ENTRY_MULT.toFixed(1)}x estimated FY2026 EBITDA of {fmtK(EBITDA_2026)}</p>
+        <p className="text-[11px] text-gray-400 mt-2">Indicative valuation: <span className="font-bold text-gray-600">{ENTRY_MULT.toFixed(1)}x</span> unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)}</p>
       </div>
 
       {/* Day-1 Chart */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders (S$M)</h3>
-          <p className="text-[11px] text-gray-400 mb-3">{MOVEMENT_PCT}% receives upfront payment including share of net cash. Performance-based consideration paid over 2 years if EBITDA targets are achieved.</p>
+          <p className="text-[11px] text-gray-400 mb-3">{MOVEMENT_PCT}% receives upfront payment including share of net cash. Earnout paid over 2 years if EBITDA targets are achieved.</p>
           <ResponsiveContainer width="100%" height={170}>
             <BarChart layout="vertical" data={chart1Data} margin={{ left: 5, right: 55 }}>
               <XAxis type="number" tickFormatter={v => `${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
-              <YAxis type="category" dataKey="name" width={185} tick={{ fontSize: 10 }} />
+              <YAxis type="category" dataKey="name" width={200} tick={{ fontSize: 10 }} />
               <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
               <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                 {chart1Data.map((d, i) => <Cell key={i} fill={d.fill} />)}
@@ -121,11 +123,11 @@ function ValueTab() {
             </BarChart>
           </ResponsiveContainer>
           <div className="mt-2 space-y-1 text-xs">
-            <div className="flex justify-between"><span className="text-gray-500">{MOVEMENT_PCT}% upfront (incl. net cash)</span><span className="font-mono font-bold text-blue-800">{fmtK(c.exit70_upfront)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">{MOVEMENT_PCT}% of {fmtK(DEFERRED_TOTAL)} performance consideration</span><span className="font-mono text-blue-400">{fmtK(c.exit70_earnout)}</span></div>
-            <div className="flex justify-between border-t pt-1"><span className="font-semibold">{MOVEMENT_PCT}% total (if all targets met)</span><span className="font-mono font-bold">{fmtK(c.exit70_total)}</span></div>
-            <div className="text-[10px] text-gray-400 mt-1 italic">Total performance consideration: {fmtK(DEFERRED_TOTAL)} ({EARNOUT_PCT}% of valuation). {MOVEMENT_PCT}% share = {fmtK(c.exit70_earnout)}. {MGMT_PCT}% ({fmtK(DEFERRED_TOTAL - c.exit70_earnout)}) adds to continuing equity value.</div>
-            <div className="flex justify-between mt-1"><span className="text-green-700">{MGMT_PCT}% continuing equity</span><span className="font-mono font-bold text-green-700">{fmtK(c.rollover30)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">{MOVEMENT_PCT}% upfront (incl. net cash)</span><span className="font-mono font-bold text-blue-800">{fmtFull(c.exit70_upfront)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">{MOVEMENT_PCT}% of {fmtFull(DEFERRED_TOTAL)} earnout</span><span className="font-mono text-blue-400">{fmtFull(c.exit70_earnout)}</span></div>
+            <div className="flex justify-between border-t pt-1"><span className="font-semibold">{MOVEMENT_PCT}% total (if all targets met)</span><span className="font-mono font-bold">{fmtFull(c.exit70_total)}</span></div>
+            <div className="text-[10px] text-gray-400 mt-1 italic">Total earnout: {fmtFull(DEFERRED_TOTAL)} ({EARNOUT_PCT}% of valuation). {MOVEMENT_PCT}% share = {fmtFull(c.exit70_earnout)}. {MGMT_PCT}% share ({fmtFull(DEFERRED_TOTAL - c.exit70_earnout)}) adds to continuing equity value.</div>
+            <div className="flex justify-between mt-1"><span className="text-green-700">{MGMT_PCT}% continuing equity</span><span className="font-mono font-bold text-green-700">{fmtFull(c.rollover30)}</span></div>
           </div>
         </div>
 
@@ -190,17 +192,23 @@ function ValueTab() {
         <h3 className="text-sm font-bold text-gray-700 mb-1">Estimated Future Value at Year {HOLD_YEARS}</h3>
         <p className="text-[11px] text-gray-400 mb-4">Adjust the estimated Year {HOLD_YEARS} EBITDA to see how the {MGMT_PCT}% continuing stake could grow.</p>
 
-        {/* EBITDA Slider */}
-        <div className="bg-gray-50 rounded-xl p-4 mb-5">
-          <div className="flex items-center justify-between mb-2">
-            <span className="font-semibold text-sm">Estimated Year {HOLD_YEARS} EBITDA</span>
+        {/* EBITDA Slider — styled like earnout sliders */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 mb-5 border border-blue-200">
+          <div className="flex items-center justify-between mb-3">
+            <span className="font-semibold text-sm text-blue-900">Estimated Year {HOLD_YEARS} EBITDA</span>
+            <span className="font-mono font-bold text-2xl text-blue-800">{fmtK(yr5Ebitda)}</span>
           </div>
-          <input type="range" min={7000} max={20000} step={100} value={yr5Ebitda} onChange={e => setYr5Ebitda(+e.target.value)}
-            className="w-full appearance-none bg-transparent cursor-pointer h-5" />
+          <div className="relative">
+            <div className="h-3 rounded-full bg-blue-200">
+              <div className="h-3 rounded-full bg-blue-500 transition-all" style={{ width: `${((yr5Ebitda - 7000) / (20000 - 7000)) * 100}%` }} />
+            </div>
+            <input type="range" min={7000} max={20000} step={100} value={yr5Ebitda} onChange={e => setYr5Ebitda(+e.target.value)}
+              className="w-full -mt-2.5 relative z-20 appearance-none bg-transparent cursor-pointer"
+              style={{ height: 20 }} />
+          </div>
           <div className="flex justify-between text-xs mt-1">
-            <span className="text-gray-400">S$7,000</span>
-            <span className="font-mono font-bold text-xl text-blue-800">{fmtK(yr5Ebitda)}</span>
-            <span className="text-gray-400">S$20,000</span>
+            <span className="text-blue-400">{fmtK(7000)}</span>
+            <span className="text-blue-400">{fmtK(20000)}</span>
           </div>
         </div>
 
@@ -227,15 +235,15 @@ function ValueTab() {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// TAB 2 — PERFORMANCE-BASED CONSIDERATION (Earnout)
+// TAB 2 — EARNOUT
 // ════════════════════════════════════════════════════════════════════════
 function EarnoutTab() {
   const [yr1Actual, setYr1Actual] = useState(7900);
   const [yr2Actual, setYr2Actual] = useState(8500);
   const yr1Hurdle = 7500;
   const yr2Hurdle = 8000;
-  const yr1MgmtForecast = 7890; // Management case Yr1
-  const yr2MgmtForecast = 8522; // Management case Yr2
+  const yr1MgmtForecast = 7890;
+  const yr2MgmtForecast = 8522;
 
   const c = useMemo(() => {
     const yr1Tranche = 0.3 * DEFERRED_TOTAL;
@@ -243,27 +251,21 @@ function EarnoutTab() {
     const yr1Floor = yr1Hurdle * 0.8;
     const yr2Floor = yr2Hurdle * 0.8;
 
-    // Year 1: pro-rata between floor (80%) and target (100%). Below floor = zero.
     const yr1Ratio = Math.min(1, Math.max(0, (yr1Actual - yr1Floor) / (yr1Hurdle - yr1Floor)));
     const yr1Pay = yr1Actual >= yr1Floor ? yr1Tranche * yr1Ratio : 0;
-    const yr1Shortfall = yr1Tranche - yr1Pay; // carries forward to Year 2
+    const yr1Shortfall = yr1Tranche - yr1Pay;
 
-    // Year 2: must hit at least 80% of target. Below 80% = zero, everything forfeited.
-    // If Year 2 hits target, pays Yr2 tranche + Yr1 carry (backward catch-up).
-    // If Year 2 is partial (80-100%), pays pro-rata of (Yr2 tranche + Yr1 carry).
     let yr2Pay = 0;
     if (yr2Actual >= yr2Floor) {
-      const yr2Pool = yr2Tranche + yr1Shortfall; // full pool including carry
+      const yr2Pool = yr2Tranche + yr1Shortfall;
       const yr2Ratio = Math.min(1, (yr2Actual - yr2Floor) / (yr2Hurdle - yr2Floor));
       yr2Pay = yr2Pool * yr2Ratio;
     }
-    // Below 80% in Year 2 = everything remaining is forfeited permanently
 
     const totalPaid = yr1Pay + yr2Pay;
-    const totalForfeited = DEFERRED_TOTAL - totalPaid;
     const yr1Status = yr1Actual >= yr1Hurdle ? "met" : yr1Actual >= yr1Floor ? "partial" : "missed";
     const yr2Status = yr2Actual >= yr2Hurdle ? "met" : yr2Actual >= yr2Floor ? "partial" : "missed";
-    return { yr1Tranche, yr2Tranche, yr1Floor, yr2Floor, yr1Pay, yr1Shortfall, yr2Pay, totalPaid, totalForfeited, yr1Status, yr2Status };
+    return { yr1Tranche, yr2Tranche, yr1Floor, yr2Floor, yr1Pay, yr1Shortfall, yr2Pay, totalPaid, yr1Status, yr2Status };
   }, [yr1Actual, yr2Actual]);
 
   const statusColors = { met: "bg-green-500", partial: "bg-yellow-500", missed: "bg-red-500" };
@@ -312,20 +314,20 @@ function EarnoutTab() {
 
   return (
     <div className="space-y-5">
-      <p className="text-sm text-gray-600">The performance-based consideration aligns the interests of both parties. {EARNOUT_PCT}% of the enterprise value ({fmtK(DEFERRED_TOTAL)}) is linked to EBITDA performance over the first two years, paid in two tranches.</p>
+      <p className="text-sm text-gray-600">The earnout aligns the interests of both parties. {EARNOUT_PCT}% of the enterprise value ({fmtFull(DEFERRED_TOTAL)}) is linked to EBITDA performance over the first two years, paid in two tranches.</p>
 
       {/* Structure boxes */}
       <div className="grid grid-cols-3 gap-4 text-center">
         <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-          <div className="text-2xl font-bold text-blue-800">{fmtK(DEFERRED_TOTAL)}</div>
-          <div className="text-xs text-gray-500 mt-1">Total Performance<br />Consideration</div>
+          <div className="text-2xl font-bold text-blue-800">{fmtFull(DEFERRED_TOTAL)}</div>
+          <div className="text-xs text-gray-500 mt-1">Total Earnout</div>
         </div>
         <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-          <div className="text-2xl font-bold text-blue-800">{fmtK(c.yr1Tranche)}</div>
+          <div className="text-2xl font-bold text-blue-800">{fmtFull(c.yr1Tranche)}</div>
           <div className="text-xs text-gray-500 mt-1">Year 1<br />(30% of total)</div>
         </div>
         <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-          <div className="text-2xl font-bold text-blue-800">{fmtK(c.yr2Tranche)}</div>
+          <div className="text-2xl font-bold text-blue-800">{fmtFull(c.yr2Tranche)}</div>
           <div className="text-xs text-gray-500 mt-1">Year 2<br />(70% of total)</div>
         </div>
       </div>
@@ -343,30 +345,29 @@ function EarnoutTab() {
         <div className="bg-gray-50 rounded-xl p-4">
           <h4 className="font-semibold text-sm mb-2">Year 1 Payment</h4>
           <div className="text-xs space-y-1">
-            <div className="flex justify-between"><span>Available (30% tranche)</span><span className="font-mono">{fmtK(c.yr1Tranche)}</span></div>
-            <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtK(c.yr1Pay)}</span></div>
-            {c.yr1Shortfall > 0 && <div className="flex justify-between text-orange-600"><span>Shortfall carries to Year 2</span><span className="font-mono">{fmtK(c.yr1Shortfall)}</span></div>}
+            <div className="flex justify-between"><span>Available (30% tranche)</span><span className="font-mono">{fmtFull(c.yr1Tranche)}</span></div>
+            <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtFull(c.yr1Pay)}</span></div>
+            {c.yr1Shortfall > 0 && <div className="flex justify-between text-orange-600"><span>Balance carries to Year 2</span><span className="font-mono">{fmtFull(c.yr1Shortfall)}</span></div>}
           </div>
-          <p className="text-[10px] text-gray-400 mt-2 italic">Pro-rata between 80-100% of target. Below 80% ({fmtK(c.yr1Floor)}) = zero.</p>
+          <p className="text-[10px] text-gray-400 mt-2 italic">Payment scales proportionally with performance. The full amount is payable when the target is achieved. Any balance carries forward to Year 2.</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-4">
           <h4 className="font-semibold text-sm mb-2">Year 2 Payment</h4>
           <div className="text-xs space-y-1">
-            <div className="flex justify-between"><span>Available (70% tranche{c.yr1Shortfall > 0 ? " + carry" : ""})</span><span className="font-mono">{fmtK(c.yr2Tranche + c.yr1Shortfall)}</span></div>
-            <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtK(c.yr2Pay)}</span></div>
-            {c.yr2Status === 'missed' && c.yr1Shortfall > 0 && <div className="text-red-600 text-[10px] mt-1 font-semibold">Year 2 below 80% floor &mdash; all remaining consideration forfeited</div>}
+            <div className="flex justify-between"><span>Available (70% tranche{c.yr1Shortfall > 0 ? " + carry" : ""})</span><span className="font-mono">{fmtFull(c.yr2Tranche + c.yr1Shortfall)}</span></div>
+            <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtFull(c.yr2Pay)}</span></div>
           </div>
-          <p className="text-[10px] text-gray-400 mt-2 italic">Must achieve at least 80% ({fmtK(c.yr2Floor)}). Below floor = all remaining forfeited permanently. Above target can recover Year 1 shortfall.</p>
+          <p className="text-[10px] text-gray-400 mt-2 italic">Payment scales proportionally with performance, including any balance carried from Year 1. Strong Year 2 results can make up for any Year 1 shortfall.</p>
         </div>
       </div>
 
       {/* Total */}
       <div className="flex items-center justify-between bg-blue-900 text-white rounded-xl p-5">
         <div>
-          <div className="text-sm font-bold">Total Performance Consideration Payable</div>
-          <div className="text-xs opacity-70">of {fmtK(DEFERRED_TOTAL)} total</div>
+          <div className="text-sm font-bold">Total Earnout Payable</div>
+          <div className="text-xs opacity-70">of {fmtFull(DEFERRED_TOTAL)} total</div>
         </div>
-        <div className="text-3xl font-bold">{fmtK(c.totalPaid)}</div>
+        <div className="text-3xl font-bold">{fmtFull(c.totalPaid)}</div>
       </div>
     </div>
   );
@@ -477,10 +478,10 @@ function HoldcoTab() {
           <div className="mt-4 space-y-1.5 text-xs text-green-700">
             <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Single ownership structure &mdash; 70/30 at HoldCo level</p>
             <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> All shareholders treated fairly at agreed group valuation</p>
-            <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Adactive integrated under Carats for operational efficiency</p>
             <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Formalised transfer pricing across all entities</p>
             <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Unified cash management, governance, and strategy</p>
             <p className="flex items-start gap-1.5"><span className="text-green-500 mt-0.5">&#x2714;</span> Future-ready structure for continued growth</p>
+            <p className="flex items-start gap-1.5"><span className="text-gray-400 mt-0.5">&#x25CB;</span> <span className="text-gray-500">(To be discussed) Adactive integrated under Carats for operational efficiency</span></p>
           </div>
         </div>
       </div>
@@ -552,16 +553,16 @@ function TimelineTab() {
       <h3 className="text-sm font-bold text-gray-700 mt-2">Key DD Topics</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {[
-          { num: 1, title: "Business Unit Review", desc: "Understand the economics of each business unit independently, including how they work together and the value of the integrated platform.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
-          { num: 2, title: "Revenue Pipeline & Sustainability", desc: "Review the order book depth and new business pipeline across all three BUs. Understand the sustainability of each revenue stream — contracted vs recurring vs project-based — and the pipeline of opportunities for FY2026-2027.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
-          { num: 3, title: "Adjusted Earnings Review", desc: "Review compensation structure, one-off items, and the ongoing cost base to understand the true recurring earnings of the group.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
-          { num: 4, title: "Working Capital & Balance Sheet", desc: "Review receivables, payables, and cash requirements to agree on the working capital baseline for the transaction.", bg: "#faf5ff", border: "#e9d5ff", accent: "#7c3aed" },
-          { num: 5, title: "Leadership Continuity & Team Alignment", desc: "Runs alongside the agreement drafting. Ensure the right people are in the right roles and aligned on the growth plan going forward.", bg: "#eef2ff", border: "#c7d2fe", accent: "#4f46e5" },
+          { num: 1, title: "Business Unit Review", desc: "Understand the economics of each business unit independently, including how they work together and the value of the integrated platform." },
+          { num: 2, title: "Revenue Pipeline & Sustainability", desc: "Review the order book depth and new business pipeline across all three BUs. Understand the sustainability of each revenue stream — contracted vs recurring vs project-based — and the pipeline of opportunities for FY2026-2027." },
+          { num: 3, title: "Adjusted Earnings Review", desc: "Review compensation structure, one-off items, and the ongoing cost base to understand the true recurring earnings of the group." },
+          { num: 4, title: "Working Capital & Balance Sheet", desc: "Review receivables, payables, and cash requirements to agree on the working capital baseline for the transaction." },
+          { num: 5, title: "Leadership Continuity & Team Alignment", desc: "Runs alongside the agreement drafting. Ensure the right people are in the right roles and aligned on the growth plan going forward." },
         ].map(card => (
-          <div key={card.num} className="rounded-xl p-4 border" style={{ backgroundColor: card.bg, borderColor: card.border }}>
+          <div key={card.num} className="rounded-xl p-4 border" style={{ backgroundColor: "#faf5ff", borderColor: "#e9d5ff" }}>
             <div className="flex items-center gap-2 mb-1">
-              <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: card.accent }}>{card.num}</span>
-              <h4 className="text-sm font-bold" style={{ color: card.accent }}>{card.title}</h4>
+              <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: "#7c3aed" }}>{card.num}</span>
+              <h4 className="text-sm font-bold" style={{ color: "#7c3aed" }}>{card.title}</h4>
             </div>
             <p className="text-xs text-gray-600 ml-8">{card.desc}</p>
           </div>
