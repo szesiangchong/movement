@@ -28,10 +28,10 @@ const ENTRY_MULT = EV / EBITDA_2025;
 const NWC_RESERVE = (NWC_PCT / 100) * REVENUE_2025;
 const NET_CASH = Math.max(0, TOTAL_CASH - DEBT - NWC_RESERVE - OP_MIN);
 const EQUITY_VALUE = EV + NET_CASH;
-const DEFERRED_TOTAL = 8606.4; // S$8,606,400 earnout
-const EXIT70_TOTAL = 30018.8; // Fixed 70% total
-const EXIT70_EARNOUT = (MOVEMENT_PCT / 100) * DEFERRED_TOTAL;
-const EXIT70_UPFRONT = EXIT70_TOTAL - EXIT70_EARNOUT;
+const DEFERRED_TOTAL = 8600; // S$8,600,000 earnout (rounded)
+const EXIT70_UPFRONT = 21600; // S$21,600,000 upfront
+const EXIT70_EARNOUT = DEFERRED_TOTAL; // full earnout on Movement bar
+const EXIT70_TOTAL = EXIT70_UPFRONT + EXIT70_EARNOUT; // S$30,200,000
 
 // ════════════════════════════════════════════════════════════════════════
 // TAB 1 — VALUE TO SHAREHOLDERS
@@ -71,7 +71,7 @@ function ValueTab() {
   }, [selectedMult, yr5Ebitda]);
 
   // Stacked bar: Movement's purchase (upfront + full earnout) vs Management continuing equity
-  // Show full earnout amount (S$8,606.4K) on Movement bar, upfront = total - earnout
+  // Show full earnout amount (S$8,600K) on Movement bar, upfront = S$21,600K
   const mvmtEarnoutDisplay = DEFERRED_TOTAL; // full earnout on the bar
   const mvmtUpfrontDisplay = c.exit70_total - mvmtEarnoutDisplay; // remainder
   const stackedData = [
@@ -107,7 +107,7 @@ function ValueTab() {
             </div>
           ))}
         </div>
-        <p className="text-[11px] text-gray-400 mt-2">Indicative valuation: <span className="font-bold text-gray-600">{ENTRY_MULT.toFixed(1)}x</span> unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)}</p>
+        <p className="text-[11px] text-gray-400 mt-2">Indicative valuation: <span className="font-bold text-gray-600">~{ENTRY_MULT.toFixed(1)}x</span> unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)}</p>
         <p className="text-[11px] italic text-gray-400 mt-1">Subject to independent financial due diligence</p>
       </div>
 
@@ -203,13 +203,13 @@ function ValueTab() {
 
       {/* Year 5 EBITDA Slider + Valuation */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-bold text-gray-700 mb-1">Estimated Future Value at Year {HOLD_YEARS}</h3>
-        <p className="text-[11px] text-gray-400 mb-4">Adjust the estimated Year {HOLD_YEARS} EBITDA to see how the {MGMT_PCT}% continuing stake could grow.</p>
+        <h3 className="text-sm font-bold text-gray-700 mb-1">Illustrative Future Value at Year {HOLD_YEARS}</h3>
+        <p className="text-[11px] text-gray-400 mb-4">Adjust the illustrative Year {HOLD_YEARS} EBITDA to see how the {MGMT_PCT}% continuing stake could grow.</p>
 
         {/* EBITDA Slider — styled like earnout sliders */}
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 mb-5 border border-blue-200">
           <div className="flex items-center justify-between mb-3">
-            <span className="font-semibold text-sm text-blue-900">Estimated Year {HOLD_YEARS} EBITDA</span>
+            <span className="font-semibold text-sm text-blue-900">Illustrative Year {HOLD_YEARS} EBITDA</span>
             <span className="font-mono font-bold text-2xl text-blue-800">{fmtFull(yr5Ebitda)}</span>
           </div>
           <div className="relative">
@@ -403,11 +403,11 @@ function HoldcoTab() {
           <div className="space-y-3">
             {[
               { name: "Carats & Co", rev: "S$20M", desc: "Signage Design & Build", color: "from-slate-500 to-slate-600",
-                holders: ["Albert 23.3%", "Raymond 23.3%", "Charlie 20%", "Ann 17.1%", "TH 8.7%", "Min Min 7.7%"] },
+                holders: ["Albert 23.3%", "Raymond 23.3%", "Charlie 20.0%", "Ann 17.1%", "TH 8.7%", "Susie 7.7%"] },
               { name: "Gleamedia", rev: "S$6M", desc: "OOH Media", color: "from-slate-400 to-slate-500",
-                holders: ["Geng Hao 30%", "Raymond 22%", "Ann 22%", "TH 22%", "Keith 4%"] },
+                holders: ["Raymond 22%", "Ann 22%", "TH 22%", "Geng Hao 30%", "Keith 4%"] },
               { name: "Adactive", rev: "S$2M", desc: "Digital Kiosks / Software", color: "from-slate-400 to-slate-500",
-                holders: ["Yu Hang 50%", "Ann 25%", "TH 12.5%", "Geng Hao 12.5%"] },
+                holders: ["Yu Hang 50%", "Ann 25%", "Susie 25%"] },
             ].map(entity => (
               <div key={entity.name} className="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
                 <div className={`bg-gradient-to-r ${entity.color} px-4 py-2 flex items-center justify-between`}>
@@ -568,8 +568,8 @@ function TimelineTab() {
       <h3 className="text-sm font-bold text-gray-700 mt-2">Key DD Topics</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {[
-          { num: 1, title: "5-Year Growth Plan", desc: "Develop a shared vision for the group over the next 5 years. Define revenue targets, margin improvement opportunities, new market entry (regional expansion), and investment priorities across all three BUs." },
-          { num: 2, title: "Revenue Pipeline & Sustainability", desc: "Review the order book depth and new business pipeline across all three BUs. Understand the sustainability of each revenue stream — contracted vs recurring vs project-based — and the pipeline of opportunities for FY2026-2027." },
+          { num: 1, title: "5-Year Growth Plan", desc: "Develop a shared vision for the group over the next 5 years. Define revenue/margin targets, new market entry, operational effectiveness and investment plans across all BUs." },
+          { num: 2, title: "Revenue Pipeline & Sustainability", desc: "Review the order book depth and new business pipeline across all BUs. Understand the sustainability of each revenue stream — contracted vs recurring vs project-based — and the pipeline of opportunities for FY2026-2027." },
           { num: 3, title: "Business Unit Review", desc: "Understand the economics of each business unit independently, including how they work together and the value of the integrated platform." },
           { num: 4, title: "Earnings Review", desc: "Understand the true operational earnings of the group." },
           { num: 5, title: "Working Capital & Balance Sheet", desc: "Review receivables, payables, and cash requirements to agree on the working capital baseline for the transaction." },
