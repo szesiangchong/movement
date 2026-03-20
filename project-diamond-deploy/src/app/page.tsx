@@ -29,9 +29,9 @@ const NWC_RESERVE = (NWC_PCT / 100) * REVENUE_2025;
 const NET_CASH = Math.max(0, TOTAL_CASH - DEBT - NWC_RESERVE - OP_MIN);
 const EQUITY_VALUE = EV + NET_CASH;
 const DEFERRED_TOTAL = 8600; // S$8,600,000 earnout (rounded)
-const EXIT70_UPFRONT = 21600; // S$21,600,000 upfront
-const EXIT70_EARNOUT = DEFERRED_TOTAL; // full earnout on Movement bar
-const EXIT70_TOTAL = EXIT70_UPFRONT + EXIT70_EARNOUT; // S$30,200,000
+const EXIT70_TOTAL = (MOVEMENT_PCT / 100) * EQUITY_VALUE; // 70% of 42,884 = 30,018.8
+const EXIT70_EARNOUT = DEFERRED_TOTAL; // full earnout shown on bar
+const EXIT70_UPFRONT = EXIT70_TOTAL - EXIT70_EARNOUT; // 30,018.8 - 8,600 = 21,418.8
 
 // ════════════════════════════════════════════════════════════════════════
 // TAB 1 — VALUE TO SHAREHOLDERS
