@@ -52,15 +52,37 @@ Output as `.docx` using the docx skill. Apply Movement branding:
 
 ### 1. Cover Page
 
-| Element | Detail |
-|---------|--------|
-| Logo | Movement logo, centered header |
-| Title | "Preliminary Information Memorandum" |
-| Project name | Project [Codename] |
-| Target name | Full legal entity name |
-| Date | DD Month YYYY |
-| Classification | CONFIDENTIAL |
-| Deal team | Names and roles from Movement team |
+Two-section layout inspired by institutional IM cover pages (e.g., Victoria/DVC format):
+
+**Top Section:**
+- Movement logo (left-aligned) and target company logo (right-aligned, if available) at the top
+- Target company name as large heading (Movement blue, #1F4E79)
+- Subtitle: "Preliminary Information Memorandum" or "Investment Memorandum"
+- Date below subtitle
+
+**Main Section (two-column table, no visible borders):**
+
+| Left Column (60% width) | Right Column (40% width) |
+|--------------------------|--------------------------|
+| **Image placeholder(s)** — 1-2 product/company/facility images. Use grey placeholder boxes with italic "[Insert company/product image]" text if images not available. Stack vertically. | **Key deal metrics** as a bulleted summary: |
+| | - **Company Name:** [Target] |
+| | - **Country:** [Geography] |
+| | - **Activity:** [1-line description] |
+| | - **Date:** [Month Year] |
+| | - **Deal Type:** [e.g., LBO, Restructuring, Carve-out] |
+| | - **FY__A Financials:** Revenue, Adj. EBITDA, Net Debt (with leverage ratio) |
+| | - **Structure:** Movement stake %, equity ticket, implied EV and multiple |
+
+**Bottom Section:**
+- Confidentiality disclaimer in small font (8-9pt), light grey background
+- Standard boilerplate: "This document is confidential, contains unpublished and/or commercially sensitive information..."
+
+**Implementation notes:**
+- Use a 2-column table with `BorderStyle.NONE` for the main section
+- Left column: image placeholders as grey-shaded cells with centered italic text
+- Right column: bulleted key metrics with bold labels
+- Color scheme: Movement blue (#1F4E79) for headings, black body text
+- Total cover page should fit on one page without scrolling
 
 ### 2. The Target
 
