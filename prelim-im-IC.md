@@ -25,6 +25,14 @@ Generate a PIM for Movement's IC to decide whether to proceed to LOI/term sheet.
 
 If any of the above are missing, stop and ask before proceeding.
 
+### Handling Missing Information
+
+For sections where data is not yet available (e.g., market sizing, comparable companies, detailed customer data):
+- **Include the section header** in the document — do not skip it
+- Below the header, insert: *"[No information at this stage, to follow-up during DD]"* in grey italic
+- If partial information exists, present what is available and tag gaps with `[DD Action: ...]` notes
+- This ensures the PIM serves as a living checklist of what still needs to be addressed
+
 ---
 
 ## Document Format
