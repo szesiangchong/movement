@@ -70,10 +70,13 @@ function ValueTab() {
     };
   }, [selectedMult, yr5Ebitda]);
 
-  // Stacked bar: Movement's purchase (upfront + earnout) vs Management continuing equity
+  // Stacked bar: Movement's purchase (upfront + full earnout) vs Management continuing equity
+  // Show full earnout amount (S$8,606.4K) on Movement bar, upfront = total - earnout
+  const mvmtEarnoutDisplay = DEFERRED_TOTAL; // full earnout on the bar
+  const mvmtUpfrontDisplay = c.exit70_total - mvmtEarnoutDisplay; // remainder
   const stackedData = [
-    { name: `Movement (${MOVEMENT_PCT}%)`, upfront: c.exit70_upfront / 1000, earnout: c.exit70_earnout / 1000 },
-    { name: `Management Equity (${MGMT_PCT}%)`, upfront: c.rollover30 / 1000, earnout: 0 },
+    { name: `Movement (${MOVEMENT_PCT}%)`, upfront: mvmtUpfrontDisplay / 1000, earnout: mvmtEarnoutDisplay / 1000, total: c.exit70_total / 1000 },
+    { name: `Management Equity (${MGMT_PCT}%)`, upfront: c.rollover30 / 1000, earnout: 0, total: c.rollover30 / 1000 },
   ];
   const chart2Data = [
     { name: "Today", value: c.rollover30 / 1000, fill: "#d1d5db" },
@@ -114,24 +117,20 @@ function ValueTab() {
           <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
           <p className="text-[11px] text-gray-400 mb-3">Total equity value: {fmtFull(EQUITY_VALUE)}. Earnout paid over 2 years if EBITDA targets are achieved.</p>
           <ResponsiveContainer width="100%" height={200}>
-            <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 120 }} barSize={44}>
+            <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 140 }} barSize={44}>
               <XAxis type="number" tickFormatter={v => `S$${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
               <YAxis type="category" dataKey="name" width={180} tick={{ fontSize: 12, fontWeight: 600 }} />
               <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
               <Bar dataKey="upfront" stackId="a" fill="#1e40af" radius={[0, 0, 0, 0]}>
-                <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 13, fontWeight: 800, fill: '#ffffff' }} />
+                <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 12, fontWeight: 800, fill: '#ffffff' }} />
               </Bar>
               <Bar dataKey="earnout" stackId="a" fill="#93c5fd" radius={[0, 6, 6, 0]}>
-                <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 12, fontWeight: 800, fill: '#1e3a5f' }} />
+                <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 11, fontWeight: 800, fill: '#1e3a5f' }} />
+                <LabelList dataKey="total" position="right" formatter={(v: any) => `S$${(Number(v) * 1000000).toLocaleString('en-SG', {maximumFractionDigits:0})}`} style={{ fontSize: 12, fontWeight: 900, fill: '#000000' }} />
               </Bar>
               <Legend formatter={(value: any) => value === 'upfront' ? 'Upfront Payment' : 'Earnout (if targets met)'} wrapperStyle={{ fontSize: 10 }} />
             </BarChart>
           </ResponsiveContainer>
-          {/* Totals displayed clearly below chart */}
-          <div className="flex justify-between mt-1 px-2 text-sm">
-            <div><span className="font-bold text-black">Movement Total: {fmtFull(c.exit70_total)}</span></div>
-            <div><span className="font-bold text-green-700">Management: {fmtFull(c.rollover30)}</span></div>
-          </div>
           {/* Breakdown table */}
           <div className="mt-3 space-y-1 text-xs">
             <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Movement&apos;s Equity Purchase ({MOVEMENT_PCT}%)</div>
