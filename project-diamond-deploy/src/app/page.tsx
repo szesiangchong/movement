@@ -16,7 +16,6 @@ const EV = 40000;
 const EBITDA_2025 = 7172; // FY2025 unaudited
 const MOVEMENT_PCT = 70;
 const MGMT_PCT = 30;
-const EARNOUT_PCT = 20;
 const EBITDA_MARGIN = 26;
 const REV_CAGR = 5;
 const HOLD_YEARS = 5;
@@ -29,8 +28,10 @@ const ENTRY_MULT = EV / EBITDA_2025;
 const NWC_RESERVE = (NWC_PCT / 100) * REVENUE_2025;
 const NET_CASH = Math.max(0, TOTAL_CASH - DEBT - NWC_RESERVE - OP_MIN);
 const EQUITY_VALUE = EV + NET_CASH;
-const DEFERRED_TOTAL = (EARNOUT_PCT / 100) * EV;
-const UPFRONT_EV = EV - DEFERRED_TOTAL;
+const DEFERRED_TOTAL = 8606.4; // S$8,606,400 earnout
+const EXIT70_TOTAL = 30018.8; // Fixed 70% total
+const EXIT70_EARNOUT = (MOVEMENT_PCT / 100) * DEFERRED_TOTAL;
+const EXIT70_UPFRONT = EXIT70_TOTAL - EXIT70_EARNOUT;
 
 // ════════════════════════════════════════════════════════════════════════
 // TAB 1 — VALUE TO SHAREHOLDERS
@@ -40,9 +41,9 @@ function ValueTab() {
   const [yr5Ebitda, setYr5Ebitda] = useState(13611);
 
   const c = useMemo(() => {
-    const exit70_upfront = (MOVEMENT_PCT / 100) * (UPFRONT_EV + NET_CASH);
-    const exit70_earnout = (MOVEMENT_PCT / 100) * DEFERRED_TOTAL;
-    const exit70_total = exit70_upfront + exit70_earnout;
+    const exit70_upfront = EXIT70_UPFRONT;
+    const exit70_earnout = EXIT70_EARNOUT;
+    const exit70_total = EXIT70_TOTAL;
     const rollover30 = (MGMT_PCT / 100) * EQUITY_VALUE;
 
     const multiples = Array.from(new Set([ENTRY_MULT, 6, 7, 8].map(m => Math.round(m * 10) / 10))).sort((a, b) => a - b);
@@ -83,14 +84,13 @@ function ValueTab() {
     <div className="space-y-6">
       {/* EV to Equity Bridge */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="text-sm font-bold text-gray-700 mb-1">Indicative Offer Valuation</h3>
-        <p className="text-[11px] italic text-gray-400 mb-3">Subject to independent financial review</p>
+        <h3 className="text-sm font-bold text-gray-700 mb-3">Indicative Offer Valuation</h3>
         <div className="flex items-center gap-0 overflow-x-auto text-center text-xs">
           {[
             { label: "Enterprise\nValue", value: EV, color: "bg-blue-600 text-white" },
-            { label: "(-) Debt", value: -DEBT, color: "bg-red-100 text-red-700", sign: "" },
-            { label: `(-) Working\nCapital (${NWC_PCT}%)`, value: -NWC_RESERVE, color: "bg-red-100 text-red-700", sign: "" },
-            { label: "(-) Operating\nReserve", value: -OP_MIN, color: "bg-red-100 text-red-700", sign: "" },
+            { label: "(-) Debt", value: -DEBT, color: "bg-yellow-100 text-yellow-800", sign: "" },
+            { label: `(-) Working\nCapital (${NWC_PCT}%)`, value: -NWC_RESERVE, color: "bg-yellow-100 text-yellow-800", sign: "" },
+            { label: "(-) Operating\nReserve", value: -OP_MIN, color: "bg-yellow-100 text-yellow-800", sign: "" },
             { label: "(+) Cash\non Balance Sheet", value: TOTAL_CASH, color: "bg-green-100 text-green-700", sign: "+" },
             { label: "Equity\nValue", value: EQUITY_VALUE, color: "bg-blue-800 text-white", sign: "=" },
           ].map((item, i) => (
@@ -105,6 +105,7 @@ function ValueTab() {
           ))}
         </div>
         <p className="text-[11px] text-gray-400 mt-2">Indicative valuation: <span className="font-bold text-gray-600">{ENTRY_MULT.toFixed(1)}x</span> unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)}</p>
+        <p className="text-[11px] italic text-gray-400 mt-1">Subject to independent financial review</p>
       </div>
 
       {/* Day-1 Chart — stacked bars */}
@@ -121,10 +122,12 @@ function ValueTab() {
                 <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 11, fontWeight: 700, fill: '#fff' }} />
               </Bar>
               <Bar dataKey="earnout" stackId="a" fill="#93c5fd" radius={[0, 6, 6, 0]}>
+                <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 10, fontWeight: 700, fill: '#1e40af' }} />
                 <LabelList dataKey="earnout" position="right" formatter={(v: any, entry: any) => {
                   if (entry && entry.upfront > 0 && Number(v) > 0) return `Total: ${fmtFull(c.exit70_total)}`;
+                  if (entry && entry.upfront > 0 && Number(v) === 0) return `${fmtFull(c.rollover30)}`;
                   return '';
-                }} style={{ fontSize: 10, fontWeight: 700, fill: '#1e40af' }} />
+                }} style={{ fontSize: 10, fontWeight: 700, fill: '#333' }} />
               </Bar>
               <Legend formatter={(value: any) => value === 'upfront' ? 'Upfront Payment' : 'Earnout (if targets met)'} wrapperStyle={{ fontSize: 10 }} />
             </BarChart>
@@ -138,7 +141,7 @@ function ValueTab() {
             <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mt-2 mb-1">Management&apos;s Continuing Equity ({MGMT_PCT}%)</div>
             <div className="flex justify-between ml-3"><span className="text-green-700">Continuing equity value</span><span className="font-mono font-bold text-green-700">{fmtFull(c.rollover30)}</span></div>
             <div className="flex justify-between mt-2 pt-2 border-t-2 border-gray-300"><span className="font-bold">Total Equity Value (100%)</span><span className="font-mono font-bold text-blue-900">{fmtFull(EQUITY_VALUE)}</span></div>
-            <div className="text-[10px] text-gray-400 mt-1 italic">Earnout total: {fmtFull(DEFERRED_TOTAL)} ({EARNOUT_PCT}% of valuation). {MOVEMENT_PCT}% share = {fmtFull(c.exit70_earnout)}. {MGMT_PCT}% share ({fmtFull(DEFERRED_TOTAL - c.exit70_earnout)}) adds to continuing equity.</div>
+            <div className="text-[10px] text-gray-400 mt-1 italic">Earnout total: {fmtFull(DEFERRED_TOTAL)}. {MOVEMENT_PCT}% share = {fmtFull(c.exit70_earnout)}. {MGMT_PCT}% share ({fmtFull(DEFERRED_TOTAL - c.exit70_earnout)}) adds to continuing equity.</div>
           </div>
         </div>
 
@@ -325,7 +328,7 @@ function EarnoutTab() {
 
   return (
     <div className="space-y-5">
-      <p className="text-sm text-gray-600">The earnout aligns the interests of both parties. {EARNOUT_PCT}% of the enterprise value ({fmtFull(DEFERRED_TOTAL)}) is linked to EBITDA performance over the first two years, paid in two tranches.</p>
+      <p className="text-sm text-gray-600">The earnout aligns the interests of both parties. {fmtFull(DEFERRED_TOTAL)} of the consideration is linked to EBITDA performance over the first two years, paid in two tranches.</p>
 
       {/* Structure boxes */}
       <div className="grid grid-cols-3 gap-4 text-center">
@@ -435,7 +438,7 @@ function HoldcoTab() {
           </div>
 
           <div className="border-2 border-green-400 rounded-xl p-4 bg-gradient-to-b from-green-50 to-emerald-50 text-center">
-            <div className="font-bold text-lg text-green-900">NewCo HoldCo</div>
+            <div className="font-bold text-lg text-green-900">HoldCo</div>
             <div className="flex justify-center gap-3 mt-2">
               <span className="px-3 py-1 bg-blue-600 text-white text-xs rounded-full font-bold">Movement 70%</span>
               <span className="px-3 py-1 bg-green-600 text-white text-xs rounded-full font-bold">Management 30%</span>
@@ -507,8 +510,9 @@ function TimelineTab() {
   const phases = [
     { task: "Submit Draft LOI", start: 1, dur: 2, color: "#1e40af", group: "LOI" },
     { task: "LOI Discussion & Agreement", start: 2, dur: 2, color: "#3b82f6", group: "LOI" },
+    { task: "Growth Plan & Revenue Pipeline", start: 4, dur: 6, color: "#6d28d9", group: "DD" },
     { task: "Business Unit Review", start: 4, dur: 4, color: "#8b5cf6", group: "DD" },
-    { task: "Adjusted Earnings Review", start: 5, dur: 5, color: "#a78bfa", group: "DD" },
+    { task: "Earnings Review", start: 5, dur: 5, color: "#a78bfa", group: "DD" },
     { task: "Working Capital & Balance Sheet Review", start: 6, dur: 4, color: "#c4b5fd", group: "DD" },
     { task: "Legal & Structural Review", start: 4, dur: 8, color: "#ddd6fe", group: "DD" },
     { task: "Agreement Drafting", start: 10, dur: 4, color: "#059669", group: "SPA" },
@@ -567,7 +571,7 @@ function TimelineTab() {
           { num: 1, title: "5-Year Growth Plan", desc: "Develop a shared vision for the group over the next 5 years. Define revenue targets, margin improvement opportunities, new market entry (regional expansion), and investment priorities across all three BUs." },
           { num: 2, title: "Revenue Pipeline & Sustainability", desc: "Review the order book depth and new business pipeline across all three BUs. Understand the sustainability of each revenue stream — contracted vs recurring vs project-based — and the pipeline of opportunities for FY2026-2027." },
           { num: 3, title: "Business Unit Review", desc: "Understand the economics of each business unit independently, including how they work together and the value of the integrated platform." },
-          { num: 4, title: "Adjusted Earnings Review", desc: "Review compensation structure, one-off items, and the ongoing cost base to understand the true recurring earnings of the group." },
+          { num: 4, title: "Earnings Review", desc: "Understand the true operational earnings of the group." },
           { num: 5, title: "Working Capital & Balance Sheet", desc: "Review receivables, payables, and cash requirements to agree on the working capital baseline for the transaction." },
           { num: 6, title: "Leadership Continuity & Team Alignment", desc: "Runs alongside the agreement drafting. Ensure the right people are in the right roles and aligned on the growth plan going forward." },
         ].map(card => (
