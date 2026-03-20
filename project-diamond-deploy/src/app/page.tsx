@@ -76,7 +76,7 @@ function ValueTab() {
   const mvmtUpfrontDisplay = c.exit70_total - mvmtEarnoutDisplay; // remainder
   const stackedData = [
     { name: `Movement (${MOVEMENT_PCT}%)`, upfront: mvmtUpfrontDisplay / 1000, earnout: mvmtEarnoutDisplay / 1000, total: c.exit70_total / 1000 },
-    { name: `Management Equity (${MGMT_PCT}%)`, upfront: c.rollover30 / 1000, earnout: 0, total: c.rollover30 / 1000 },
+    { name: `Continuing Stake (${MGMT_PCT}%)`, upfront: c.rollover30 / 1000, earnout: 0, total: c.rollover30 / 1000 },
   ];
   const chart2Data = [
     { name: "Today", value: c.rollover30 / 1000, fill: "#d1d5db" },
@@ -126,7 +126,7 @@ function ValueTab() {
               </Bar>
               <Bar dataKey="earnout" stackId="a" fill="#93c5fd" radius={[0, 6, 6, 0]}>
                 <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 11, fontWeight: 800, fill: '#1e3a5f' }} />
-                <LabelList dataKey="total" position="right" formatter={(v: any) => `S$${(Number(v) * 1000000).toLocaleString('en-SG', {maximumFractionDigits:0})}`} style={{ fontSize: 12, fontWeight: 900, fill: '#000000' }} />
+                <LabelList dataKey="total" position="right" formatter={(v: any) => `S$${Math.round(Number(v))}M`} style={{ fontSize: 13, fontWeight: 900, fill: '#000000' }} />
               </Bar>
               <Legend formatter={(value: any) => value === 'upfront' ? 'Upfront Payment' : 'Earnout (if targets met)'} wrapperStyle={{ fontSize: 10 }} />
             </BarChart>
