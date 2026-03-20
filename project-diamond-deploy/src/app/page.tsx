@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, LabelList,
+  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell, LabelList,
 } from "recharts";
 
 const fmt = (n: number) => "S$" + (Math.abs(n) >= 1000 ? (n / 1000).toFixed(1) + "M" : n.toFixed(0) + "K");
@@ -69,10 +69,10 @@ function ValueTab() {
     };
   }, [selectedMult, yr5Ebitda]);
 
-  const chart1Data = [
-    { name: `${MOVEMENT_PCT}% Upfront Payment`, value: c.exit70_upfront / 1000, fill: "#1e40af" },
-    { name: `${MOVEMENT_PCT}% of ${fmtFull(DEFERRED_TOTAL)} Earnout`, value: c.exit70_earnout / 1000, fill: "#93c5fd" },
-    { name: `${MGMT_PCT}% Continuing Equity`, value: c.rollover30 / 1000, fill: "#059669" },
+  // Stacked bar: Movement's purchase (upfront + earnout) vs Management continuing equity
+  const stackedData = [
+    { name: `Movement's Equity Purchase (${MOVEMENT_PCT}%)`, upfront: c.exit70_upfront / 1000, earnout: c.exit70_earnout / 1000 },
+    { name: `Management's Continuing Equity (${MGMT_PCT}%)`, upfront: c.rollover30 / 1000, earnout: 0 },
   ];
   const chart2Data = [
     { name: "Today", value: c.rollover30 / 1000, fill: "#d1d5db" },
@@ -85,49 +85,77 @@ function ValueTab() {
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h3 className="text-sm font-bold text-gray-700 mb-3">Indicative Offer Valuation</h3>
         <div className="flex items-center gap-0 overflow-x-auto text-center text-xs">
-          {[
-            { label: "Enterprise\nValue", value: EV, color: "bg-blue-600 text-white" },
-            { label: "(-) Debt", value: -DEBT, color: "bg-red-100 text-red-700", sign: "" },
-            { label: `(-) Working\nCapital (${NWC_PCT}%)`, value: -NWC_RESERVE, color: "bg-red-100 text-red-700", sign: "" },
-            { label: "(-) Operating\nReserve", value: -OP_MIN, color: "bg-red-100 text-red-700", sign: "" },
-            { label: "(+) Cash\non Balance Sheet", value: TOTAL_CASH, color: "bg-green-100 text-green-700", sign: "+" },
-            { label: "Equity\nValue", value: EQUITY_VALUE, color: "bg-blue-800 text-white", sign: "=" },
-          ].map((item, i) => (
-            <div key={i} className="flex items-center">
-              {i > 0 && i < 5 && <div className="text-gray-300 text-lg px-1.5 font-light">{item.sign || ""}</div>}
-              {i === 5 && <div className="text-gray-400 text-xl px-2 font-bold">=</div>}
-              <div className={`rounded-lg px-3 py-2.5 min-w-[85px] ${item.color} shadow-sm`}>
-                <div className="font-bold text-sm">{fmtFull(Math.abs(item.value))}</div>
-                <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{item.label}</div>
-              </div>
+          {/* EV */}
+          <div className="rounded-lg px-3 py-2.5 min-w-[85px] bg-blue-600 text-white shadow-sm">
+            <div className="font-bold text-sm">{fmtFull(EV)}</div>
+            <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{"Enterprise\nValue"}</div>
+          </div>
+
+          {/* Subject to DD box — dotted border around debt, NWC, op reserve */}
+          <div className="mx-2 border-2 border-dashed border-amber-400 rounded-lg px-1 py-1.5 relative">
+            <div className="absolute -top-2.5 left-2 bg-white px-1.5 text-[8px] font-semibold text-amber-600 whitespace-nowrap">Subject to Financial DD</div>
+            <div className="flex items-center gap-0">
+              {[
+                { label: "(-) Debt", value: -DEBT, color: "bg-red-100 text-red-700" },
+                { label: `(-) Working\nCapital (${NWC_PCT}%)`, value: -NWC_RESERVE, color: "bg-red-100 text-red-700" },
+                { label: "(-) Operating\nReserve", value: -OP_MIN, color: "bg-red-100 text-red-700" },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center">
+                  <div className={`rounded-lg px-2.5 py-2 min-w-[78px] ${item.color} shadow-sm mx-0.5`}>
+                    <div className="font-bold text-sm">{fmtFull(Math.abs(item.value))}</div>
+                    <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:9}}>{item.label}</div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* + Cash */}
+          <div className="text-gray-300 text-lg px-1.5 font-light">+</div>
+          <div className="rounded-lg px-3 py-2.5 min-w-[85px] bg-green-100 text-green-700 shadow-sm">
+            <div className="font-bold text-sm">{fmtFull(TOTAL_CASH)}</div>
+            <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{"(+) Cash\non Balance Sheet"}</div>
+          </div>
+
+          {/* = Equity Value */}
+          <div className="text-gray-400 text-xl px-2 font-bold">=</div>
+          <div className="rounded-lg px-3 py-2.5 min-w-[85px] bg-blue-800 text-white shadow-sm">
+            <div className="font-bold text-sm">{fmtFull(EQUITY_VALUE)}</div>
+            <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{"Equity\nValue"}</div>
+          </div>
         </div>
         <p className="text-[11px] text-gray-400 mt-2">Indicative valuation: <span className="font-bold text-gray-600">{ENTRY_MULT.toFixed(1)}x</span> unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)}</p>
       </div>
 
-      {/* Day-1 Chart */}
+      {/* Day-1 Chart — stacked bars */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders (S$M)</h3>
-          <p className="text-[11px] text-gray-400 mb-3">{MOVEMENT_PCT}% receives upfront payment including share of net cash. Earnout paid over 2 years if EBITDA targets are achieved.</p>
-          <ResponsiveContainer width="100%" height={170}>
-            <BarChart layout="vertical" data={chart1Data} margin={{ left: 5, right: 55 }}>
-              <XAxis type="number" tickFormatter={v => `${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
-              <YAxis type="category" dataKey="name" width={200} tick={{ fontSize: 10 }} />
+          <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
+          <p className="text-[11px] text-gray-400 mb-3">Total equity value: {fmtFull(EQUITY_VALUE)}. Earnout paid over 2 years if EBITDA targets are achieved.</p>
+          <ResponsiveContainer width="100%" height={140}>
+            <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 80 }}>
+              <XAxis type="number" tickFormatter={v => `S$${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
+              <YAxis type="category" dataKey="name" width={230} tick={{ fontSize: 10 }} />
               <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
-              <Bar dataKey="value" radius={[0, 6, 6, 0]}>
-                {chart1Data.map((d, i) => <Cell key={i} fill={d.fill} />)}
-                <LabelList dataKey="value" position="right" formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} style={{ fontSize: 11, fontWeight: 700 }} />
+              <Bar dataKey="upfront" stackId="a" fill="#1e40af" radius={[0, 0, 0, 0]}>
+                <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 10, fontWeight: 600, fill: '#fff' }} />
               </Bar>
+              <Bar dataKey="earnout" stackId="a" fill="#93c5fd" radius={[0, 6, 6, 0]}>
+                <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 10, fontWeight: 600, fill: '#1e40af' }} />
+              </Bar>
+              <Legend formatter={(value: any) => value === 'upfront' ? 'Upfront Payment' : 'Earnout (if targets met)'} wrapperStyle={{ fontSize: 10 }} />
             </BarChart>
           </ResponsiveContainer>
-          <div className="mt-2 space-y-1 text-xs">
-            <div className="flex justify-between"><span className="text-gray-500">{MOVEMENT_PCT}% upfront (incl. net cash)</span><span className="font-mono font-bold text-blue-800">{fmtFull(c.exit70_upfront)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">{MOVEMENT_PCT}% of {fmtFull(DEFERRED_TOTAL)} earnout</span><span className="font-mono text-blue-400">{fmtFull(c.exit70_earnout)}</span></div>
-            <div className="flex justify-between border-t pt-1"><span className="font-semibold">{MOVEMENT_PCT}% total (if all targets met)</span><span className="font-mono font-bold">{fmtFull(c.exit70_total)}</span></div>
-            <div className="text-[10px] text-gray-400 mt-1 italic">Total earnout: {fmtFull(DEFERRED_TOTAL)} ({EARNOUT_PCT}% of valuation). {MOVEMENT_PCT}% share = {fmtFull(c.exit70_earnout)}. {MGMT_PCT}% share ({fmtFull(DEFERRED_TOTAL - c.exit70_earnout)}) adds to continuing equity value.</div>
-            <div className="flex justify-between mt-1"><span className="text-green-700">{MGMT_PCT}% continuing equity</span><span className="font-mono font-bold text-green-700">{fmtFull(c.rollover30)}</span></div>
+          {/* Breakdown table */}
+          <div className="mt-3 space-y-1 text-xs">
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Movement&apos;s Equity Purchase ({MOVEMENT_PCT}%)</div>
+            <div className="flex justify-between ml-3"><span className="text-gray-500">Upfront (incl. net cash)</span><span className="font-mono font-bold text-blue-800">{fmtFull(c.exit70_upfront)}</span></div>
+            <div className="flex justify-between ml-3"><span className="text-gray-500">Earnout (if all targets met)</span><span className="font-mono text-blue-400">{fmtFull(c.exit70_earnout)}</span></div>
+            <div className="flex justify-between ml-3 border-t pt-1"><span className="font-semibold">Subtotal</span><span className="font-mono font-bold">{fmtFull(c.exit70_total)}</span></div>
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mt-2 mb-1">Management&apos;s Continuing Equity ({MGMT_PCT}%)</div>
+            <div className="flex justify-between ml-3"><span className="text-green-700">Continuing equity value</span><span className="font-mono font-bold text-green-700">{fmtFull(c.rollover30)}</span></div>
+            <div className="flex justify-between mt-2 pt-2 border-t-2 border-gray-300"><span className="font-bold">Total Equity Value (100%)</span><span className="font-mono font-bold text-blue-900">{fmtFull(EQUITY_VALUE)}</span></div>
+            <div className="text-[10px] text-gray-400 mt-1 italic">Earnout total: {fmtFull(DEFERRED_TOTAL)} ({EARNOUT_PCT}% of valuation). {MOVEMENT_PCT}% share = {fmtFull(c.exit70_earnout)}. {MGMT_PCT}% share ({fmtFull(DEFERRED_TOTAL - c.exit70_earnout)}) adds to continuing equity.</div>
           </div>
         </div>
 
@@ -553,11 +581,12 @@ function TimelineTab() {
       <h3 className="text-sm font-bold text-gray-700 mt-2">Key DD Topics</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {[
-          { num: 1, title: "Business Unit Review", desc: "Understand the economics of each business unit independently, including how they work together and the value of the integrated platform." },
+          { num: 1, title: "5-Year Growth Plan", desc: "Develop a shared vision for the group over the next 5 years. Define revenue targets, margin improvement opportunities, new market entry (regional expansion), and investment priorities across all three BUs." },
           { num: 2, title: "Revenue Pipeline & Sustainability", desc: "Review the order book depth and new business pipeline across all three BUs. Understand the sustainability of each revenue stream — contracted vs recurring vs project-based — and the pipeline of opportunities for FY2026-2027." },
-          { num: 3, title: "Adjusted Earnings Review", desc: "Review compensation structure, one-off items, and the ongoing cost base to understand the true recurring earnings of the group." },
-          { num: 4, title: "Working Capital & Balance Sheet", desc: "Review receivables, payables, and cash requirements to agree on the working capital baseline for the transaction." },
-          { num: 5, title: "Leadership Continuity & Team Alignment", desc: "Runs alongside the agreement drafting. Ensure the right people are in the right roles and aligned on the growth plan going forward." },
+          { num: 3, title: "Business Unit Review", desc: "Understand the economics of each business unit independently, including how they work together and the value of the integrated platform." },
+          { num: 4, title: "Adjusted Earnings Review", desc: "Review compensation structure, one-off items, and the ongoing cost base to understand the true recurring earnings of the group." },
+          { num: 5, title: "Working Capital & Balance Sheet", desc: "Review receivables, payables, and cash requirements to agree on the working capital baseline for the transaction." },
+          { num: 6, title: "Leadership Continuity & Team Alignment", desc: "Runs alongside the agreement drafting. Ensure the right people are in the right roles and aligned on the growth plan going forward." },
         ].map(card => (
           <div key={card.num} className="rounded-xl p-4 border" style={{ backgroundColor: "#faf5ff", borderColor: "#e9d5ff" }}>
             <div className="flex items-center gap-2 mb-1">
