@@ -111,11 +111,12 @@ function ValueTab() {
         <p className="text-[11px] italic text-gray-400 mt-1">Subject to independent financial due diligence</p>
       </div>
 
-      {/* Day-1 Chart — stacked bars */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
-          <p className="text-[11px] text-gray-400 mb-3">Total equity value: {fmtFull(EQUITY_VALUE)}. Earnout paid over 2 years if EBITDA targets are achieved.</p>
+      {/* Day-1 Chart — full width */}
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
+        <p className="text-[11px] text-gray-400 mb-3">Total equity value: {fmtFull(EQUITY_VALUE)}. Earnout paid over 2 years if EBITDA targets are achieved.</p>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
+        <div className="md:col-span-3">
           <ResponsiveContainer width="100%" height={200}>
             <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 140 }} barSize={44}>
               <XAxis type="number" tickFormatter={v => `S$${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
@@ -144,7 +145,7 @@ function ValueTab() {
         </div>
 
         {/* Sensitivity Table */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="md:col-span-2">
           <h3 className="text-sm font-bold text-gray-700 mb-1">{MGMT_PCT}% Continuing Stake &mdash; Projected Growth</h3>
           <p className="text-[11px] text-gray-400 mb-3">Select a scenario to see how the {MGMT_PCT}% stake could grow over {HOLD_YEARS} years.</p>
           <table className="w-full text-xs">
@@ -174,6 +175,7 @@ function ValueTab() {
               })}
             </tbody>
           </table>
+        </div>
         </div>
       </div>
 
