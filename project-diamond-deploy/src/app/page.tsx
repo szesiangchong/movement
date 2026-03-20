@@ -94,7 +94,7 @@ function ValueTab() {
             { label: "(-) Debt", value: -DEBT, color: "bg-yellow-100 text-yellow-800", sign: "" },
             { label: `(-) Working\nCapital (${NWC_PCT}%)`, value: -NWC_RESERVE, color: "bg-yellow-100 text-yellow-800", sign: "" },
             { label: "(-) Operating\nReserve", value: -OP_MIN, color: "bg-yellow-100 text-yellow-800", sign: "" },
-            { label: "(+) Cash\non Balance Sheet", value: TOTAL_CASH, color: "bg-green-100 text-green-700", sign: "+" },
+            { label: "(+) Unrestricted\nCash on BS", value: TOTAL_CASH, color: "bg-green-100 text-green-700", sign: "+" },
             { label: "Equity\nValue", value: EQUITY_VALUE, color: "bg-blue-800 text-white", sign: "=" },
           ].map((item, i) => (
             <div key={i} className="flex items-center">
