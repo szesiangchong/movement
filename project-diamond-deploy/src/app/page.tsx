@@ -70,13 +70,11 @@ function ValueTab() {
     };
   }, [selectedMult, yr5Ebitda]);
 
-  // Stacked bar: Movement's purchase (upfront + full earnout) vs Management continuing equity
-  // Show full earnout amount (S$8,600K) on Movement bar, upfront = S$21,600K
-  const mvmtEarnoutDisplay = DEFERRED_TOTAL; // full earnout on the bar
-  const mvmtUpfrontDisplay = c.exit70_total - mvmtEarnoutDisplay; // remainder
-  const stackedData = [
-    { name: `Movement (${MOVEMENT_PCT}%)`, upfront: mvmtUpfrontDisplay / 1000, earnout: mvmtEarnoutDisplay / 1000, total: c.exit70_total / 1000 },
-    { name: `Continuing Stake (${MGMT_PCT}%)`, upfront: c.rollover30 / 1000, earnout: 0, total: c.rollover30 / 1000 },
+  // Simple two-bar chart: upfront (70%) and continuing stake (30%). No earnout bar.
+  const equityAtClose = c.exit70_upfront + c.rollover30; // 21,418.8 + 12,865.2 = 34,284
+  const barData = [
+    { name: `Upfront (${MOVEMENT_PCT}%)`, value: c.exit70_upfront / 1000, fill: "#1e40af" },
+    { name: `Continuing Stake (${MGMT_PCT}%)`, value: c.rollover30 / 1000, fill: "#059669" },
   ];
   const chart2Data = [
     { name: "Today", value: c.rollover30 / 1000, fill: "#d1d5db" },
@@ -114,34 +112,28 @@ function ValueTab() {
       {/* Day-1 Chart — full width, same dimensions as bridge */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
-        <p className="text-[11px] text-gray-400 mb-3">Total equity value: {fmtFull(EQUITY_VALUE)}. Earnout paid over 2 years if EBITDA targets are achieved.</p>
+        <p className="text-[11px] text-gray-400 mb-3">Total equity value: {fmtFull(EQUITY_VALUE)}. Earnout funded by HoldCo over 2 years if EBITDA targets are achieved.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 140 }} barSize={44}>
+            <ResponsiveContainer width="100%" height={180}>
+              <BarChart layout="vertical" data={barData} margin={{ left: 5, right: 80 }} barSize={44}>
                 <XAxis type="number" tickFormatter={v => `S$${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
                 <YAxis type="category" dataKey="name" width={180} tick={{ fontSize: 12, fontWeight: 600 }} />
                 <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
-                <Bar dataKey="upfront" stackId="a" fill="#1e40af" radius={[0, 0, 0, 0]}>
-                  <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 12, fontWeight: 800, fill: '#ffffff' }} />
+                <Bar dataKey="value" radius={[0, 6, 6, 0]}>
+                  {barData.map((d, i) => <Cell key={i} fill={d.fill} />)}
+                  <LabelList dataKey="value" position="center" formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} style={{ fontSize: 13, fontWeight: 800, fill: '#ffffff' }} />
                 </Bar>
-                <Bar dataKey="earnout" stackId="a" fill="#93c5fd" radius={[0, 6, 6, 0]}>
-                  <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 11, fontWeight: 800, fill: '#1e3a5f' }} />
-                  <LabelList dataKey="total" position="right" formatter={(v: any) => `S$${Math.round(Number(v))}M`} style={{ fontSize: 13, fontWeight: 900, fill: '#000000' }} />
-                </Bar>
-                <Legend formatter={(value: any) => value === 'upfront' ? 'Upfront Payment' : 'Earnout (if targets met)'} wrapperStyle={{ fontSize: 10 }} />
               </BarChart>
             </ResponsiveContainer>
           </div>
           {/* Breakdown table */}
           <div className="space-y-1 text-xs">
-            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Movement ({MOVEMENT_PCT}%)</div>
-            <div className="flex justify-between ml-3"><span className="text-gray-500">Upfront (incl. net cash)</span><span className="font-mono font-bold text-blue-800">{fmtFull(mvmtUpfrontDisplay)}</span></div>
-            <div className="flex justify-between ml-3"><span className="text-gray-500">Earnout (if all targets met)</span><span className="font-mono text-blue-400">{fmtFull(DEFERRED_TOTAL)}</span></div>
-            <div className="flex justify-between ml-3 border-t pt-1"><span className="font-semibold">Subtotal</span><span className="font-mono font-bold">{fmtFull(c.exit70_total)}</span></div>
-            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mt-2 mb-1">Continuing Stake ({MGMT_PCT}%)</div>
-            <div className="flex justify-between ml-3"><span className="text-green-700">Continuing equity value</span><span className="font-mono font-bold text-green-700">{fmtFull(c.rollover30)}</span></div>
-            <div className="flex justify-between mt-2 pt-2 border-t-2 border-gray-300"><span className="font-bold">Total Equity Value (100%)</span><span className="font-mono font-bold text-blue-900">{fmtFull(EQUITY_VALUE)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-600">Upfront incl. net cash ({MOVEMENT_PCT}%)</span><span className="font-mono font-bold text-blue-800">{fmtFull(c.exit70_upfront)}</span></div>
+            <div className="flex justify-between"><span className="text-green-700">Continuing Stake ({MGMT_PCT}%)</span><span className="font-mono font-bold text-green-700">{fmtFull(c.rollover30)}</span></div>
+            <div className="flex justify-between border-t pt-1 mt-1"><span className="font-semibold">Equity Value at close (100%)</span><span className="font-mono font-bold">{fmtFull(equityAtClose)}</span></div>
+            <div className="flex justify-between mt-3 pt-2 border-t border-dashed border-gray-300"><span className="text-gray-500 italic">Earnout (funded by HoldCo, if targets met)</span><span className="font-mono text-blue-400 italic">{fmtFull(DEFERRED_TOTAL)}</span></div>
+            <div className="flex justify-between mt-2 pt-2 border-t-2 border-gray-400"><span className="font-bold text-blue-900">Total Equity Value (100%)</span><span className="font-mono font-bold text-blue-900">{fmtFull(EQUITY_VALUE)}</span></div>
           </div>
         </div>
       </div>
@@ -328,7 +320,7 @@ function EarnoutTab() {
 
   return (
     <div className="space-y-5">
-      <p className="text-sm text-gray-600">The earnout aligns the interests of both parties. {fmtFull(DEFERRED_TOTAL)} of the consideration is linked to EBITDA performance over the first two years, paid in two tranches.</p>
+      <p className="text-sm text-gray-600">The earnout aligns the interests of both parties. {fmtFull(DEFERRED_TOTAL)} of the consideration is linked to EBITDA performance over the first two years, funded by the HoldCo and paid in two tranches.</p>
 
       {/* Structure boxes */}
       <div className="grid grid-cols-3 gap-4 text-center">
