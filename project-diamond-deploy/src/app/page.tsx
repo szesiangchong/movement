@@ -131,16 +131,15 @@ function ValueTab() {
               <Legend formatter={(value: any) => value === 'upfront' ? 'Upfront Payment' : 'Earnout (if targets met)'} wrapperStyle={{ fontSize: 10 }} />
             </BarChart>
           </ResponsiveContainer>
-          {/* Breakdown table */}
+          {/* Breakdown table — matches bar chart display values */}
           <div className="mt-3 space-y-1 text-xs">
-            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Movement&apos;s Equity Purchase ({MOVEMENT_PCT}%)</div>
-            <div className="flex justify-between ml-3"><span className="text-gray-500">Upfront (incl. net cash)</span><span className="font-mono font-bold text-blue-800">{fmtFull(c.exit70_upfront)}</span></div>
-            <div className="flex justify-between ml-3"><span className="text-gray-500">Earnout (if all targets met)</span><span className="font-mono text-blue-400">{fmtFull(c.exit70_earnout)}</span></div>
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Movement ({MOVEMENT_PCT}%)</div>
+            <div className="flex justify-between ml-3"><span className="text-gray-500">Upfront (incl. net cash)</span><span className="font-mono font-bold text-blue-800">{fmtFull(mvmtUpfrontDisplay)}</span></div>
+            <div className="flex justify-between ml-3"><span className="text-gray-500">Earnout (if all targets met)</span><span className="font-mono text-blue-400">{fmtFull(DEFERRED_TOTAL)}</span></div>
             <div className="flex justify-between ml-3 border-t pt-1"><span className="font-semibold">Subtotal</span><span className="font-mono font-bold">{fmtFull(c.exit70_total)}</span></div>
-            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mt-2 mb-1">Management&apos;s Continuing Equity ({MGMT_PCT}%)</div>
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mt-2 mb-1">Continuing Stake ({MGMT_PCT}%)</div>
             <div className="flex justify-between ml-3"><span className="text-green-700">Continuing equity value</span><span className="font-mono font-bold text-green-700">{fmtFull(c.rollover30)}</span></div>
             <div className="flex justify-between mt-2 pt-2 border-t-2 border-gray-300"><span className="font-bold">Total Equity Value (100%)</span><span className="font-mono font-bold text-blue-900">{fmtFull(EQUITY_VALUE)}</span></div>
-            <div className="text-[10px] text-gray-400 mt-1 italic">Earnout total: {fmtFull(DEFERRED_TOTAL)}. {MOVEMENT_PCT}% share = {fmtFull(c.exit70_earnout)}. {MGMT_PCT}% share ({fmtFull(DEFERRED_TOTAL - c.exit70_earnout)}) adds to continuing equity.</div>
           </div>
         </div>
 
