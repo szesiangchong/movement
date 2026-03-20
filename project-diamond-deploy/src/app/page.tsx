@@ -97,7 +97,7 @@ function ValueTab() {
               {i > 0 && i < 5 && <div className="text-gray-300 text-lg px-1.5 font-light">{item.sign || ""}</div>}
               {i === 5 && <div className="text-gray-400 text-xl px-2 font-bold">=</div>}
               <div className={`rounded-lg px-3 py-2.5 min-w-[85px] ${item.color} shadow-sm`}>
-                <div className="font-bold text-sm">{fmtK(Math.abs(item.value))}</div>
+                <div className="font-bold text-sm">{fmtFull(Math.abs(item.value))}</div>
                 <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{item.label}</div>
               </div>
             </div>
@@ -196,7 +196,7 @@ function ValueTab() {
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 mb-5 border border-blue-200">
           <div className="flex items-center justify-between mb-3">
             <span className="font-semibold text-sm text-blue-900">Estimated Year {HOLD_YEARS} EBITDA</span>
-            <span className="font-mono font-bold text-2xl text-blue-800">{fmtK(yr5Ebitda)}</span>
+            <span className="font-mono font-bold text-2xl text-blue-800">{fmtFull(yr5Ebitda)}</span>
           </div>
           <div className="relative">
             <div className="h-3 rounded-full bg-blue-200">
@@ -207,8 +207,8 @@ function ValueTab() {
               style={{ height: 20 }} />
           </div>
           <div className="flex justify-between text-xs mt-1">
-            <span className="text-blue-400">{fmtK(7000)}</span>
-            <span className="text-blue-400">{fmtK(20000)}</span>
+            <span className="text-blue-400">{fmtFull(7000)}</span>
+            <span className="text-blue-400">{fmtFull(20000)}</span>
           </div>
         </div>
 
@@ -221,7 +221,7 @@ function ValueTab() {
             </tr>
           </thead>
           <tbody>
-            <tr><td className="py-1.5 px-3 text-gray-600">Year {HOLD_YEARS} EBITDA</td><td className="text-right py-1.5 px-3 font-mono">{fmtK(yr5Ebitda)}</td></tr>
+            <tr><td className="py-1.5 px-3 text-gray-600">Year {HOLD_YEARS} EBITDA</td><td className="text-right py-1.5 px-3 font-mono">{fmtFull(yr5Ebitda)}</td></tr>
             <tr className="bg-gray-50"><td className="py-1.5 px-3 font-semibold text-blue-800">Projected Value ({c.active.mult.toFixed(1)}x)</td><td className="text-right py-1.5 px-3 font-mono font-bold text-blue-800">{fmt(c.active.futureEV)}</td></tr>
             <tr><td className="py-1.5 px-3 text-gray-600">(+) Est. Net Cash</td><td className="text-right py-1.5 px-3 font-mono">{fmt(c.futureNetCash)}</td></tr>
             <tr className="bg-blue-50"><td className="py-1.5 px-3 font-bold text-blue-900">Total Equity Value (100%)</td><td className="text-right py-1.5 px-3 font-mono font-bold text-blue-900">{fmt(c.active.futureEquity)}</td></tr>
@@ -281,20 +281,20 @@ function EarnoutTab() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <span className="font-semibold text-sm">{label}</span>
-            <span className="text-[10px] text-gray-400 ml-2">Target: {fmtK(hurdle)} (vs Mgmt forecast of {fmtK(mgmtForecast)})</span>
+            <span className="text-[10px] text-gray-400 ml-2">Target: {fmtFull(hurdle)} (vs Mgmt forecast of {fmtFull(mgmtForecast)})</span>
           </div>
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold text-white ${statusColors[status as keyof typeof statusColors]}`}>{statusLabels[status as keyof typeof statusLabels]}</span>
         </div>
         <div className="relative mb-3">
           <div className="h-3 rounded-full bg-gray-200 relative overflow-visible">
             <div className="absolute top-0 bottom-0 w-0.5 bg-red-400 z-10" style={{ left: `${floorPct}%` }}>
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-red-500 whitespace-nowrap">Floor {fmtK(floor)}</div>
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-red-500 whitespace-nowrap">Floor {fmtFull(floor)}</div>
             </div>
             <div className="absolute top-0 bottom-0 w-0.5 bg-green-600 z-10" style={{ left: `${hurdlePct}%` }}>
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-green-600 whitespace-nowrap">Target {fmtK(hurdle)}</div>
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-green-600 whitespace-nowrap">Target {fmtFull(hurdle)}</div>
             </div>
             <div className="absolute top-0 bottom-0 w-0.5 bg-blue-400 z-10 border-dashed" style={{ left: `${mgmtPct}%` }}>
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[8px] text-blue-400 whitespace-nowrap">Mgmt {fmtK(mgmtForecast)}</div>
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[8px] text-blue-400 whitespace-nowrap">Mgmt {fmtFull(mgmtForecast)}</div>
             </div>
             <div className={`absolute top-0 left-0 bottom-0 rounded-full transition-all ${status === 'met' ? 'bg-green-400' : status === 'partial' ? 'bg-yellow-400' : 'bg-red-300'}`}
               style={{ width: `${Math.min(100, pctPos)}%` }} />
@@ -304,9 +304,9 @@ function EarnoutTab() {
             style={{ height: 20 }} />
         </div>
         <div className="flex justify-between text-xs mt-2">
-          <span className="text-gray-400">{fmtK(min)}</span>
-          <span className="font-mono font-bold text-lg">{fmtK(value)}</span>
-          <span className="text-gray-400">{fmtK(max)}</span>
+          <span className="text-gray-400">{fmtFull(min)}</span>
+          <span className="font-mono font-bold text-lg">{fmtFull(value)}</span>
+          <span className="text-gray-400">{fmtFull(max)}</span>
         </div>
       </div>
     );
