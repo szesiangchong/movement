@@ -72,8 +72,8 @@ function ValueTab() {
 
   // Stacked bar: Movement's purchase (upfront + earnout) vs Management continuing equity
   const stackedData = [
-    { name: `Movement's Equity Purchase (${MOVEMENT_PCT}%)`, upfront: c.exit70_upfront / 1000, earnout: c.exit70_earnout / 1000 },
-    { name: `Management's Continuing Equity (${MGMT_PCT}%)`, upfront: c.rollover30 / 1000, earnout: 0 },
+    { name: `Movement (${MOVEMENT_PCT}%)`, upfront: c.exit70_upfront / 1000, earnout: c.exit70_earnout / 1000 },
+    { name: `Management Equity (${MGMT_PCT}%)`, upfront: c.rollover30 / 1000, earnout: 0 },
   ];
   const chart2Data = [
     { name: "Today", value: c.rollover30 / 1000, fill: "#d1d5db" },
@@ -105,7 +105,7 @@ function ValueTab() {
           ))}
         </div>
         <p className="text-[11px] text-gray-400 mt-2">Indicative valuation: <span className="font-bold text-gray-600">{ENTRY_MULT.toFixed(1)}x</span> unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)}</p>
-        <p className="text-[11px] italic text-gray-400 mt-1">Subject to independent financial review</p>
+        <p className="text-[11px] italic text-gray-400 mt-1">Subject to independent financial due diligence</p>
       </div>
 
       {/* Day-1 Chart — stacked bars */}
@@ -114,24 +114,24 @@ function ValueTab() {
           <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
           <p className="text-[11px] text-gray-400 mb-3">Total equity value: {fmtFull(EQUITY_VALUE)}. Earnout paid over 2 years if EBITDA targets are achieved.</p>
           <ResponsiveContainer width="100%" height={200}>
-            <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 100 }} barSize={40}>
+            <BarChart layout="vertical" data={stackedData} margin={{ left: 5, right: 120 }} barSize={44}>
               <XAxis type="number" tickFormatter={v => `S$${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
-              <YAxis type="category" dataKey="name" width={240} tick={{ fontSize: 11, fontWeight: 500 }} />
+              <YAxis type="category" dataKey="name" width={180} tick={{ fontSize: 12, fontWeight: 600 }} />
               <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
               <Bar dataKey="upfront" stackId="a" fill="#1e40af" radius={[0, 0, 0, 0]}>
-                <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 11, fontWeight: 700, fill: '#fff' }} />
+                <LabelList dataKey="upfront" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 13, fontWeight: 800, fill: '#ffffff' }} />
               </Bar>
               <Bar dataKey="earnout" stackId="a" fill="#93c5fd" radius={[0, 6, 6, 0]}>
-                <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 10, fontWeight: 700, fill: '#1e40af' }} />
-                <LabelList dataKey="earnout" position="right" formatter={(v: any, entry: any) => {
-                  if (entry && entry.upfront > 0 && Number(v) > 0) return `Total: ${fmtFull(c.exit70_total)}`;
-                  if (entry && entry.upfront > 0 && Number(v) === 0) return `${fmtFull(c.rollover30)}`;
-                  return '';
-                }} style={{ fontSize: 10, fontWeight: 700, fill: '#333' }} />
+                <LabelList dataKey="earnout" position="center" formatter={(v: any) => Number(v) > 1 ? `S$${Number(v).toFixed(1)}M` : ''} style={{ fontSize: 12, fontWeight: 800, fill: '#1e3a5f' }} />
               </Bar>
               <Legend formatter={(value: any) => value === 'upfront' ? 'Upfront Payment' : 'Earnout (if targets met)'} wrapperStyle={{ fontSize: 10 }} />
             </BarChart>
           </ResponsiveContainer>
+          {/* Totals displayed clearly below chart */}
+          <div className="flex justify-between mt-1 px-2 text-sm">
+            <div><span className="font-bold text-black">Movement Total: {fmtFull(c.exit70_total)}</span></div>
+            <div><span className="font-bold text-green-700">Management: {fmtFull(c.rollover30)}</span></div>
+          </div>
           {/* Breakdown table */}
           <div className="mt-3 space-y-1 text-xs">
             <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Movement&apos;s Equity Purchase ({MOVEMENT_PCT}%)</div>
@@ -670,7 +670,7 @@ function Dashboard() {
       <header className="text-center py-3 mb-4">
         <h1 className="text-2xl font-bold text-blue-900 tracking-tight">PROJECT DIAMOND</h1>
         <p className="text-xs text-gray-400 mt-0.5">Preliminary Discussion &mdash; Confidential</p>
-        <p className="text-[11px] text-gray-500 mt-3 max-w-2xl mx-auto leading-relaxed italic">Movement is pleased to present this Partnership Proposal, reflecting our commitment to a lasting partnership with both generations of the Carats family to drive the Group&apos;s next chapter of growth.</p>
+        <p className="text-[11px] text-gray-500 mt-3 max-w-2xl mx-auto leading-relaxed italic">Movement is pleased to present this Partnership Proposal, reflecting our commitment to a lasting partnership with both generations<br />of the CARATS family to drive the Group&apos;s next chapter of growth.</p>
       </header>
       <div className="flex gap-1 mb-5 bg-white rounded-xl p-1 shadow-sm border border-gray-200">
         {TABS.map((t, i) => (
