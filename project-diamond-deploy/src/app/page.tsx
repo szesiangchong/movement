@@ -113,7 +113,7 @@ function ValueTab() {
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
         <p className="text-[11px] text-gray-400 mb-1">Total equity value: {fmtFull(EQUITY_VALUE)}. Earnout funded by HoldCo over 2 years if EBITDA targets are achieved.</p>
-        <p className="text-[11px] italic text-gray-400 mb-3">Subject to independent financial diligence and transaction financing (to be finalised)</p>
+        <p className="text-[11px] italic text-gray-400 mb-3">Subject to independent financial due diligence and transaction financing (to be finalised)</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <ResponsiveContainer width="100%" height={180}>
