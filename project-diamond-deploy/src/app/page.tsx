@@ -106,7 +106,7 @@ function ValueTab() {
           ))}
         </div>
         <p className="text-[11px] text-gray-400 mt-2">Indicative valuation: <span className="font-bold text-gray-600">~{ENTRY_MULT.toFixed(1)}x</span> unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)}</p>
-        <p className="text-[11px] italic text-gray-400 mt-1">Subject to independent financial due diligence <span className="font-bold">and transaction financing (to be finalised)</span></p>
+        <p className="text-[11px] italic text-gray-400 mt-1">Subject to independent financial due diligence and transaction financing (to be finalised)</p>
       </div>
 
       {/* Day-1 Chart — full width, same dimensions as bridge */}
