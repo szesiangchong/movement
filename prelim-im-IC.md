@@ -84,14 +84,12 @@ Two-section layout inspired by institutional IM cover pages (e.g., Victoria/DVC 
 - Color scheme: Movement blue (#1F4E79) for headings, black body text
 - Total cover page should fit on one page without scrolling
 
-### 2. The Target
+### 2. Executive Summary
 
-What the business does. Keep it tight — 1-2 paragraphs max, then a key metrics snapshot table.
+The first substantive page after the cover and contents. IC members may only read this. Keep it tight.
 
 **Must include:**
-- Products/services description
-- Geography and operations footprint
-- Founding year and ownership structure
+- Target at a glance (1-2 paragraphs: what it does, where, how big)
 - Key metrics snapshot table:
 
 | Metric | Value |
@@ -102,26 +100,40 @@ What the business does. Keep it tight — 1-2 paragraphs max, then a key metrics
 | Employees | |
 | Locations / Assets | |
 
-### 3. The Context
+- Go/no-go recommendation with conditions
+- Recent developments and status of engagement
 
-Why now. What complexity creates the opportunity. This is the most Movement-specific section.
+### 3. Company Overview
+
+Consolidates: who they are, why now, who runs it, and who buys from them.
 
 **Must include:**
+
+**The Business:**
+- Products/services description
+- Geography and operations footprint
+- Founding year and ownership structure
+
+**The Context (Why Now):**
 - Transition catalyst articulated clearly (founder exit, succession vacuum, aging shareholders, market dislocation, failed prior sale, carve-out rationale)
 - Historical timeline of key events (bullet chronology)
-- If prior sale process failed: diagnose why (structure, politics, expectations, unsolved problems) — per Javier's framework, complexity taxes the multiple
+- If prior sale process failed: diagnose why — per Javier's framework, complexity taxes the multiple
 - What transition Movement is facilitating
 
-### 4. Management Team
-
-**Must include:**
+**Management Team:**
 - Key personnel table (Name, Role, Tenure, Background)
 - Strengths and gaps assessment
 - Founder dependency risk (if applicable)
 - Post-close management continuity plan (retain/replace/augment)
 - Key person risk flags and mitigation
 
-### 5. Market & Competitive Landscape
+**Customer Dynamics:**
+- Customer concentration (top 5/10 clients as % revenue)
+- Retention / churn metrics
+- Contract structure (duration, renewal rates, pricing mechanism)
+- Revenue quality: decompose % captive/intercompany vs. genuine external revenue
+
+### 4. Market Overview
 
 **Must include:**
 - Market size — bottom-up with shown workings (segment-level, unit economics), using appropriate benchmarks ($/MW, $/unit, $/sqft). No top-down TAM assertions without backup.
@@ -134,17 +146,7 @@ Why now. What complexity creates the opportunity. This is the most Movement-spec
 - Regulatory environment (if material)
 - Geographic moat stress-test: contract enforceability varies by jurisdiction
 
-### 6. Consumer / Customer Dynamics
-
-**Must include:**
-- Customer concentration (top 5/10 clients as % revenue)
-- Retention / churn metrics
-- Contract structure (duration, renewal rates, pricing mechanism)
-- Channel mix
-- Pricing power indicators
-- Revenue quality: decompose % captive/intercompany vs. genuine external revenue
-
-### 7. Financial Highlights
+### 5. Financial Overview
 
 **Must include:**
 - Historical P&L summary (3-5 years) in table format
@@ -155,41 +157,36 @@ Why now. What complexity creates the opportunity. This is the most Movement-spec
 - Capex split: maintenance vs. growth (per Javier — capex-to-grow = working capital drag affecting multiple/financing)
 - Intercompany pricing analysis if multi-entity: compare charges to sister entities vs. external clients; gap = subsidy
 
-### 8. Business Plan
+### 6. Transaction Proposal
 
-**Must include 3 scenarios:**
+Consolidates: how we plan to buy it and what we plan to do with it.
+
+**Must include:**
+
+**Business Plan (3 scenarios):**
 
 | | Base | Upside | Downside |
 |--|------|--------|----------|
 | Revenue CAGR | | | |
-| Exit EBITDA | | | |
+| Year 5 EBITDA | | | |
 | Key assumptions | | | |
 
 - Value creation levers (operational, financial, strategic) — quantified, not vague
-- EBITDA bridge from entry to exit
+- EBITDA bridge from entry to projected
 - Synergies: explicit quantified basis with calculation shown; reject vague "synergy potential"
 
-### 9. Transaction Structure
-
-**Must include:**
+**Transaction Structure:**
 - Entry valuation with comp anchoring (never same multiple across multi-entity deals — pull sector-specific comps per Javier)
 - Articulate the multiple-earning gap: why this multiple for this business quality
-- Sources & Uses table:
-
-| Sources | Amount | Uses | Amount |
-|---------|--------|------|--------|
-| Equity | | Enterprise Value | |
-| Senior Debt | | Transaction Costs | |
-| Vendor Loan | | Working Capital | |
-| **Total** | | **Total** | |
-
+- Sources & Uses table
 - Debt structure and key terms
 - Equity required from Movement
 - Key deal terms / conditions
-- Exit optionality (patient capital advantage)
-- Pre-deal control signals: flag seller conditions (e.g., employment requirements) — price in or structure earnout/deferred
+- Pre-deal control signals: flag seller conditions — price in or structure earnout/deferred
 
-### 10. Investment Highlights & Key Risks
+### 7. Investment Rationale
+
+Consolidates: why we should do this deal, what could go wrong, and what's next.
 
 **Investment Highlights** — use ✓ prefix:
 - Lead with thesis bullets (3-5 max)
@@ -205,16 +202,12 @@ Why now. What complexity creates the opportunity. This is the most Movement-spec
 - For asset-heavy targets: asset-by-asset liquidation value with recovery assumptions (cash 100%, receivables 80%, inventory 60%, PP&E at forced-sale discount)
 - Entry valuation vs. replacement cost, liquidation value, comp floor
 
-### 11. Recent Updates & Next Steps
-
+**Next Steps:**
 - Latest developments since materials were received
 - **Concrete, time-bound next steps** — never open-ended
-- Example: "IC recommendation within 2-3 weeks pending DDQ responses and management call"
 - Clear go/no-go recommendation or conditions for proceeding
 
-### 12. Appendix
-
-Include as needed:
+**Appendix** (at end of document):
 - Detailed financial tables (full P&L, balance sheet)
 - Organizational chart
 - Asset register (if asset-heavy)
