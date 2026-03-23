@@ -1006,6 +1006,28 @@ function TermSheetTab() {
             </div>
           </div>
         </div>
+
+        {/* Mechanics & Protections */}
+        <div className="mt-5">
+          <h4 className="text-sm font-bold text-gray-700 mb-3">Mechanics & Protections</h4>
+
+          <div className="space-y-3">
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: How is EBITDA measured for earnout purposes — and who decides?</div>
+              <div className="text-xs text-gray-600">A: EBITDA for earnout measurement will be prepared by management and reviewed/audited by an independent accounting firm agreed by both parties. The definition of &quot;Adjusted EBITDA&quot; will be mutually agreed during due diligence — this will specify adjustments for one-off/non-recurring items, management fees, intercompany charges, and other normalisations to ensure a fair and consistent basis of measurement throughout the earnout period.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: Does management retain day-to-day control of the business during the earnout period?</div>
+              <div className="text-xs text-gray-600">A: Yes. Management retains operational autonomy over day-to-day running of the business during the earnout period, subject to the Reserved Matters in the Governance section. This ensures management has a fair opportunity to achieve the EBITDA targets. If the parties cannot agree on the earnout calculation within [30] days of delivery of the measurement accounts, the dispute will be referred to an independent accounting firm (mutually agreed or appointed per the SHA) whose determination shall be final and binding.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: Is the upfront payment of {fmt(UPFRONT)} unconditional?</div>
+              <div className="text-xs text-gray-600">A: Yes. The upfront cash consideration of {fmt(UPFRONT)} payable at completion is unconditional and not subject to clawback. The earnout is a separate, additional component — non-achievement of earnout targets does not affect the upfront payment already received.</div>
+            </div>
+          </div>
+        </div>
       </Section>
 
       {/* Section 5: Put/Call */}
@@ -1025,21 +1047,16 @@ function TermSheetTab() {
       {/* Section 6: Purchase Price Adjustments */}
       <Section title="6. Purchase Price Adjustments" tag="STANDARD" defaultOpen={false}>
         <div className="mt-3">
-          <Row label="Mechanism">Completion accounts prepared within [60–90] days post-close. Purchase price adjusted for variances in net debt, cash, and working capital versus agreed reference levels.</Row>
-          <Row label="Net Debt / Cash">Final equity value adjusted for actual net debt (or net cash) at completion versus the reference balance used in EV-to-equity bridge. Excess cash increases consideration; excess debt reduces it.</Row>
-          <Row label="Working Capital">Normalised working capital target set at [10%] of trailing 12-month revenue. If actual NWC at completion deviates from target, purchase price adjusted dollar-for-dollar (up or down).</Row>
-          <Row label="Dispute Resolution">Parties to agree within [30] days of completion accounts delivery. Unresolved items referred to independent accounting firm whose determination is final and binding.</Row>
-          <Row label="Payment">Adjustments settled in cash within [10] business days of final determination. Movement or sellers may owe the adjustment depending on direction.</Row>
-        </div>
-        <div className="mt-3 bg-blue-50 border-l-4 border-blue-400 p-3 text-xs text-gray-600">
-          <strong className="text-gray-800">Note:</strong> Standard mechanism to ensure the price paid reflects the actual financial position of the group at completion. Protects both buyer and seller.
+          <Row label="NWC Adjustment">All payments of the Purchase Price shall be subject to a net working capital adjustment. The applicable target net working capital (&quot;NWC Target&quot;) shall be agreed to by the Parties following the completion of the Purchaser&apos;s financial due diligence.</Row>
+          <Row label="Net Debt / Cash">Final equity value adjusted for actual net debt (or net cash) at completion versus the reference balance used in the EV-to-equity bridge.</Row>
+          <Row label="True-Up">Completion accounts to be prepared post-close. Any variance between actual NWC and the agreed NWC Target will result in a dollar-for-dollar adjustment to the Purchase Price (up or down).</Row>
         </div>
       </Section>
 
       {/* Section 7: Governance */}
       <Section title="7. Governance & Shareholder Rights" tag="STANDARD" defaultOpen={false}>
         <div className="mt-3">
-          <Row label="Board">Movement-appointed majority. 1 seat reserved for continuing management (likely TH). <span className="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded text-[10px] font-bold ml-1">Discuss</span></Row>
+          <Row label="Board">Movement-appointed majority. 1 seat reserved for continuing management (likely TH or Raymond). <span className="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded text-[10px] font-bold ml-1">Discuss</span></Row>
           <Row label="Reserved Matters">Capex above threshold, new indebtedness, related-party transactions, dividend policy, key executive hires/terminations, material contracts, change of business</Row>
           <Row label="Info Rights">Monthly management accounts, quarterly board reporting, annual audited statements</Row>
           <Row label="Anti-Dilution">Pre-emptive rights on new issuances to maintain pro-rata ownership</Row>
