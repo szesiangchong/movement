@@ -257,21 +257,33 @@ function EarnoutTab() {
     const yr1Floor = yr1Hurdle * 0.8;
     const yr2Floor = yr2Hurdle * 0.8;
 
+    // Year 1 payout — proportional between floor and target
     const yr1Ratio = Math.min(1, Math.max(0, (yr1Actual - yr1Floor) / (yr1Hurdle - yr1Floor)));
     const yr1Pay = yr1Actual >= yr1Floor ? yr1Tranche * yr1Ratio : 0;
-    const yr1Shortfall = yr1Tranche - yr1Pay;
+    const yr1Unpaid = yr1Tranche - yr1Pay;
+    const yr1EbitdaShortfall = Math.max(0, yr1Hurdle - yr1Actual);
+    const yr1EbitdaExcess = Math.max(0, yr1Actual - yr1Hurdle);
 
-    let yr2Pay = 0;
-    if (yr2Actual >= yr2Floor) {
-      const yr2Pool = yr2Tranche + yr1Shortfall;
-      const yr2Ratio = Math.min(1, (yr2Actual - yr2Floor) / (yr2Hurdle - yr2Floor));
-      yr2Pay = yr2Pool * yr2Ratio;
+    // Year 2 — carry forward & carry backward
+    // Carry backward: Year 1 excess EBITDA credits toward Year 2 target
+    const yr2EffectiveHurdle = yr1EbitdaExcess > 0
+      ? Math.max(yr2Floor, yr2Hurdle - yr1EbitdaExcess)
+      : yr2Hurdle;
+    const yr2Ratio = Math.min(1, Math.max(0, (yr2Actual - yr2Floor) / (yr2EffectiveHurdle - yr2Floor)));
+    const yr2BasePay = yr2Actual >= yr2Floor ? yr2Tranche * yr2Ratio : 0;
+
+    // Carry forward: Year 1 shortfall only recoverable if Year 2 EXCEEDS its hurdle
+    let yr1Recovery = 0;
+    if (yr1Unpaid > 0 && yr1EbitdaShortfall > 0 && yr2Actual > yr2Hurdle) {
+      const recoveryRatio = Math.min(1, (yr2Actual - yr2Hurdle) / yr1EbitdaShortfall);
+      yr1Recovery = yr1Unpaid * recoveryRatio;
     }
 
-    const totalPaid = yr1Pay + yr2Pay;
+    const yr2Pay = Math.min(yr2Tranche + yr1Unpaid, yr2BasePay + yr1Recovery);
+    const totalPaid = Math.min(DEFERRED_TOTAL, yr1Pay + yr2Pay);
     const yr1Status = yr1Actual >= yr1Hurdle ? "met" : yr1Actual >= yr1Floor ? "partial" : "missed";
-    const yr2Status = yr2Actual >= yr2Hurdle ? "met" : yr2Actual >= yr2Floor ? "partial" : "missed";
-    return { yr1Tranche, yr2Tranche, yr1Floor, yr2Floor, yr1Pay, yr1Shortfall, yr2Pay, totalPaid, yr1Status, yr2Status };
+    const yr2Status = yr2Actual >= yr2EffectiveHurdle ? "met" : yr2Actual >= yr2Floor ? "partial" : "missed";
+    return { yr1Tranche, yr2Tranche, yr1Floor, yr2Floor, yr1Pay, yr1Unpaid, yr1EbitdaShortfall, yr1EbitdaExcess, yr2EffectiveHurdle, yr2BasePay, yr1Recovery, yr2Pay, totalPaid, yr1Status, yr2Status };
   }, [yr1Actual, yr2Actual]);
 
   const statusColors = { met: "bg-green-500", partial: "bg-yellow-500", missed: "bg-red-500" };
@@ -320,7 +332,7 @@ function EarnoutTab() {
 
   return (
     <div className="space-y-5">
-      <p className="text-sm text-gray-600">The earnout aligns the interests of both parties. {fmtFull(DEFERRED_TOTAL)} of the consideration is linked to EBITDA performance over the first two years, funded by the HoldCo and paid in two tranches.</p>
+      <p className="text-sm text-gray-600">The earnout aligns the interests of both parties. {fmtFull(DEFERRED_TOTAL)} of the consideration is linked to EBITDA performance over the first two years, funded by HoldCo and paid in two tranches. Includes <strong>carry forward</strong> (Year 1 shortfall recoverable if Year 2 exceeds its target by the shortfall amount) and <strong>carry backward</strong> (Year 1 outperformance credits toward Year 2).</p>
 
       {/* Structure boxes */}
       <div className="grid grid-cols-3 gap-4 text-center">
@@ -353,17 +365,22 @@ function EarnoutTab() {
           <div className="text-xs space-y-1">
             <div className="flex justify-between"><span>Available (30% tranche)</span><span className="font-mono">{fmtFull(c.yr1Tranche)}</span></div>
             <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtFull(c.yr1Pay)}</span></div>
-            {c.yr1Shortfall > 0 && <div className="flex justify-between text-orange-600"><span>Balance carries to Year 2</span><span className="font-mono">{fmtFull(c.yr1Shortfall)}</span></div>}
+            {c.yr1Unpaid > 0 && <div className="flex justify-between text-orange-600"><span>Unpaid (carry forward)</span><span className="font-mono">{fmtFull(c.yr1Unpaid)}</span></div>}
+            {c.yr1EbitdaShortfall > 0 && <div className="flex justify-between text-orange-500"><span>EBITDA gap to recover in Yr 2</span><span className="font-mono">{fmtFull(c.yr1EbitdaShortfall)}</span></div>}
+            {c.yr1EbitdaExcess > 0 && <div className="flex justify-between text-blue-600"><span>EBITDA excess (carry backward)</span><span className="font-mono">{fmtFull(c.yr1EbitdaExcess)}</span></div>}
           </div>
-          <p className="text-[10px] text-gray-400 mt-2 italic">Payment scales proportionally with performance. The full amount is payable when the target is achieved. Any balance carries forward to Year 2.</p>
+          <p className="text-[10px] text-gray-400 mt-2 italic">Scales proportionally between floor and target. {c.yr1EbitdaShortfall > 0 ? `Year 2 must exceed its target by ${fmtFull(c.yr1EbitdaShortfall)} to recover the carried amount.` : c.yr1EbitdaExcess > 0 ? `Excess of ${fmtFull(c.yr1EbitdaExcess)} credits toward Year 2 target.` : 'Full tranche achieved.'}</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-4">
           <h4 className="font-semibold text-sm mb-2">Year 2 Payment</h4>
           <div className="text-xs space-y-1">
-            <div className="flex justify-between"><span>Available (70% tranche{c.yr1Shortfall > 0 ? " + carry" : ""})</span><span className="font-mono">{fmtFull(c.yr2Tranche + c.yr1Shortfall)}</span></div>
-            <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtFull(c.yr2Pay)}</span></div>
+            <div className="flex justify-between"><span>Base tranche (70%)</span><span className="font-mono">{fmtFull(c.yr2Tranche)}</span></div>
+            {c.yr1EbitdaExcess > 0 && <div className="flex justify-between text-blue-600"><span>Effective target (after carry back)</span><span className="font-mono">{fmtFull(c.yr2EffectiveHurdle)}</span></div>}
+            <div className="flex justify-between"><span>Base payout</span><span className="font-mono">{fmtFull(c.yr2BasePay)}</span></div>
+            {c.yr1Recovery > 0 && <div className="flex justify-between text-green-600"><span>(+) Year 1 recovery</span><span className="font-mono">{fmtFull(c.yr1Recovery)}</span></div>}
+            <div className="flex justify-between font-bold text-green-700 border-t border-gray-200 pt-1"><span>Total Year 2 Payable</span><span className="font-mono">{fmtFull(c.yr2Pay)}</span></div>
           </div>
-          <p className="text-[10px] text-gray-400 mt-2 italic">Payment scales proportionally with performance, including any balance carried from Year 1. Strong Year 2 results can make up for any Year 1 shortfall.</p>
+          <p className="text-[10px] text-gray-400 mt-2 italic">{c.yr1Unpaid > 0 ? `Year 1 carry of ${fmtFull(c.yr1Unpaid)} requires Year 2 EBITDA to exceed ${fmtFull(yr2Hurdle)} by ${fmtFull(c.yr1EbitdaShortfall)} (i.e., ${fmtFull(yr2Hurdle + c.yr1EbitdaShortfall)}) for full recovery.` : c.yr1EbitdaExcess > 0 ? `Year 1 outperformance reduces effective Year 2 target from ${fmtFull(yr2Hurdle)} to ${fmtFull(c.yr2EffectiveHurdle)}.` : 'Scales proportionally between floor and target.'}</p>
         </div>
       </div>
 
@@ -970,8 +987,9 @@ function TermSheetTab() {
             <tr className="bg-gray-50"><td className="py-2 px-3">EBITDA Target</td><td className="py-2 px-3 font-mono">{fmtFull(7500)}</td><td className="py-2 px-3 font-mono">{fmtFull(8000)}</td></tr>
             <tr><td className="py-2 px-3">Mgmt Forecast</td><td className="py-2 px-3 font-mono text-gray-400">{fmtFull(7890)}</td><td className="py-2 px-3 font-mono text-gray-400">{fmtFull(8522)}</td></tr>
             <tr className="bg-gray-50"><td className="py-2 px-3">Floor</td><td className="py-2 px-3" colSpan={2}>80% of target — below floor, zero payout</td></tr>
-            <tr><td className="py-2 px-3">Carry-Forward</td><td className="py-2 px-3" colSpan={2}>Year 1 shortfall carries into Year 2 pool</td></tr>
-            <tr className="bg-gray-50 font-bold"><td className="py-2 px-3">Total</td><td className="py-2 px-3" colSpan={2}>{fmtFull(DEFERRED_TOTAL)} (funded by HoldCo)</td></tr>
+            <tr><td className="py-2 px-3">Carry Forward</td><td className="py-2 px-3" colSpan={2}>Year 1 EBITDA shortfall must be exceeded in Year 2 to recover unpaid tranche</td></tr>
+            <tr className="bg-gray-50"><td className="py-2 px-3">Carry Backward</td><td className="py-2 px-3" colSpan={2}>Year 1 EBITDA outperformance credits toward Year 2 target</td></tr>
+            <tr className="font-bold border-t-2 border-gray-200"><td className="py-2 px-3">Total</td><td className="py-2 px-3" colSpan={2}>{fmtFull(DEFERRED_TOTAL)} (funded by HoldCo)</td></tr>
           </tbody>
         </table>
 
@@ -987,17 +1005,22 @@ function TermSheetTab() {
 
             <div className="bg-gray-50 rounded-xl p-4">
               <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA is below the target but above the floor (80%)?</div>
-              <div className="text-xs text-gray-600">A: The Year 1 earnout tranche (S$2.58M) pays out proportionally between the floor and target. For example, if EBITDA comes in at 90% of the S$7.5M target (i.e., S$6.75M), the payout scales proportionally. Any shortfall from the full S$2.58M carries forward into the Year 2 pool.</div>
+              <div className="text-xs text-gray-600">A: The Year 1 tranche (S$2.58M) pays out proportionally between the floor and target. The unpaid portion carries forward, but recovering it requires Year 2 to <strong>exceed</strong> its own S$8.0M target by the EBITDA shortfall amount. For example, if Year 1 misses by S$300K, Year 2 needs to hit S$8.3M (not just S$8.0M) to fully recover the carried amount.</div>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-4">
               <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA falls below the floor (80% of target)?</div>
-              <div className="text-xs text-gray-600">A: No Year 1 earnout is paid. The full S$2.58M Year 1 tranche carries forward to the Year 2 pool, giving management the opportunity to earn it back in the second year.</div>
+              <div className="text-xs text-gray-600">A: No Year 1 earnout is paid. The full S$2.58M carries forward, but the EBITDA gap is large — Year 2 would need to exceed S$8.0M by the full shortfall amount (up to S$1.5M if Year 1 hit the floor, i.e., Year 2 would need S$9.5M) to fully recover. Partial recovery is proportional to how much Year 2 exceeds its target.</div>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-4">
-              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 is missed but Year 2 exceeds the target?</div>
-              <div className="text-xs text-gray-600">A: The Year 1 shortfall carries into the Year 2 pool. If Year 2 EBITDA meets the S$8.0M target, the full Year 2 tranche (S$6.02M) is paid plus the carried Year 1 amount — up to the total earnout cap of {fmtFull(DEFERRED_TOTAL)}.</div>
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 is missed but Year 2 hits exactly S$8.0M?</div>
+              <div className="text-xs text-gray-600">A: Year 2 hitting its own target of S$8.0M earns the full Year 2 tranche (S$6.02M), but does <strong>not</strong> recover any of the Year 1 shortfall. Recovery only begins when Year 2 EBITDA <strong>exceeds</strong> S$8.0M — the carried amount is earned back proportionally to how far above the target Year 2 goes, up to the EBITDA gap from Year 1.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 exceeds its target — does the excess help Year 2?</div>
+              <div className="text-xs text-gray-600">A: Yes — this is the <strong>carry backward</strong> mechanism. If Year 1 EBITDA exceeds the S$7.5M target (e.g., by S$300K), that S$300K excess credits toward Year 2, effectively lowering Year 2&apos;s target from S$8.0M to S$7.7M. This makes it easier for management to earn the full Year 2 tranche.</div>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-4">
@@ -1034,13 +1057,18 @@ function TermSheetTab() {
       <Section title="5. Put / Call on 30% Stake" tag="TBD" defaultOpen={false}>
         <div className="mt-3">
           <Row label="Lock-Up"><span className="text-gray-600">[3–5 years] from completion</span> <span className="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded text-[10px] font-bold ml-1">Discuss</span></Row>
-          <Row label="Put Option">Post lock-up, management may put their 30% to Movement at fair market value (independent valuation). Provides liquidity path for existing stakeholders who wish to fully exit.</Row>
+          <Row label="Put Option">Post lock-up, management may put their 30% to Movement at fair market value (independent valuation). Provides a defined liquidity path for existing stakeholders who wish to fully exit.</Row>
           <Row label="Call Option">Movement may call the 30% at FMV post lock-up, or upon trigger events (material breach, key-man departure).</Row>
+          <Row label="ROFR">Right of first refusal — if management wishes to sell their 30% stake to a third party, Movement has the right to match the offer and acquire the stake on the same terms before any external sale proceeds.</Row>
           <Row label="Valuation">Independent third-party valuation. Methodology TBD — likely trailing 12M EBITDA × agreed multiple, subject to floor.</Row>
-          <Row label="Tag / Drag">Standard tag-along on any Movement sale. Drag-along at Movement&apos;s option above [●]x MOIC threshold.</Row>
+          <Row label="Tag-Along">If Movement sells its 70% stake to a third party, management has the right to sell their 30% stake on the same terms and at the same price per share — proportionally alongside Movement. This protects the 30% holders from being left behind in a change-of-control event.</Row>
+          <Row label="Drag-Along">Movement may require management to sell their 30% alongside Movement&apos;s stake in a full exit. Detailed trigger mechanics and MOIC threshold to be defined in the SPA.</Row>
         </div>
-        <div className="mt-3 bg-green-50 border-l-4 border-green-400 p-3 text-xs text-gray-600">
-          <strong className="text-gray-800">Positioning for family:</strong> The put option guarantees a defined exit path for the 30% holders — unlike the current illiquid shareholding across three separate entities.
+        <div className="mt-3 bg-blue-50 border-l-4 border-blue-400 p-3 text-xs text-gray-600">
+          <strong className="text-gray-800">Note:</strong> Detailed mechanics, trigger events, valuation methodology, and MOIC thresholds for tag/drag will be properly defined in the SPA. The above sets out the principles.
+        </div>
+        <div className="mt-2 bg-green-50 border-l-4 border-green-400 p-3 text-xs text-gray-600">
+          <strong className="text-gray-800">Positioning for family:</strong> The put option guarantees a defined exit path. The ROFR and tag-along protect the 30% holders — if Movement ever sells, you sell on the same terms. Unlike the current illiquid shareholding across three separate entities, these rights give you clear, enforceable liquidity options.
         </div>
       </Section>
 
