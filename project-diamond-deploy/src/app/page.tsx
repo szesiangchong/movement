@@ -647,10 +647,12 @@ function TermSheetTab() {
       {/* Section 1: Transaction Overview */}
       <Section title="1. Transaction Overview" tag="STANDARD">
         <div className="mt-3">
-          <Row label="Target">Carats & Co Pte Ltd, Gleamedia Pte Ltd, and Adactive Pte Ltd <span className="px-1.5 py-0.5 bg-blue-100 text-blue-600 rounded text-[10px] font-bold ml-1">Adactive TBD</span></Row>
+          <Row label="Target">Carats & Co Pte Ltd, Gleamedia Pte Ltd, and Adactive Pte Ltd</Row>
           <Row label="Acquirer">Newly formed HoldCo (SPV) — Movement 70% / Management 30%</Row>
           <Row label="Transaction">100% acquisition of all operating entities into HoldCo. All existing shareholders exit into cash and/or rollover equity at agreed group valuation.</Row>
           <Row label="Enterprise Value">{fmtFull(EV)} (~{ENTRY_MULT.toFixed(1)}x unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)})</Row>
+          <Row label="Equity Value">Subject to independent financial due diligence on debt, cash, and working capital positions at completion</Row>
+          <Row label="Payment">Combination of upfront cash consideration and deferred earnout. Final amounts determined per EV-to-equity bridge adjustments.</Row>
           <Row label="Basis">Cash-free, debt-free, subject to normalised working capital</Row>
         </div>
         <div className="mt-3 bg-blue-50 border-l-4 border-blue-400 p-3 text-xs text-gray-600">
@@ -658,32 +660,27 @@ function TermSheetTab() {
         </div>
       </Section>
 
-      {/* Section 2: Strategic Rationale */}
-      <Section title="2. Strategic Rationale" tag="STANDARD">
+      {/* Section 2: Co-Investment Opportunity */}
+      <Section title="2. Co-Investment Opportunity" tag="TBD" defaultOpen={false}>
         <div className="mt-3">
-          <Row label="Thesis">Platform play in Singapore DOOH & signage — consolidating design-build, media, and digital kiosk capabilities under unified governance with patient capital. Under unified ownership, explore regional expansion into Malaysia and Australia as natural next markets.</Row>
-          <Row label="Key Drivers">
-            <div className="space-y-1.5">
-              <p>(a) Contracted backlog of S$43M (26 months revenue) anchored by Stellar Ace/Lifestyle through 2033-2034</p>
-              <p>(b) Gleamedia growing (1.18x book-to-bill) as media layer on the group&apos;s installed out-of-home media screens base</p>
-              <p>(c) Adactive&apos;s existing digital kiosk and interactive signage technology can be offered to third-party OOH operators (e.g., Clear Channel, JCDecaux, Moove Media) — currently captive within the group, but under unified governance becomes a scalable B2B SaaS/licensing channel for touch-screen wayfinding, content management, and audience analytics across operator networks</p>
-            </div>
-          </Row>
-          <Row label="Risk to Diligence">
-            <div className="space-y-1.5">
-              <p>(i) Carats new order intake slowed to 0.75x book-to-bill in FY2025 — requires pipeline deep-dive</p>
-              <p>(ii) Co-develop 5-year growth plan with management: revenue targets, margin roadmap, regional expansion, investment requirements</p>
-              <p>(iii) Business unit review on standalone basis — strip intercompany subsidies, validate true unit economics per entity</p>
-            </div>
-          </Row>
+          <Row label="Opportunity">New stakeholders from the existing family may elect to co-invest in HoldCo, acquiring up to 30% of the total equity on mutually agreed terms.</Row>
+          <Row label="Purpose">Provide an opportunity for family members who wish to participate in the long-term growth of the unified group beyond their current shareholding.</Row>
+          <Row label="Terms">To be mutually agreed between Movement and the co-investing stakeholders, structured for long-term alignment with the group&apos;s growth objectives.</Row>
+          <Row label="Governance">Co-investors would hold equity alongside Management&apos;s 30% continuing stake and be subject to the same shareholder agreement terms (lock-up, put/call, tag/drag).</Row>
+        </div>
+        <div className="mt-3 bg-blue-50 border-l-4 border-blue-400 p-3 text-xs text-gray-600">
+          <strong className="text-gray-800">Note:</strong> This is an optional opportunity, not a requirement. Details to be discussed during the LOI/DD phase.
         </div>
       </Section>
 
       {/* Section 3: SPV STRUCTURE & ROLLOVER — CORE */}
       <Section title="3. SPV Structure & Management Rollover" tag="CORE">
         <p className="text-xs text-gray-500 mt-3 mb-4">
-          Total consideration is capped at S$40M — comprising <strong className="text-gray-800">{fmt(UPFRONT)} upfront</strong> at close and <strong className="text-gray-800">{fmt(EARNOUT_AMT)} deferred earnout</strong> over 2 years. Management <strong className="text-gray-800">reinvests</strong> a portion of the upfront back into the SPV for their 30% continuing stake. The more debt at SPV level, the less management needs to reinvest — meaning <strong className="text-green-700">more cash to the family at close</strong>.
+          Illustrative total consideration of S$40M — comprising <strong className="text-gray-800">{fmt(UPFRONT)} upfront</strong> at close and <strong className="text-gray-800">{fmt(EARNOUT_AMT)} deferred earnout</strong> over 2 years. Management <strong className="text-gray-800">reinvests</strong> a portion of the upfront back into the SPV for their 30% continuing stake. The more debt at SPV level, the less management needs to reinvest — meaning <strong className="text-green-700">more cash to the family at close</strong>.
         </p>
+        <div className="bg-blue-50 border-l-4 border-blue-400 p-3 text-xs text-gray-600 mb-4">
+          <strong className="text-gray-800">Note:</strong> The figures below are illustrative. Final amounts will be adjusted for actual net debt/cash and working capital at completion per the Purchase Price Adjustments mechanism.
+        </div>
 
         {/* 3-step summary boxes */}
         <div className="grid grid-cols-3 gap-4 mb-5">
@@ -795,11 +792,6 @@ function TermSheetTab() {
               </tbody>
             </table>
           </div>
-        </div>
-
-        {/* Key point callout */}
-        <div className="bg-blue-50 border-l-4 border-blue-400 p-3 text-xs text-gray-600 mb-5">
-          <strong className="text-gray-800">Key point for Gen-1s:</strong> Total consideration is capped at S$40M. Shareholders receive {fmt(UPFRONT)} upfront. Management reinvests a portion back for their 30% continuing stake. More debt at SPV = less reinvestment required = more cash in your pocket at close. The debt is serviced by the operating businesses — no personal liability for the family.
         </div>
 
         {/* ═══ 6-STEP WALKTHROUGH ═══ */}
@@ -932,7 +924,7 @@ function TermSheetTab() {
               <div className="w-0.5 flex-1 bg-blue-200 min-h-[16px]"></div>
             </div>
             <div className="pb-5 flex-1">
-              <div className="text-sm font-bold text-green-800 mb-1">You walk away with cash + 30% ownership + earnout potential</div>
+              <div className="text-sm font-bold text-green-800 mb-1">Total Consideration: cash + 30% ownership + earnout potential</div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="flex items-center justify-center gap-3 flex-wrap text-center">
                   <div className="border-2 border-green-500 rounded-lg px-3 py-2 bg-green-50 flex-1 max-w-[150px]"><div className="text-base font-bold text-green-700">{fmt(active.netCashToShareholders)}</div><div className="text-[10px] text-gray-500">Net cash at close</div></div>
@@ -967,140 +959,10 @@ function TermSheetTab() {
           </div>
         </div>
 
-        {/* ═══ LEVERAGE COMPARISON TABLE ═══ */}
-        <div className="bg-white rounded-xl border-2 border-gray-200 p-6 mb-5">
-          <h3 className="text-base font-bold text-gray-900 mb-1">How Much Cash Do You Keep?</h3>
-          <p className="text-xs text-gray-500 mb-4">Same S$40M total deal (S$31.4M upfront + S$8.6M earnout) — the only difference is how much HoldCo borrows from the bank.</p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead>
-                <tr className="bg-gray-50 text-gray-500">
-                  <th className="text-left py-2 px-3 font-semibold">S$&apos;000</th>
-                  {scenarios.map(s => (
-                    <th key={s.lev} className={`text-right py-2 px-3 font-semibold ${s.lev === levX ? 'bg-amber-50 text-amber-800' : ''}`}>{s.lev === 0 ? 'No Debt' : `${s.lev.toFixed(1)}x EBITDA`}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td className="py-2 px-3">Upfront to sellers</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(UPFRONT)}</td>)}</tr>
-                <tr className="bg-gray-50"><td className="py-2 px-3">You reinvest (for 30% of HoldCo)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono text-blue-600 ${s.lev === levX ? 'bg-amber-50' : ''}`}>({fmtK(s.mgmtEquity)})</td>)}</tr>
-                <tr className="bg-green-50 border-t-2 border-gray-200"><td className="py-2 px-3 font-bold text-green-800">Net cash at close</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono font-bold text-green-800 ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.netCashToShareholders)}</td>)}</tr>
-                <tr><td className="py-2 px-3 text-gray-400">Earnout potential (if targets met)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono text-gray-400 ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(EARNOUT_AMT)}</td>)}</tr>
-                <tr className="bg-gray-50 font-bold"><td className="py-2 px-3">Total potential cash</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono font-bold ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.totalPotentialCash)}</td>)}</tr>
-                <tr><td colSpan={5} className="py-1 border-none"></td></tr>
-                <tr className="bg-gray-50"><td colSpan={5} className="py-1.5 px-3 text-[11px] font-bold text-gray-500 uppercase">SPV Funding Sources</td></tr>
-                <tr><td className="py-2 px-3">Movement equity (70%)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.movementEquity)}</td>)}</tr>
-                <tr className="bg-gray-50"><td className="py-2 px-3">Your reinvestment (30%)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.mgmtEquity)}</td>)}</tr>
-                <tr><td className="py-2 px-3">Bank loan</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono text-amber-600 ${s.lev === levX ? 'bg-amber-50' : ''}`}>{s.debt === 0 ? '—' : fmtK(s.debt)}</td>)}</tr>
-                <tr className="bg-gray-50 font-bold"><td className="py-2 px-3">Total = EV</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono font-bold ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(EV)}</td>)}</tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* ═══ PROPERTY ANALOGY ═══ */}
-        <div className="bg-white rounded-xl border-2 border-yellow-300 p-6 mb-5">
-          <h3 className="text-base font-bold text-yellow-800 mb-1">Why Use a Loan? Think of It Like Buying Property.</h3>
-          <p className="text-xs text-yellow-700 mb-4">A familiar example that shows how the same investment grows your return when you use a loan.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-yellow-50 rounded-xl p-4">
-              <h4 className="text-sm font-bold text-yellow-800 mb-2">Scenario A: Pay 100% Cash</h4>
-              <div className="space-y-1 text-xs">
-                <div className="flex justify-between py-1 border-b border-yellow-100"><span>Buy condo for</span><span className="font-bold">S$1,000,000</span></div>
-                <div className="flex justify-between py-1 border-b border-yellow-100"><span>Your cash in</span><span className="font-bold">S$1,000,000</span></div>
-                <div className="flex justify-between py-1 border-b border-yellow-100"><span>Bank loan</span><span>S$0</span></div>
-                <div className="h-2"></div>
-                <div className="flex justify-between py-1 border-b border-yellow-100"><span>After 5 years, condo worth</span><span className="font-bold">S$1,200,000</span></div>
-                <div className="flex justify-between py-1 border-b border-yellow-100"><span>Your gain</span><span className="font-bold text-green-700">S$200,000</span></div>
-                <div className="h-2"></div>
-                <div className="flex justify-between bg-yellow-100 rounded-lg px-2 py-2 mt-1"><span className="font-bold">Return on your cash</span><span className="font-bold text-lg text-yellow-800">3.7% p.a.</span></div>
-                <div className="text-center text-[10px] text-yellow-600 mt-1">S$200K gain ÷ S$1M invested over 5 yrs</div>
-              </div>
-            </div>
-            <div className="bg-green-50 rounded-xl p-4">
-              <h4 className="text-sm font-bold text-green-800 mb-2">Scenario B: 50% Cash + 50% Loan</h4>
-              <div className="space-y-1 text-xs">
-                <div className="flex justify-between py-1 border-b border-green-100"><span>Buy same condo for</span><span className="font-bold">S$1,000,000</span></div>
-                <div className="flex justify-between py-1 border-b border-green-100"><span>Your cash in</span><span className="font-bold">S$500,000</span></div>
-                <div className="flex justify-between py-1 border-b border-green-100"><span>Bank loan</span><span className="font-bold text-amber-600">S$500,000</span></div>
-                <div className="h-2"></div>
-                <div className="flex justify-between py-1 border-b border-green-100"><span>After 5 years, condo worth</span><span className="font-bold">S$1,200,000</span></div>
-                <div className="flex justify-between py-1 border-b border-green-100"><span>Repay loan (from rental income)</span><span>(S$500,000)</span></div>
-                <div className="flex justify-between py-1 border-b border-green-100"><span>Your equity</span><span className="font-bold text-green-700">S$1,200,000</span></div>
-                <div className="h-2"></div>
-                <div className="flex justify-between bg-green-100 rounded-lg px-2 py-2 mt-1"><span className="font-bold">Return on your cash</span><span className="font-bold text-lg text-green-800">19.1% p.a.</span></div>
-                <div className="text-center text-[10px] text-green-600 mt-1">Same condo, same gain — but you only put in half the cash</div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-green-50 border-l-3 border-green-400 rounded-r-lg p-3 text-xs text-gray-600 mt-4">
-            <strong>The point:</strong> The property went up the same 20% either way. But in Scenario B, your <em>personal return</em> is much higher because you committed less of your own money. The loan is repaid by rental income (just like HoldCo&apos;s loan is repaid by business cash flow). And you had S$500K extra to use elsewhere.
-          </div>
-        </div>
-
-        {/* ═══ RETURNS SUMMARY ═══ */}
-        <div className="bg-white rounded-xl border-2 border-green-200 p-6 mb-5">
-          <h3 className="text-base font-bold text-green-800 mb-1">Your 30% Stake — How Debt Improves Your Return</h3>
-          <p className="text-xs text-green-600 mb-4">Same business growth. Same exit value. Less cash committed = higher return on your investment.</p>
-          <p className="text-xs text-gray-500 mb-4"><strong>Assumptions:</strong> 5-year hold, revenue grows {REV_CAGR}% p.a., EBITDA margin stays at {EBITDA_MARGIN}%, loan fully repaid from cash flow.</p>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead>
-                <tr className="bg-gray-50 text-gray-500">
-                  <th className="text-left py-2 px-3 font-semibold">Your 30% stake (S$&apos;000)</th>
-                  <th className="text-right py-2 px-3 font-semibold">No Debt</th>
-                  <th className="text-right py-2 px-3 font-semibold">1.0x</th>
-                  <th className="text-right py-2 px-3 font-semibold">1.5x</th>
-                  <th className="text-right py-2 px-3 font-semibold">2.0x</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td className="py-2 px-3">You reinvest today</td>{scenarios.map(s => <td key={s.lev} className="text-right py-2 px-3 font-mono font-bold">{fmtK(s.mgmtEquity)}</td>)}</tr>
-                <tr className="bg-gray-50"><td className="py-2 px-3">Your 30% at exit ({ENTRY_MULT.toFixed(1)}x)</td>{scenarios.map(s => <td key={s.lev} className="text-right py-2 px-3 font-mono text-green-700">15,665</td>)}</tr>
-                <tr className="bg-green-50"><td className="py-2 px-3 font-bold">MOIC ({ENTRY_MULT.toFixed(1)}x exit)</td>{scenarios.map(s => <td key={s.lev} className="text-right py-2 px-3 font-mono font-bold text-green-700">{(15665 / s.mgmtEquity).toFixed(1)}x</td>)}</tr>
-                <tr className="bg-gray-50"><td className="py-2 px-3">Your 30% at exit (7.0x)</td>{scenarios.map(s => <td key={s.lev} className="text-right py-2 px-3 font-mono text-green-700">19,581</td>)}</tr>
-                <tr className="bg-green-50"><td className="py-2 px-3 font-bold">MOIC (7.0x exit)</td>{scenarios.map(s => <td key={s.lev} className="text-right py-2 px-3 font-mono font-bold text-green-700">{(19581 / s.mgmtEquity).toFixed(1)}x</td>)}</tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div className="bg-green-50 border-l-3 border-green-400 rounded-r-lg p-3 text-xs text-gray-600 mt-4">
-            <strong>Key takeaway:</strong> Your 30% stake is worth exactly the same at exit regardless of leverage. The difference is how much cash you locked up to get there. With a modest 1.5x loan, you commit {fmt(scenarios[2].mgmtEquity)} instead of {fmt(scenarios[0].mgmtEquity)} — keeping an extra <strong className="text-green-700">{fmt(scenarios[0].mgmtEquity - scenarios[2].mgmtEquity)}</strong> in your pocket today.
-          </div>
-        </div>
-
-        {/* ═══ SAFETY NOTE ═══ */}
-        <div className="bg-green-50 border-l-4 border-green-400 p-4 text-xs text-gray-600 rounded-r-xl">
-          <strong className="text-gray-800">A note on safety:</strong> Total consideration is capped at S$40M — there is no open-ended liability. The loan we are proposing is conservative (1.0x–2.0x EBITDA) and sits on HoldCo — not on any individual. It is repaid from the group&apos;s strong operating cash flow. No family member signs a personal guarantee. The businesses continue to operate exactly as before. The only difference is that more of your hard-earned value comes home as cash on day one.
-        </div>
       </Section>
 
-      {/* Section 4: Consideration Structure */}
-      <Section title="4. Consideration Structure" tag="STANDARD">
-        <table className="w-full text-xs mt-3">
-          <thead>
-            <tr className="bg-gray-50 text-gray-500">
-              <th className="text-left py-2 px-3 font-semibold">Component</th>
-              <th className="text-right py-2 px-3 font-semibold">Amount (S$&apos;000)</th>
-              <th className="text-left py-2 px-3 font-semibold">Timing</th>
-              <th className="text-left py-2 px-3 font-semibold">Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td className="py-2 px-3 font-bold">Upfront to all shareholders</td><td className="text-right py-2 px-3 font-mono font-bold">{fmtK(UPFRONT)}</td><td className="py-2 px-3">Completion</td><td className="py-2 px-3">Cash at close</td></tr>
-            <tr className="bg-blue-50"><td className="py-2 px-3 pl-6 text-blue-700">of which: Mgmt reinvestment (30%)</td><td className="text-right py-2 px-3 font-mono text-blue-600">({fmtK(active.mgmtEquity)})</td><td className="py-2 px-3">Completion</td><td className="py-2 px-3">Reinvested into SPV @ {levX === 0 ? '0x' : `${levX.toFixed(1)}x`}</td></tr>
-            <tr className="bg-green-50"><td className="py-2 px-3 font-bold text-green-800">Net cash to shareholders</td><td className="text-right py-2 px-3 font-mono font-bold text-green-800">{fmtK(active.netCashToShareholders)}</td><td className="py-2 px-3">Completion</td><td className="py-2 px-3">Cash home</td></tr>
-            <tr><td className="py-2 px-3">Earnout — Year 1 (30%)</td><td className="text-right py-2 px-3 font-mono">2,582</td><td className="py-2 px-3">Year 1</td><td className="py-2 px-3">EBITDA-linked</td></tr>
-            <tr className="bg-gray-50"><td className="py-2 px-3">Earnout — Year 2 (70%)</td><td className="text-right py-2 px-3 font-mono">6,024</td><td className="py-2 px-3">Year 2</td><td className="py-2 px-3">EBITDA-linked</td></tr>
-            <tr className="border-t-2 border-gray-200"><td className="py-2 px-3 font-bold">Total Consideration (capped)</td><td className="text-right py-2 px-3 font-mono font-bold">{fmtK(EV)}</td><td className="py-2 px-3"></td><td className="py-2 px-3"></td></tr>
-          </tbody>
-        </table>
-        <p className="text-[10px] text-gray-400 mt-2">Earnout at 100% achievement. Actual payouts scale proportionally between 80% floor and target. Total consideration inclusive of earnout. Reinvestment amount shown at selected leverage ({levX === 0 ? '0x' : `${levX.toFixed(1)}x`}).</p>
-      </Section>
-
-      {/* Section 5: Earnout */}
-      <Section title="5. Earnout Structure" tag="STANDARD" defaultOpen={false}>
+      {/* Section 4: Earnout Structure */}
+      <Section title="4. Earnout Structure" tag="STANDARD" defaultOpen={false}>
         <table className="w-full text-xs mt-3">
           <thead><tr className="bg-gray-50 text-gray-500"><th className="text-left py-2 px-3 font-semibold">Parameter</th><th className="text-left py-2 px-3 font-semibold">Year 1</th><th className="text-left py-2 px-3 font-semibold">Year 2</th></tr></thead>
           <tbody>
@@ -1112,13 +974,45 @@ function TermSheetTab() {
             <tr className="bg-gray-50 font-bold"><td className="py-2 px-3">Total</td><td className="py-2 px-3" colSpan={2}>{fmtFull(DEFERRED_TOTAL)} (funded by HoldCo)</td></tr>
           </tbody>
         </table>
+
+        {/* Q&A Scenarios */}
+        <div className="mt-5">
+          <h4 className="text-sm font-bold text-gray-700 mb-3">Scenarios — Q&A</h4>
+
+          <div className="space-y-3">
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 EBITDA targets are met?</div>
+              <div className="text-xs text-gray-600">A: Full earnout of {fmtFull(DEFERRED_TOTAL)} is paid — S$2.58M after Year 1 and S$6.02M after Year 2. Combined with the {fmt(UPFRONT)} upfront, total consideration reaches S$40.0M.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA is below the target but above the floor (80%)?</div>
+              <div className="text-xs text-gray-600">A: The Year 1 earnout tranche (S$2.58M) pays out proportionally between the floor and target. For example, if EBITDA comes in at 90% of the S$7.5M target (i.e., S$6.75M), the payout scales proportionally. Any shortfall from the full S$2.58M carries forward into the Year 2 pool.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA falls below the floor (80% of target)?</div>
+              <div className="text-xs text-gray-600">A: No Year 1 earnout is paid. The full S$2.58M Year 1 tranche carries forward to the Year 2 pool, giving management the opportunity to earn it back in the second year.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 is missed but Year 2 exceeds the target?</div>
+              <div className="text-xs text-gray-600">A: The Year 1 shortfall carries into the Year 2 pool. If Year 2 EBITDA meets the S$8.0M target, the full Year 2 tranche (S$6.02M) is paid plus the carried Year 1 amount — up to the total earnout cap of {fmtFull(DEFERRED_TOTAL)}.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 EBITDA fall below the floor?</div>
+              <div className="text-xs text-gray-600">A: No earnout is payable. Total consideration received would be the {fmt(UPFRONT)} upfront amount only.</div>
+            </div>
+          </div>
+        </div>
       </Section>
 
-      {/* Section 6: Put/Call */}
-      <Section title="6. Put / Call on 30% Stake" tag="TBD" defaultOpen={false}>
+      {/* Section 5: Put/Call */}
+      <Section title="5. Put / Call on 30% Stake" tag="TBD" defaultOpen={false}>
         <div className="mt-3">
           <Row label="Lock-Up"><span className="text-gray-600">[3–5 years] from completion</span> <span className="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded text-[10px] font-bold ml-1">Discuss</span></Row>
-          <Row label="Put Option">Post lock-up, management may put their 30% to Movement at fair market value (independent valuation). Provides liquidity path for Gen-1s who wish to fully exit.</Row>
+          <Row label="Put Option">Post lock-up, management may put their 30% to Movement at fair market value (independent valuation). Provides liquidity path for existing stakeholders who wish to fully exit.</Row>
           <Row label="Call Option">Movement may call the 30% at FMV post lock-up, or upon trigger events (material breach, key-man departure).</Row>
           <Row label="Valuation">Independent third-party valuation. Methodology TBD — likely trailing 12M EBITDA × agreed multiple, subject to floor.</Row>
           <Row label="Tag / Drag">Standard tag-along on any Movement sale. Drag-along at Movement&apos;s option above [●]x MOIC threshold.</Row>
@@ -1128,10 +1022,24 @@ function TermSheetTab() {
         </div>
       </Section>
 
+      {/* Section 6: Purchase Price Adjustments */}
+      <Section title="6. Purchase Price Adjustments" tag="STANDARD" defaultOpen={false}>
+        <div className="mt-3">
+          <Row label="Mechanism">Completion accounts prepared within [60–90] days post-close. Purchase price adjusted for variances in net debt, cash, and working capital versus agreed reference levels.</Row>
+          <Row label="Net Debt / Cash">Final equity value adjusted for actual net debt (or net cash) at completion versus the reference balance used in EV-to-equity bridge. Excess cash increases consideration; excess debt reduces it.</Row>
+          <Row label="Working Capital">Normalised working capital target set at [10%] of trailing 12-month revenue. If actual NWC at completion deviates from target, purchase price adjusted dollar-for-dollar (up or down).</Row>
+          <Row label="Dispute Resolution">Parties to agree within [30] days of completion accounts delivery. Unresolved items referred to independent accounting firm whose determination is final and binding.</Row>
+          <Row label="Payment">Adjustments settled in cash within [10] business days of final determination. Movement or sellers may owe the adjustment depending on direction.</Row>
+        </div>
+        <div className="mt-3 bg-blue-50 border-l-4 border-blue-400 p-3 text-xs text-gray-600">
+          <strong className="text-gray-800">Note:</strong> Standard mechanism to ensure the price paid reflects the actual financial position of the group at completion. Protects both buyer and seller.
+        </div>
+      </Section>
+
       {/* Section 7: Governance */}
       <Section title="7. Governance & Shareholder Rights" tag="STANDARD" defaultOpen={false}>
         <div className="mt-3">
-          <Row label="Board">Movement-appointed majority. 1 seat reserved for continuing management (likely Albert or Raymond). <span className="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded text-[10px] font-bold ml-1">Discuss</span></Row>
+          <Row label="Board">Movement-appointed majority. 1 seat reserved for continuing management (likely TH). <span className="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded text-[10px] font-bold ml-1">Discuss</span></Row>
           <Row label="Reserved Matters">Capex above threshold, new indebtedness, related-party transactions, dividend policy, key executive hires/terminations, material contracts, change of business</Row>
           <Row label="Info Rights">Monthly management accounts, quarterly board reporting, annual audited statements</Row>
           <Row label="Anti-Dilution">Pre-emptive rights on new issuances to maintain pro-rata ownership</Row>
@@ -1176,6 +1084,16 @@ function TermSheetTab() {
             <tr className="bg-gray-50"><td className="py-2 px-3 font-bold text-emerald-800">Close</td><td className="py-2 px-3">Signing & closing</td><td className="py-2 px-3 font-mono">W14–15</td></tr>
           </tbody>
         </table>
+      </Section>
+
+      {/* Section 11: Exclusivity */}
+      <Section title="11. Exclusivity" tag="CORE" defaultOpen={false}>
+        <div className="mt-3">
+          <Row label="Period">4 months from execution of LOI</Row>
+          <Row label="Obligation">The Company and its shareholders shall immediately cease and cause to be terminated all existing contacts, discussions, and negotiations with any third parties regarding any Alternative Proposal. During the exclusivity period, neither the Company nor its shareholders shall, directly or indirectly, solicit, initiate, encourage, or facilitate any inquiries, proposals, or offers from any third party relating to an Alternative Proposal.</Row>
+          <Row label="Alternative Proposal">Any inquiry, proposal, or offer relating to: (a) the acquisition of all or a material part of the assets or business of the Group; (b) the acquisition of any equity interest in the Company or its subsidiaries; (c) any merger, consolidation, or business combination involving the Company or its subsidiaries; or (d) any recapitalisation, restructuring, or similar transaction.</Row>
+          <Row label="Notification">The Company shall promptly notify Movement of any unsolicited approach or inquiry from a third party regarding an Alternative Proposal received during the exclusivity period.</Row>
+        </div>
       </Section>
 
       {/* Non-binding */}
