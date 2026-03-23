@@ -1,53 +1,82 @@
 ---
 name: term-sheet-draft
 description: >
-  Draft Non-Binding Offers (NBOs) and term sheets for Movement (DVC Partners) acquisitions. Use this skill whenever the user asks to draft an NBO, non-binding offer, indicative offer, term sheet, or LOI for a deal. Also trigger on "draft NBO for [project]", "write term sheet", "indicative offer for [target]", "NBO for [target]", or "send offer letter". Supports English and Spanish language output. Handles standard acquisitions, add-on acquisitions, restructurings/distressed situations, and earn-out/reinvestment structures.
+  Draft Non-Binding Offers (NBOs), Letters of Intent (LOIs), and term sheets for Movement and DVC Partners acquisitions. Use this skill whenever the user asks to draft an NBO, LOI, non-binding offer, indicative offer, term sheet, or letter of intent for a deal. Also trigger on "draft NBO for [project]", "write term sheet", "LOI for [target]", "indicative offer for [target]", "NBO for [target]", or "send offer letter". Supports English and Spanish language output. Handles standard acquisitions, add-on acquisitions, restructurings/distressed situations, earn-out/reinvestment structures, and North American share purchase LOIs.
 ---
 
-# Non-Binding Offer (NBO) / Term Sheet
+# Non-Binding Offer (NBO) / Letter of Intent (LOI) / Term Sheet
 
-Draft Non-Binding Offers for DVC Partners (Movement) acquisitions. The NBO is a formal indicative offer letter sent to sellers, advisors, or banks — it establishes deal terms, conditions, exclusivity, and DVC's credentials before entering confirmatory DD.
+Draft NBOs and LOIs for Movement acquisitions. Movement uses TWO distinct formats depending on geography and entity:
+
+| Format | Entity | Geography | Use Case |
+|--------|--------|-----------|----------|
+| **DVC NBO** | DVC Partners, S.L. | Europe (Spain, Italy, Switzerland) | Indicative offers to sellers, advisors, or banks |
+| **Movement LOI** | Special Sits General Partner I, S.A. | North America (Canada) | Letters of Intent with binding provisions to sellers or advisors |
+
+**Key structural difference:** DVC NBOs are entirely non-binding persuasion documents with DVC corporate narrative. Movement LOIs are quasi-definitive documents with binding exclusivity, escrow mechanics, indemnification frameworks, and purchase price adjustment mechanics pre-agreed at LOI stage.
 
 ## Before You Start
 
 1. **Read `Claude.md` and `SYSTEM_PROMPT.md`** from the movement repo for Movement context and communication standards.
-2. **Clarify before building.** NBOs are externally-facing legal documents. Never generate on incomplete inputs. Ask one focused round of clarifying questions for any missing data below.
-3. **Tag assumptions.** If user says "use best judgment", proceed but tag every gap-fill with `[ASSUMPTION]`.
-4. **Language:** Default to English. Switch to Spanish if the target/advisor is Spanish-speaking (user will specify). Maintain the same formal legal register in both languages.
+2. **Determine the format:** Is this a DVC NBO (Europe) or a Movement LOI (North America)? Ask if unclear.
+3. **Clarify before building.** These are externally-facing legal documents. Never generate on incomplete inputs. Ask one focused round of clarifying questions for any missing data below.
+4. **Tag assumptions.** If user says "use best judgment", proceed but tag every gap-fill with `[ASSUMPTION]`.
+5. **Language:** Default to English. Switch to Spanish if the target/advisor is Spanish-speaking (user will specify). Maintain the same formal legal register in both languages.
 
-### Minimum Required Inputs
+### Minimum Required Inputs (Both Formats)
 
 - Target company name
 - Recipient (seller name, advisor firm, or bank — with contact names if available)
 - Transaction type: standard acquisition / add-on / restructuring / earn-out structure
-- Equity value or enterprise value (and basis — e.g., multiple × EBITDA)
+- Enterprise value or equity value (and basis — e.g., multiple × EBITDA)
 - Key financial targets (Revenue and EBITDA for current and prior year)
 - Deal structure (100% acquisition, seller reinvestment %, debt assumptions)
 - Exclusivity period desired
-- Deal team contacts at DVC
+- Deal team contacts
 
-If any of the above are missing, stop and ask before proceeding.
+### Additional Inputs for Movement LOIs (North America)
+
+- Target NWC peg (or "to be determined post-QoE")
+- Indemnification parameters (escrow %, cap structure, survival periods) — or use defaults
+- Named key employees for new employment agreements
+- Real property details (owned vs leased, lease terms if applicable)
+- Restrictive covenant terms (non-compete/non-solicit duration and geography)
+- Co-investment offer for seller (% and terms, or none)
+- Closing timeline target (default: 90 days)
+- Signing entity: Special Sits General Partner I, S.A.
+
+If any critical inputs are missing, stop and ask before proceeding.
 
 ---
 
 ## Document Format
 
-Output as `.docx` using the docx skill. Apply DVC/Movement NBO formatting:
+Output as `.docx` using the docx skill.
 
+### DVC NBO Format (Europe)
 - **Header:** "Strictly Private and Confidential" (or "Estrictamente confidencial" for Spanish)
 - **Sub-header:** "Subject to contract" (or "Sujeto a contrato")
 - **Recipient block:** "To the attention of:" with names, firm, email
 - **Date:** Full date format (e.g., "February 13, 2026" or "23 de diciembre de 2025")
 - **Title line:** "Re: Non-Binding Offer for the acquisition of 100% of [Target] (the "Transaction")"
-- **Font:** Professional serif or sans-serif, consistent with prior NBOs
 - **Signature block:** DVC Partners S.L. with signatory name and title
-- **No Movement logo on NBOs** — these go out under DVC Partners branding
+- **No Movement logo** — DVC Partners branding
+
+### Movement LOI Format (North America)
+- **Header:** "PRIVATE AND CONFIDENTIAL"
+- **No sub-header** (no "Subject to contract" — binding provisions are explicitly carved out)
+- **Recipient block:** Company name and address, or advisor firm
+- **Date:** Full date format (e.g., "July 23, 2025")
+- **Title line:** "Re: Non-Binding Letter of Intent for the acquisition of [Target] (the "Transaction")"
+- **Signature block:** "SPECIAL SITS GENERAL PARTNER I, S.A." signed by Managing Director
+- **Counter-signature block** for seller (LOIs require seller execution to activate exclusivity)
+- **No Movement logo** — Special Sits branding
 
 ---
 
-## NBO Section Structure
+# PART A: DVC NBO STRUCTURE (EUROPE)
 
-The NBO follows a 15-section structure. All sections are mandatory unless marked [CONDITIONAL].
+The DVC NBO follows a 15-section structure. All sections are mandatory unless marked [CONDITIONAL].
 
 ---
 
@@ -469,7 +498,7 @@ Offer shall be submitted to the exclusive jurisdiction of the courts of [city].
 
 ---
 
-## Deal-Type Templates
+## DVC NBO Deal-Type Templates
 
 ### Standard Acquisition
 Sections: 1-7, 8, 10-15. No break-up fee, no restructuring language. Clean Sources & Uses.
@@ -485,17 +514,513 @@ Section 4 includes earn-out mechanics (EBITDA threshold, buffer, payment timing)
 
 ---
 
+# PART B: MOVEMENT LOI STRUCTURE (NORTH AMERICA)
+
+The Movement LOI is a more legally detailed document than the DVC NBO. It follows a 22-23 section structure with binding and non-binding provisions explicitly separated. The LOI functions as a quasi-definitive document — escrow mechanics, indemnification caps, purchase price adjustments, and restrictive covenants are pre-agreed at LOI stage.
+
+---
+
+### 1. Introduction
+
+```
+[Date]
+
+PRIVATE AND CONFIDENTIAL
+
+[Recipient Name / Company / Advisor]
+[Address]
+
+Re: Non-Binding Letter of Intent for the acquisition of 100% of the issued and
+outstanding shares of [Target] (the "Transaction")
+
+Dear [Name],
+
+We are pleased to submit this letter of intent (the "LOI") setting out the proposed
+terms and conditions on which [Purchaser Entity], or an affiliate thereof (the
+"Purchaser"), would acquire all of the issued and outstanding shares (the "Shares")
+of [Target] (the "Company") from [Seller Names] (collectively, the "Vendors").
+```
+
+---
+
+### 2. Overview of Purchaser
+
+**Movement / Special Sits description (tailor per deal):**
+- Describe Movement's investment focus (special situations, turnarounds, operational transformation)
+- Reference the SITS fund structure and backing
+- Include 1-2 relevant portfolio case studies demonstrating sector or deal-type expertise
+- Shorter and more direct than DVC boilerplate — no verbatim block required
+
+---
+
+### 3. Structure of Transaction
+
+```
+The Transaction would be structured as the acquisition by the Purchaser of all of
+the issued and outstanding Shares in the capital of the Company, free and clear of
+all liens, pledges, encumbrances, charges, options, and third-party rights of any
+nature (the "Share Purchase").
+
+[If asset deal alternative:] The Purchaser reserves the right to restructure the
+Transaction as an asset purchase if determined to be more tax-efficient, provided
+the economic terms remain substantially equivalent.
+```
+
+---
+
+### 4. Consideration and Payment Terms
+
+```
+Based on the information provided, the Purchaser proposes an enterprise value of
+approximately [currency] [amount] (the "Enterprise Value"), representing approximately
+[X]x the Company's trailing twelve-month ("TTM") normalized EBITDA of no less than
+[currency] [amount] as of [date].
+
+The purchase price payable at closing (the "Closing Cash Payment") shall equal:
+
+  Enterprise Value
+  (+) Excess unrestricted cash at Closing
+  (-) All indebtedness outstanding at Closing
+  (+/-) Net Working Capital adjustment (see Section 5)
+
+The Closing Cash Payment shall be paid in cash at Closing, subject to the adjustments
+and escrow holdbacks described herein.
+```
+
+**Valuation presentation rules:**
+- Always express as Enterprise Value with explicit multiple and EBITDA basis
+- State the TTM EBITDA floor: "no less than [amount]"
+- Show the bridge from EV to Closing Cash Payment
+- Never present equity value without showing the EV-to-equity bridge
+
+**Co-Investment offer [CONDITIONAL]:**
+```
+The Purchaser would offer [Seller Name] the opportunity to co-invest up to [X]% of
+the equity in the acquisition vehicle on mutually agreeable terms. This co-investment
+opportunity is offered as a further expression of partnership and is not a condition
+of the Transaction.
+```
+
+---
+
+### 5. Purchase Price Adjustments
+
+**Mandatory section in all Movement LOIs. Include ALL of the following:**
+
+#### A. Net Working Capital Adjustment
+```
+The Closing Cash Payment shall be subject to a dollar-for-dollar adjustment based on
+the difference between the actual Net Working Capital at Closing and the target Net
+Working Capital of [currency] [amount] (the "NWC Target").
+
+Net Working Capital shall be defined as current assets (inventory, accounts receivable,
+prepaid expenses, and other current assets) less current liabilities (accounts payable,
+accrued liabilities, and other current liabilities), calculated in accordance with GAAP
+applied on a basis consistent with past practice.
+
+The NWC Target shall be estimated at Closing and finalized through a customary
+post-Closing true-up process within [90/120] days.
+```
+
+#### B. Cash Adjustment
+- Excess unrestricted cash at Closing results in upward adjustment to Closing Cash Payment
+- Expectation that excess cash will be distributed to sellers pre-Closing
+
+#### C. Debt & Liability Adjustment
+- Downward adjustment for any liabilities remaining at Closing
+- Exhaustive list of what constitutes "indebtedness":
+  - Shareholder loans and related-party balances
+  - Interest-bearing debt (bank loans, lines of credit)
+  - Capital lease obligations
+  - Intercompany loans and balances
+  - Income taxes payable
+  - Deferred revenue and customer deposits
+  - Accrued bonuses and deferred compensation
+  - Any non-ordinary-course obligations
+
+---
+
+### 6. Definitive Agreements (Escrow & Indemnification)
+
+**This section pre-commits the key SPA mechanics at LOI stage. Critical for Movement LOIs.**
+
+#### A. Escrow Structure
+```
+The Definitive Agreements shall provide for the following escrow arrangements:
+
+Indemnity Escrow: An amount equal to [10]% of the Closing Cash Payment shall be
+deposited with a mutually agreed third-party escrow agent for a period of [18] months
+following Closing (the "Indemnity Escrow").
+
+  - Two-thirds (2/3) of the Indemnity Escrow released on the first anniversary of
+    Closing, less any pending or resolved claims
+  - Remaining one-third (1/3) released on the [18]-month anniversary, less any
+    pending or resolved claims
+
+Working Capital Escrow: An amount of [currency] [amount] shall be held in escrow for
+[120] days following Closing to secure any NWC true-up adjustment.
+```
+
+**Default escrow parameters (adjust per deal):**
+
+| Parameter | Default | Range Observed |
+|-----------|---------|---------------|
+| Indemnity escrow % | 10% of Closing Cash Payment | 10% (all 3 LOIs) |
+| Indemnity escrow duration | 18 months | 18 months (all 3 LOIs) |
+| Release schedule | 2/3 at 12mo, 1/3 at 18mo | Consistent across all |
+| WC escrow amount | $150k-$250k | Deal-specific |
+| WC escrow duration | 120 days | 120 days (all 3 LOIs) |
+
+#### B. Indemnification Framework
+```
+The Definitive Agreements shall contain representations, warranties, covenants, and
+indemnities customary for transactions of this nature, including:
+
+Indemnification Caps:
+  - Fundamental representations and warranties: [100]% of Closing Cash Payment
+  - Non-fundamental representations and warranties: [40-50]% of Closing Cash Payment
+
+Survival Periods:
+  - Fundamental representations: [7-15] years from Closing
+  - Non-fundamental representations: [18] months from Closing
+  - Tax representations: [60-90] days following expiry of applicable limitation period
+
+De Minimis / Basket:
+  - Individual claim threshold: [currency] [amount]
+  - Aggregate basket (deductible): [currency] [amount]
+```
+
+**Default indemnification parameters:**
+
+| Parameter | Default | Range Observed |
+|-----------|---------|---------------|
+| Fundamental cap | 100% of Closing Cash Payment | 100% (all 3 LOIs) |
+| Non-fundamental cap | 40-50% of Closing Cash Payment | 40% (Eco), 50% (Loadstar) |
+| Fundamental survival | 7-15 years | 7yr (Eco/Nusens), 15yr (Loadstar) |
+| Non-fundamental survival | 18 months | 18mo (all 3 LOIs) |
+| Individual threshold | ~$25k-$50k | Deal-specific |
+| Aggregate basket | ~$100k-$150k | $150k (Eco) |
+
+#### C. Restrictive Covenants
+```
+The Definitive Agreements shall contain customary restrictive covenants, including:
+
+Non-Competition: [3-5] years from Closing, within [geographic scope]
+Non-Solicitation: [3-5] years from Closing (employees, customers, suppliers)
+
+[If seller is individual:] The Vendors shall be jointly and severally liable for
+compliance with these restrictive covenants.
+```
+
+---
+
+### 7. Real Property [CONDITIONAL]
+
+**Include when the target owns or leases its operating facilities.**
+
+#### If Target Owns Real Property:
+```
+The real property located at [address] (the "Real Property") shall be acquired
+pursuant to a separate agreement of purchase and sale on terms consistent with this
+LOI. The value of the Real Property shall be determined through a jointly commissioned
+independent appraisal.
+```
+
+#### If Target Leases (Seller-Owned Property):
+```
+The Purchaser and the Vendors shall enter into a lease agreement for the property
+located at [address] on the following terms:
+
+  - Lease type: Triple-net lease
+  - Term: [5] years, with [3] renewal options of [5] years each
+  - Rent: Fair market value, to be determined by independent appraisal
+  - Right of first refusal: Purchaser shall have a right of first refusal on any
+    proposed sale of the property during the lease term
+  - [If arbitration:] Fair market rent disputes resolved by independent arbitrator
+```
+
+---
+
+### 8. Management Team and Other Employees
+
+```
+The Purchaser recognizes the importance of the Company's employees and intends to
+maintain comparable employment terms post-Closing.
+
+Key employees: The Purchaser may require the following individuals to enter into new
+employment agreements as a condition of Closing:
+
+  - [Name], [Title]
+  - [Name], [Title]
+  - [Name], [Title]
+
+[If founder transition:] The Purchaser would welcome the opportunity for [Founder Name]
+to serve as a consultant post-Closing for a period of [3-4] months at a rate of
+[currency] [rate]/hour, to ensure a smooth transition of relationships and institutional
+knowledge.
+
+All other employees: The Purchaser intends to offer continued employment to the
+Company's employees on substantially similar terms and conditions as currently exist.
+```
+
+---
+
+### 9. Business in the Ordinary Course (Binding Covenant)
+
+**This is a BINDING provision in Movement LOIs — critical difference from DVC NBOs.**
+
+```
+From the Effective Date until the earlier of Closing or termination of this LOI,
+the Vendors shall cause the Company to conduct its business in the ordinary course,
+consistent with past practice, and shall not, without the prior written consent of
+the Purchaser:
+
+  (a) incur any indebtedness or guarantee any obligation exceeding [currency] [amount];
+  (b) make any capital expenditure exceeding [currency] [amount] individually or
+      [currency] [amount] in aggregate;
+  (c) increase compensation, bonuses, or benefits for any employee beyond ordinary
+      course adjustments;
+  (d) enter into, amend, or terminate any material contract;
+  (e) declare or pay any dividend or distribution;
+  (f) sell, lease, or encumber any material asset;
+  (g) hire or terminate any employee earning in excess of [currency] [amount]; or
+  (h) take any action outside the ordinary course of business.
+```
+
+---
+
+### 10. Closing
+
+```
+The Parties shall use commercially reasonable efforts to complete the Transaction
+within [90] days of the Effective Date (the "Target Closing Date"), subject to:
+
+  - Completion of satisfactory due diligence
+  - Negotiation and execution of Definitive Agreements
+  - Satisfaction or waiver of all conditions precedent
+  - Receipt of all required consents and approvals
+
+Closing shall take place at a mutually agreed location or by electronic exchange
+of documents.
+```
+
+---
+
+### 11. Funding
+
+```
+The Purchaser confirms that it has, or will have at Closing, sufficient funds to
+complete the Transaction on the terms contemplated herein. Financing is not a
+condition to the Purchaser's obligations under the Definitive Agreements.
+
+The Transaction will be financed through a combination of equity from the Purchaser's
+existing financial resources and, if applicable, third-party debt financing.
+```
+
+---
+
+### 12. Access and Due Diligence
+
+```
+Upon execution of this LOI, the Vendors shall provide the Purchaser and its
+professional advisors with full access to:
+
+  - The Company's books, records, contracts, and financial information
+  - Management and key employees for interviews and operational review
+  - Physical facilities for site visits
+  - Customers, suppliers, and other third parties as reasonably required
+
+The Vendors and the Company shall cooperate with the Purchaser's professional advisors
+to perform a Quality of Earnings review and such other due diligence as the Purchaser
+deems necessary.
+```
+
+---
+
+### 13. Exclusivity (BINDING)
+
+**Movement LOIs use binding exclusivity with survival provisions.**
+
+```
+Upon execution of this LOI, and for a period ending on the earlier of: (a) [90] days
+following the Effective Date; (b) execution of the Definitive Agreements; (c) the
+Purchaser's written notice declining to proceed; or (d) mutual written agreement
+(the "Exclusivity Period"):
+
+The Vendors shall not, and shall cause the Company and its directors, officers,
+employees, shareholders, agents, and representatives not to, directly or indirectly:
+
+  (i) solicit, initiate, or encourage any inquiry, proposal, or offer relating to
+      any acquisition, merger, or similar transaction involving the Company;
+  (ii) provide any information to, or enter into discussions or negotiations with,
+       any third party regarding any such transaction; or
+  (iii) enter into any agreement, understanding, or commitment with any third party
+        regarding any such transaction.
+
+The Vendors shall immediately cease and cause to be terminated any existing
+discussions or negotiations with any third party regarding any such transaction.
+```
+
+**Key differences from DVC NBO exclusivity:**
+- Binding and survives termination
+- Requires immediate cessation of existing discussions (not just prospective)
+- Includes broader scope of restricted parties (shareholders, agents, representatives)
+- No break-up fee needed — binding exclusivity provides sufficient protection
+
+---
+
+### 14. Costs
+
+```
+Each Party shall bear its own costs and expenses incurred in connection with the
+Transaction, including legal, accounting, and advisory fees, whether or not the
+Transaction is completed.
+```
+
+---
+
+### 15. Effect of this LOI (Binding vs Non-Binding Carve-Out)
+
+**Critical section — explicitly separates binding from non-binding provisions.**
+
+```
+This LOI constitutes a statement of present intent only and does not create any
+binding obligation on any Party to complete the Transaction. The rights and obligations
+of the Parties with respect to the Transaction shall only be as set forth in the
+Definitive Agreements.
+
+Notwithstanding the foregoing, the following provisions (the "Binding Provisions")
+shall be legally binding and enforceable upon execution of this LOI:
+
+  - Section 9: Business in the Ordinary Course
+  - Section 13: Exclusivity
+  - Section 14: Costs
+  - Section 15: Effect of this LOI
+  - Section 16: Entire Agreement
+  - Section 17: Public Announcement
+  - Section 18: Quality of Earnings [if applicable]
+  - Section 19: Governing Law
+  - Section 20: Miscellaneous Terms
+  - Section 21: Counterparts
+
+The Binding Provisions shall survive any termination of this LOI.
+```
+
+---
+
+### 16. Entire Agreement
+
+Standard integration clause: this LOI supersedes all prior discussions and agreements relating to the Transaction.
+
+---
+
+### 17. Public Announcement
+
+No public announcements without mutual written consent. Standard confidentiality language.
+
+---
+
+### 18. Quality of Earnings [CONDITIONAL — include for larger deals]
+
+**Operationalized QoE section — unique to Movement LOIs.**
+
+```
+The Purchaser shall engage, at [Purchaser's / respective party's] cost, a nationally
+recognized accounting firm [acceptable to both Parties] to conduct a Quality of
+Earnings review of the Company (the "QoE Review").
+
+  - The QoE Review shall be conducted under the direction and control of the Purchaser
+  - The Vendors and the Company shall provide full cooperation and access to all
+    financial records, working papers, and personnel as reasonably required
+  - Scope: historical financial performance, normalized EBITDA, working capital
+    analysis, revenue quality, and such other matters as the Purchaser deems necessary
+
+[Cost allocation:] If the Transaction closes, the cost of the QoE Review shall be
+borne by the Purchaser. If the Transaction does not close for reasons other than a
+material breach by the Vendors, each Party shall bear its own costs.
+```
+
+---
+
+### 19. Governing Law
+
+```
+This LOI shall be governed by and construed in accordance with the laws of the
+Province of [Ontario / applicable province] and the federal laws of Canada applicable
+therein. The Parties submit to the [exclusive / non-exclusive] jurisdiction of the
+courts of [Province].
+```
+
+---
+
+### 20-22. Miscellaneous, Counterparts, Legal Counsel
+
+Standard legal boilerplate: amendment requirements, severability, counterparts acceptance, legal counsel identification and contact information.
+
+---
+
+### 23. Signature and Counter-Signature
+
+**Movement LOIs require BOTH parties to sign (unlike DVC NBOs which are unilateral).**
+
+```
+IN WITNESS WHEREOF, the Parties have executed this LOI as of the date first written
+above.
+
+PURCHASER:
+
+SPECIAL SITS GENERAL PARTNER I, S.A.
+
+Per: _________________________
+Name: [Signatory]
+Title: Managing Director
+
+
+VENDOR(S):
+
+[TARGET COMPANY NAME]
+
+Per: _________________________
+Name: [Seller Name]
+Title: [Title]
+
+[If multiple sellers, include separate signature blocks for each]
+```
+
+**Third-party beneficiary clause [CONDITIONAL]:**
+```
+[PE Parent Entity] shall be an express third-party beneficiary of this LOI with
+direct enforcement rights over the Binding Provisions.
+```
+
+---
+
+## Movement LOI Deal-Type Templates
+
+### Standard Share Purchase (Eco, Loadstar pattern)
+Full 22-section structure. Clean EV with TTM EBITDA basis. 10% indemnity escrow, 18-month hold. Co-investment optional. Real property section if applicable. 90-day closing target.
+
+### Seller Co-Investment (Nusens pattern)
+Same as standard, but Section 4 includes mandatory equity co-invest (e.g., 10% at $1M). New-Co vehicle structure. MIP integrated with co-investment.
+
+### Founder Transition
+Section 8 includes detailed consulting arrangement (hours, rate, duration, scope). Longer non-compete (5 years). Real property lease if founder owns premises.
+
+---
+
 ## IC Review Gate (Mandatory)
 
 Before presenting the NBO to the user, run two silent review passes:
 
 ### Pass 1 — Jerry Tan (Director): Editorial, Factual & Analytical Integrity
-- Verify all financial figures are consistent throughout the document (equity value, EBITDA targets, debt amounts)
-- Check naming consistency (company name, legal entity, project codename)
-- Verify DVC boilerplate is current and accurate
+- Verify all financial figures are consistent throughout the document (EV, EBITDA targets, debt amounts, escrow percentages, indemnification caps)
+- Check naming consistency (company name, legal entity, project codename, defined terms)
+- Verify DVC boilerplate is current and accurate (if NBO format)
 - Ensure portfolio case studies use correct and current figures
 - Check conditions precedent are comprehensive and internally consistent
-- Verify dates are logical (lockbox before closing, exclusivity allows sufficient DD time)
+- Verify dates are logical (lockbox before closing, exclusivity allows sufficient DD time, escrow release dates)
+- For LOIs: verify binding vs non-binding section references are correct and complete
+- For LOIs: check indemnification math is internally consistent (escrow % × closing cash = escrow amount; caps as % × closing cash)
 - Tone filter: ensure language is confident but not overreaching
 - Core test: "If the seller's lawyers read this, are there any inconsistencies or gaps?"
 
@@ -504,9 +1029,14 @@ Before presenting the NBO to the user, run two silent review passes:
 - Check earn-out / deferred structures are properly incentive-aligned
 - Verify conditions provide adequate protection without being deal-breaking
 - If restructuring: check debt write-off is realistic and proceeds-sharing is fair
-- If seller reinvestment: verify alignment of interests
+- If seller reinvestment / co-invest: verify alignment of interests and % is appropriate
 - Capex conditions distinguish maintenance vs growth
 - Exclusivity period is sufficient for the DD scope
+- For LOIs: verify NWC target is reasonable vs historical (flag if "TBD" without rationale)
+- For LOIs: check indemnification caps are proportionate to deal size and risk
+- For LOIs: verify restrictive covenant scope is enforceable in the target's jurisdiction
+- For LOIs: check real property terms are fair (lease rate, ROFR, renewal options)
+- For LOIs: verify ordinary course covenant restrictions are practical (not so tight they create friction)
 - Core test: "Does this term sheet protect us while remaining credible to the seller?"
 
 **Protocol:**
@@ -528,7 +1058,9 @@ Before presenting the NBO to the user, run two silent review passes:
 
 ## Training Data
 
-This skill is trained on Movement/DVC Partners' existing NBOs. As new NBOs are uploaded, reference them to refine clause language, deal-specific structuring, and tone calibration. Current training set:
+This skill is trained on Movement/DVC Partners' existing NBOs and LOIs. As new documents are uploaded, reference them to refine clause language, deal-specific structuring, and tone calibration. Current training set:
+
+### DVC NBOs (Europe)
 
 | NBO | Target | Date | Deal Type | Language | Key Features |
 |-----|--------|------|-----------|----------|-------------|
@@ -537,4 +1069,12 @@ This skill is trained on Movement/DVC Partners' existing NBOs. As new NBOs are u
 | Pibiplast | Italian beauty packaging | Mar 2026 | Restructuring / distressed | English | 85% debt write-off, two-phase DD, proceeds-sharing with banks, €1 nominal equity price |
 | Beroil | Spanish fuel distribution | Mar 2025 | Earn-out + reinvestment | English | €14m earn-out, 70/30 New-Co structure, seller reinvestment |
 
-When generating a new NBO, match the formality, clause precision, and structural consistency of these reference documents.
+### Movement LOIs (North America)
+
+| LOI | Target | Date | Deal Type | EV | Key Features |
+|-----|--------|------|-----------|-----|-------------|
+| Eco Architectural Glass | Canadian architectural glass | Jul 2025 | Standard share purchase | $18M CAD (5.9x) | Most detailed LOI: dedicated QoE section with cost allocation, separate real property purchase, 30% co-invest option, 10% escrow, 40% non-fundamental cap, 7yr fundamental survival, named key employees (4), $1.7M NWC target |
+| Nusens Niche Contracting | Canadian niche contracting | Jan 2025 | Seller co-investment | $20M CAD (5.0x) | Mandatory 10% equity co-invest ($1M, Da Silva), joint/several seller liability, 10% escrow, 50% non-fundamental cap, 7yr fundamental survival, 3yr non-compete, founder consulting (3mo, $100/hr) |
+| Loadstar Trailers | Canadian trailer manufacturing | Jun 2025 | Standard + lease-back | $11.5M CAD (5.0x) | Triple-net lease (5yr + 3×5yr renewals, FMV rent, ROFR), 30% co-invest option, 10% escrow, 50% non-fundamental cap, 15yr fundamental survival (longest), 5yr non-compete/non-solicit, WC target TBD post-QoE |
+
+When generating a new NBO or LOI, match the formality, clause precision, and structural consistency of the relevant format's reference documents.
