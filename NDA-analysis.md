@@ -176,6 +176,12 @@ The AVS NDA uses s.127 Corporations Act 2001 (Cth) execution, which requires two
 
 **Rule:** When inserting new contract language as a tracked change, do NOT wrap it in quotation marks ("" or ""). The inserted text is meant to become part of the agreement — quotation marks make it look like a suggestion being discussed rather than proposed operative language. The tracked-change formatting (underline/colour) already signals that it's a proposed addition.
 
+### 13. Operator NDAs Must Be Mutual
+
+> Jerry on Maxwell: "I wouldn't have cleared the doc for sharing with him as there's a few gaps — I'd wanted our one-pager to be converted to a mutual NDA, but the current draft is still structurally one-way."
+
+**Rule:** When Turtle/Movement is sharing information **with** an operator (not receiving from a target), the template must be converted to a **mutual NDA** before sending. The standard template only protects Turtle's information as Discloser — but in operator relationships (co-investment, deal sharing), both parties disclose. "Disclosing Party" and "Receiving Party" must become role-based labels applying to whichever side is sharing, with symmetric obligations. Use EngageRocket or FoodX as mutual NDA precedents. Also verify the Purpose clause reflects the actual relationship (co-investment/deal sharing, not investment evaluation).
+
 ---
 
 ## Process Checklist (Pre-Send)
@@ -194,10 +200,15 @@ Before sending any NDA markup to a counterparty, verify:
 
 ## Deal-Specific Review Notes
 
-### Maxwell (Invest Movement template)
+### Maxwell (Invest Movement template — Operator NDA)
 - **Our paper:** Standard Turtle template used
-- **Turtle's role:** Receiver; Invest Movement as Discloser
-- **Status:** Template prepared with Invest Movement filled in as Discloser
+- **Turtle's role:** Discloser (Invest Movement); Maxwell as Receiver
+- **Jerry's feedback (post-send):** NDA should NOT have been sent without his review. Several structural gaps:
+  1. **Must be converted to mutual NDA** — current draft is structurally one-way; only Turtle/Movement's information is protected. If Maxwell shares deals or proprietary info with us, there's no coverage going the other direction.
+  2. **Role-based party labels needed** — "Disclosing Party" and "Receiving Party" need to become role-based labels that apply to whichever party is sharing at the time, with obligations binding both sides symmetrically.
+  3. **Purpose clause is misleading** — currently reads as though Maxwell is evaluating an investment *in us*, when the actual relationship is co-investment and deal sharing. Jerry notes the existing "or transaction with the Discloser" language provides a sufficient out for now, so this is lower priority.
+  4. **Relevant precedents for mutual conversion:** EngageRocket or FoodX NDAs
+- **Status:** Sent to Maxwell prematurely — needs mutual NDA conversion before further use with other operators
 
 ### Project Gear (Indonesian heavy equipment distribution)
 - **Counterparty paper:** Deloitte-originated, heavily Discloser-favoured
