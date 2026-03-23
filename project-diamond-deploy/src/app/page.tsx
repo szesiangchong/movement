@@ -584,20 +584,20 @@ function TimelineTab() {
 // TAB 5 — TERM SHEET (IC Discussion Draft + SPV Walkthrough)
 // ════════════════════════════════════════════════════════════════════════
 function TermSheetTab() {
-  // Structure 2: Earnout WITHIN S$40M envelope
-  const UPFRONT = 31400;          // S$31.4M upfront to sellers at close
-  const EARNOUT_AMT = 8600;       // S$8.6M deferred earnout
-  const MGMT_VALUE = EV * 0.30;   // 12,000 — mgmt's 30% of EV
+  // Structure 3 (Javier): SPV funds S$31.4M at closing; earnout is future HoldCo liability
+  const UPFRONT = 31400;          // S$31.4M paid to sellers at close = SPV funding need
+  const EARNOUT_AMT = 8600;       // S$8.6M deferred earnout (paid from operating cash flow)
+  const MGMT_VALUE = UPFRONT * 0.30;  // 9,420 — mgmt's 30% of closing equity (no-debt case)
   const [levX, setLevX] = useState(1.5);
 
-  // Leverage scenarios: SPV equity based on S$40M EV, but sellers only get S$31.4M upfront
+  // Leverage scenarios: SPV raises S$31.4M (equity + debt) to pay upfront consideration
   const scenarios = useMemo(() => {
     return [0, 1.0, 1.5, 2.0].map(lev => {
       const debt = lev * EBITDA_2025;
-      const totalEquity = EV - debt;
+      const totalEquity = UPFRONT - debt;             // equity + debt = S$31.4M at closing
       const movementEquity = totalEquity * 0.70;
-      const mgmtEquity = totalEquity * 0.30;       // mgmt reinvestment for 30% of SPV
-      const netCashToShareholders = UPFRONT - mgmtEquity;  // upfront minus reinvestment
+      const mgmtEquity = totalEquity * 0.30;          // mgmt reinvestment for 30% of SPV
+      const netCashToShareholders = UPFRONT - mgmtEquity;  // = Movement equity + debt
       const totalPotentialCash = netCashToShareholders + EARNOUT_AMT;
       return { lev, debt, totalEquity, movementEquity, mgmtEquity, netCashToShareholders, totalPotentialCash };
     });
@@ -676,7 +676,7 @@ function TermSheetTab() {
       {/* Section 3: SPV STRUCTURE & ROLLOVER — CORE */}
       <Section title="3. SPV Structure & Management Rollover" tag="CORE">
         <p className="text-xs text-gray-500 mt-3 mb-4">
-          Illustrative total consideration of S$40M — comprising <strong className="text-gray-800">{fmt(UPFRONT)} upfront</strong> at close and <strong className="text-gray-800">{fmt(EARNOUT_AMT)} deferred earnout</strong> over 2 years. Management <strong className="text-gray-800">reinvests</strong> a portion of the upfront back into the SPV for their 30% continuing stake. The more debt at SPV level, the less management needs to reinvest — meaning <strong className="text-green-700">more cash to the family at close</strong>.
+          Illustrative total consideration of S$40M — comprising <strong className="text-gray-800">{fmt(UPFRONT)} upfront</strong> at close and <strong className="text-gray-800">{fmt(EARNOUT_AMT)} deferred earnout</strong> over 2 years. The SPV raises {fmt(UPFRONT)} at closing (equity + debt) to pay the upfront consideration; the earnout is paid later from operating cash flow. Management <strong className="text-gray-800">reinvests</strong> a portion of their proceeds back into the SPV for their 30% continuing stake. The more debt at SPV level, the less equity is needed — meaning <strong className="text-green-700">less reinvestment and more cash to the family at close</strong>.
         </p>
         <div className="bg-blue-50 border-l-4 border-blue-400 p-3 text-xs text-gray-600 mb-4">
           <strong className="text-gray-800">Note:</strong> The figures below are illustrative. Final amounts will be adjusted for actual net debt/cash and working capital at completion per the Purchase Price Adjustments mechanism.
@@ -720,19 +720,19 @@ function TermSheetTab() {
           <div className="flex items-center gap-3 mb-2">
             <span className="text-xs font-semibold text-gray-500 w-[100px] text-right">SPV Funding</span>
             <div className="flex-1 h-9 bg-gray-100 rounded-md overflow-hidden flex">
-              <div className="bg-blue-900 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.movementEquity / EV) * 100}%` }}>
-                {(active.movementEquity / EV) * 100 > 14 ? fmt(active.movementEquity) : ''}
+              <div className="bg-blue-900 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.movementEquity / UPFRONT) * 100}%` }}>
+                {(active.movementEquity / UPFRONT) * 100 > 14 ? fmt(active.movementEquity) : ''}
               </div>
-              <div className="bg-blue-500 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.mgmtEquity / EV) * 100}%` }}>
-                {(active.mgmtEquity / EV) * 100 > 14 ? fmt(active.mgmtEquity) : ''}
+              <div className="bg-blue-500 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.mgmtEquity / UPFRONT) * 100}%` }}>
+                {(active.mgmtEquity / UPFRONT) * 100 > 14 ? fmt(active.mgmtEquity) : ''}
               </div>
               {active.debt > 0 && (
-                <div className="bg-amber-500 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.debt / EV) * 100}%` }}>
-                  {(active.debt / EV) * 100 > 10 ? fmt(active.debt) : ''}
+                <div className="bg-amber-500 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.debt / UPFRONT) * 100}%` }}>
+                  {(active.debt / UPFRONT) * 100 > 10 ? fmt(active.debt) : ''}
                 </div>
               )}
             </div>
-            <span className="text-xs font-mono font-bold w-[70px]">S$40.0M</span>
+            <span className="text-xs font-mono font-bold w-[70px]">{fmt(UPFRONT)}</span>
           </div>
           <div className="flex gap-4 ml-[112px] text-[10px] text-gray-500 mb-3">
             <span><span className="inline-block w-2.5 h-2.5 bg-blue-900 rounded-sm mr-1"></span>Movement Equity</span>
@@ -788,7 +788,7 @@ function TermSheetTab() {
                 <tr><td className="py-1.5 px-2">Movement Equity (70%)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.movementEquity)}</td>)}</tr>
                 <tr className="bg-gray-50"><td className="py-1.5 px-2">Mgmt Rollover (30%)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.mgmtEquity)}</td>)}</tr>
                 <tr><td className="py-1.5 px-2">Acquisition Debt</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono text-amber-600 ${s.lev === levX ? 'bg-amber-50' : ''}`}>{s.debt === 0 ? 'S$0' : fmtK(s.debt)}</td>)}</tr>
-                <tr className="bg-gray-50 font-bold border-t-2 border-gray-200"><td className="py-1.5 px-2">Total Sources = EV</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono font-bold ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(EV)}</td>)}</tr>
+                <tr className="bg-gray-50 font-bold border-t-2 border-gray-200"><td className="py-1.5 px-2">Total Sources at Close</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono font-bold ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(UPFRONT)}</td>)}</tr>
               </tbody>
             </table>
           </div>
@@ -835,20 +835,20 @@ function TermSheetTab() {
               <div className="w-0.5 flex-1 bg-blue-200 min-h-[16px]"></div>
             </div>
             <div className="pb-5 flex-1">
-              <div className="text-sm font-bold text-blue-900 mb-1">HoldCo raises S$40M to acquire the group</div>
-              <div className="text-xs text-gray-500 mb-2">The money comes from equity (Movement + management) and optionally a bank loan. The more HoldCo borrows, the less equity is needed.</div>
+              <div className="text-sm font-bold text-blue-900 mb-1">HoldCo raises {fmt(UPFRONT)} to pay the upfront consideration</div>
+              <div className="text-xs text-gray-500 mb-2">The {fmt(UPFRONT)} comes from equity (Movement + management) and optionally a bank loan. The more HoldCo borrows, the less equity is needed. The {fmt(EARNOUT_AMT)} earnout is paid later from operating cash flow.</div>
               <div className="bg-gray-50 rounded-xl p-4">
-                <div className="text-[11px] font-semibold text-gray-500 mb-1.5">SOURCES OF FUNDS</div>
+                <div className="text-[11px] font-semibold text-gray-500 mb-1.5">SOURCES OF FUNDS AT CLOSING</div>
                 <div className="flex h-9 rounded-md overflow-hidden mb-2">
-                  <div className="bg-blue-900 flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.movementEquity / EV) * 100}%` }}>
-                    {(active.movementEquity / EV) * 100 > 14 ? fmt(active.movementEquity) : ''}
+                  <div className="bg-blue-900 flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.movementEquity / UPFRONT) * 100}%` }}>
+                    {(active.movementEquity / UPFRONT) * 100 > 14 ? fmt(active.movementEquity) : ''}
                   </div>
-                  <div className="bg-blue-500 flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.mgmtEquity / EV) * 100}%` }}>
-                    {(active.mgmtEquity / EV) * 100 > 14 ? fmt(active.mgmtEquity) : ''}
+                  <div className="bg-blue-500 flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.mgmtEquity / UPFRONT) * 100}%` }}>
+                    {(active.mgmtEquity / UPFRONT) * 100 > 14 ? fmt(active.mgmtEquity) : ''}
                   </div>
                   {active.debt > 0 && (
-                    <div className="bg-amber-500 flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.debt / EV) * 100}%` }}>
-                      {(active.debt / EV) * 100 > 10 ? fmt(active.debt) : ''}
+                    <div className="bg-amber-500 flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.debt / UPFRONT) * 100}%` }}>
+                      {(active.debt / UPFRONT) * 100 > 10 ? fmt(active.debt) : ''}
                     </div>
                   )}
                 </div>
@@ -866,7 +866,7 @@ function TermSheetTab() {
                     <div className="border-2 border-dashed border-amber-500 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold text-amber-600">{fmt(active.debt)}</div><div className="text-[10px] text-gray-400">Bank Loan</div></div>
                   </>}
                   <span className="text-gray-400 font-bold">=</span>
-                  <div className="border-2 border-gray-300 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold">S$40.0M</div><div className="text-[10px] text-gray-400">Total</div></div>
+                  <div className="border-2 border-gray-300 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold">{fmt(UPFRONT)}</div><div className="text-[10px] text-gray-400">Upfront</div></div>
                 </div>
               </div>
             </div>
