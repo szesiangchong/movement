@@ -584,24 +584,12 @@ function TimelineTab() {
 // TAB 5 — TERM SHEET (IC Discussion Draft + SPV Walkthrough)
 // ════════════════════════════════════════════════════════════════════════
 function TermSheetTab() {
-  const MGMT_VALUE = EV * 0.30; // 12,000
-  const [levX, setLevX] = useState(1.5);
-
-  const scenarios = useMemo(() => {
-    return [0, 1.0, 1.5, 2.0].map(lev => {
-      const debt = lev * EBITDA_2025;
-      const totalEquity = EV - debt;
-      const movementEquity = totalEquity * 0.70;
-      const mgmtEquity = totalEquity * 0.30;
-      const mgmtCashOut = MGMT_VALUE - mgmtEquity;
-      const netCashToShareholders = EV - mgmtEquity;
-      const addlCashOut = mgmtCashOut;
-      const totalPotentialCash = netCashToShareholders + 8606;
-      return { lev, debt, totalEquity, movementEquity, mgmtEquity, mgmtCashOut, netCashToShareholders, addlCashOut, totalPotentialCash };
-    });
-  }, []);
-
-  const active = scenarios.find(s => s.lev === levX) || scenarios[2];
+  // Structure 2: Earnout WITHIN S$40M envelope
+  const UPFRONT = 31400;          // S$31.4M upfront to sellers at close
+  const MGMT_REINVEST = 8800;     // S$8.8M management reinvests for 30%
+  const NET_CASH_CLOSE = UPFRONT - MGMT_REINVEST; // S$22.6M
+  const EARNOUT_AMT = 8600;       // S$8.6M deferred earnout
+  const TOTAL_IF_EARNOUT = NET_CASH_CLOSE + EARNOUT_AMT; // S$31.2M
 
   const Section = ({ title, tag, children, defaultOpen = true }: { title: string; tag: string; children: React.ReactNode; defaultOpen?: boolean }) => {
     const [open, setOpen] = useState(defaultOpen);
@@ -680,125 +668,80 @@ function TermSheetTab() {
       {/* Section 3: SPV STRUCTURE & ROLLOVER — CORE */}
       <Section title="3. SPV Structure & Management Rollover" tag="CORE">
         <p className="text-xs text-gray-500 mt-3 mb-4">
-          The SPV acquires 100% of the group for S$40M. All existing shareholders receive S$40M in aggregate. Management then <strong className="text-gray-800">reinvests</strong> a portion back into 30% of the SPV (their continuing stake). The more debt at SPV level, the less management needs to reinvest — meaning <strong className="text-green-700">more cash to the family at close</strong>.
+          Total consideration is capped at S$40M — comprising <strong className="text-gray-800">S$31.4M upfront</strong> at close and <strong className="text-gray-800">S$8.6M deferred earnout</strong> over 2 years. Management <strong className="text-gray-800">reinvests S$8.8M</strong> from their share of the upfront proceeds back into the SPV for their 30% continuing stake. Net cash to all shareholders at close: <strong className="text-green-700">S$22.6M</strong>.
         </p>
 
         {/* 3-step summary boxes */}
         <div className="grid grid-cols-3 gap-4 mb-5">
           <div className="border-2 border-gray-200 rounded-xl p-4 text-center">
-            <div className="text-[10px] font-bold text-gray-400 uppercase mb-2">Step 1: Sale</div>
-            <div className="text-2xl font-bold">S$40.0M</div>
-            <div className="text-xs text-gray-500 mt-1">All shareholders receive gross proceeds at EV</div>
+            <div className="text-[10px] font-bold text-gray-400 uppercase mb-2">Step 1: Upfront</div>
+            <div className="text-2xl font-bold">{fmt(UPFRONT)}</div>
+            <div className="text-xs text-gray-500 mt-1">Paid to all shareholders at close</div>
+            <div className="text-[10px] text-gray-400 mt-0.5">of S$40M total consideration</div>
           </div>
           <div className="border-2 border-blue-400 rounded-xl p-4 text-center">
             <div className="text-[10px] font-bold text-blue-500 uppercase mb-2">Step 2: Reinvestment</div>
-            <div className="text-2xl font-bold text-blue-600">({fmt(active.mgmtEquity)})</div>
+            <div className="text-2xl font-bold text-blue-600">({fmt(MGMT_REINVEST)})</div>
             <div className="text-xs text-gray-500 mt-1">Mgmt reinvests for 30% SPV equity</div>
-            <div className="text-[10px] text-gray-400 mt-0.5">↑ Less with more debt</div>
           </div>
           <div className="border-2 border-green-400 rounded-xl p-4 text-center bg-green-50">
             <div className="text-[10px] font-bold text-green-600 uppercase mb-2">Net Cash at Close</div>
-            <div className="text-2xl font-bold text-green-700">{fmt(active.netCashToShareholders)}</div>
+            <div className="text-2xl font-bold text-green-700">{fmt(NET_CASH_CLOSE)}</div>
             <div className="text-xs text-gray-500 mt-1">Cash home to all shareholders</div>
-            <div className="text-[10px] text-green-600 font-semibold mt-0.5">+ S$8.6M earnout potential</div>
+            <div className="text-[10px] text-green-600 font-semibold mt-0.5">+ {fmt(EARNOUT_AMT)} earnout potential = {fmt(TOTAL_IF_EARNOUT)}</div>
           </div>
         </div>
 
-        {/* Leverage buttons */}
-        <div className="flex items-center gap-2 mb-5">
-          <span className="text-xs font-bold text-gray-500">Leverage:</span>
-          {[0, 1.0, 1.5, 2.0].map(l => (
-            <button key={l} onClick={() => setLevX(l)}
-              className={`px-4 py-2 rounded-lg text-xs font-bold border-2 transition-all ${levX === l ? 'bg-blue-900 text-white border-blue-900' : 'border-gray-300 text-gray-600 hover:border-blue-900'}`}>
-              {l === 0 ? 'No Debt' : `${l.toFixed(1)}x EBITDA`}
-            </button>
-          ))}
-        </div>
-
-        {/* Stacked bars */}
+        {/* Consideration waterfall bar */}
         <div className="mb-5">
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-xs font-semibold text-gray-500 w-[100px] text-right">SPV Funding</span>
+            <span className="text-xs font-semibold text-gray-500 w-[100px] text-right">Total Deal</span>
             <div className="flex-1 h-9 bg-gray-100 rounded-md overflow-hidden flex">
-              <div className="bg-blue-900 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.movementEquity / EV) * 100}%` }}>
-                {(active.movementEquity / EV) * 100 > 14 ? fmt(active.movementEquity) : ''}
+              <div className="bg-green-600 h-full flex items-center justify-center text-white text-[10px] font-bold" style={{ width: `${(UPFRONT / EV) * 100}%` }}>
+                {fmt(UPFRONT)} upfront
               </div>
-              <div className="bg-blue-500 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.mgmtEquity / EV) * 100}%` }}>
-                {(active.mgmtEquity / EV) * 100 > 14 ? fmt(active.mgmtEquity) : ''}
+              <div className="bg-purple-400 h-full flex items-center justify-center text-white text-[10px] font-bold" style={{ width: `${(EARNOUT_AMT / EV) * 100}%` }}>
+                {fmt(EARNOUT_AMT)} earnout
               </div>
-              {active.debt > 0 && (
-                <div className="bg-amber-500 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.debt / EV) * 100}%` }}>
-                  {(active.debt / EV) * 100 > 10 ? fmt(active.debt) : ''}
-                </div>
-              )}
             </div>
             <span className="text-xs font-mono font-bold w-[70px]">S$40.0M</span>
           </div>
           <div className="flex gap-4 ml-[112px] text-[10px] text-gray-500 mb-3">
-            <span><span className="inline-block w-2.5 h-2.5 bg-blue-900 rounded-sm mr-1"></span>Movement Equity</span>
+            <span><span className="inline-block w-2.5 h-2.5 bg-green-600 rounded-sm mr-1"></span>Upfront at Close</span>
+            <span><span className="inline-block w-2.5 h-2.5 bg-purple-400 rounded-sm mr-1"></span>Deferred Earnout</span>
             <span><span className="inline-block w-2.5 h-2.5 bg-blue-500 rounded-sm mr-1"></span>Mgmt Reinvestment</span>
-            <span><span className="inline-block w-2.5 h-2.5 bg-amber-500 rounded-sm mr-1"></span>Acq. Debt</span>
-            <span><span className="inline-block w-2.5 h-2.5 bg-green-500 rounded-sm mr-1"></span>Additional Cash-Out</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-gray-500 w-[100px] text-right">Mgmt 30% Value</span>
+            <span className="text-xs font-semibold text-gray-500 w-[100px] text-right">Upfront Split</span>
             <div className="flex-1 h-9 bg-gray-100 rounded-md overflow-hidden flex">
-              <div className="bg-blue-500 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.mgmtEquity / MGMT_VALUE) * 100}%` }}>
-                {fmt(active.mgmtEquity)} reinvested
+              <div className="bg-green-500 h-full flex items-center justify-center text-white text-[10px] font-bold" style={{ width: `${(NET_CASH_CLOSE / UPFRONT) * 100}%` }}>
+                {fmt(NET_CASH_CLOSE)} net cash
               </div>
-              <div className="bg-green-500 h-full flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.mgmtCashOut / MGMT_VALUE) * 100}%` }}>
-                {fmt(active.mgmtCashOut)} cash
+              <div className="bg-blue-500 h-full flex items-center justify-center text-white text-[10px] font-bold" style={{ width: `${(MGMT_REINVEST / UPFRONT) * 100}%` }}>
+                {fmt(MGMT_REINVEST)} reinvested
               </div>
             </div>
-            <span className="text-xs font-mono font-bold w-[70px]">{fmt(MGMT_VALUE)}</span>
+            <span className="text-xs font-mono font-bold w-[70px]">{fmt(UPFRONT)}</span>
           </div>
         </div>
 
-        {/* Two side-by-side tables */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-          {/* Cash to Shareholders */}
-          <div>
-            <h4 className="text-sm font-bold text-gray-700 mb-2">Cash to Shareholders</h4>
-            <table className="w-full text-xs">
-              <thead>
-                <tr className="bg-gray-50 text-gray-500">
-                  <th className="text-left py-1.5 px-2 font-semibold">S$&apos;000</th>
-                  {scenarios.map(s => <th key={s.lev} className={`text-right py-1.5 px-2 font-semibold ${s.lev === levX ? 'bg-amber-50 text-amber-800' : ''}`}>{s.lev === 0 ? '0x' : `${s.lev.toFixed(1)}x`}</th>)}
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td className="py-1.5 px-2">Gross Proceeds (EV)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(EV)}</td>)}</tr>
-                <tr className="bg-gray-50"><td className="py-1.5 px-2">(-) Mgmt Reinvestment</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>({fmtK(s.mgmtEquity)})</td>)}</tr>
-                <tr className="bg-green-50 border-t-2 border-gray-200"><td className="py-1.5 px-2 font-bold text-green-800">Net Cash at Close</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono font-bold text-green-800 ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.netCashToShareholders)}</td>)}</tr>
-                <tr><td className="py-1.5 px-2 text-gray-400">(+) Earnout (if met)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono text-gray-400 ${s.lev === levX ? 'bg-amber-50' : ''}`}>8,606</td>)}</tr>
-                <tr className="bg-gray-50 font-bold"><td className="py-1.5 px-2">Total Potential Cash</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono font-bold ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.totalPotentialCash)}</td>)}</tr>
-              </tbody>
-            </table>
-          </div>
-          {/* SPV Funding Sources */}
-          <div>
-            <h4 className="text-sm font-bold text-gray-700 mb-2">SPV Funding Sources</h4>
-            <table className="w-full text-xs">
-              <thead>
-                <tr className="bg-gray-50 text-gray-500">
-                  <th className="text-left py-1.5 px-2 font-semibold">S$&apos;000</th>
-                  {scenarios.map(s => <th key={s.lev} className={`text-right py-1.5 px-2 font-semibold ${s.lev === levX ? 'bg-amber-50 text-amber-800' : ''}`}>{s.lev === 0 ? '0x' : `${s.lev.toFixed(1)}x`}</th>)}
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td className="py-1.5 px-2">Movement Equity (70%)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.movementEquity)}</td>)}</tr>
-                <tr className="bg-gray-50"><td className="py-1.5 px-2">Mgmt Rollover (30%)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.mgmtEquity)}</td>)}</tr>
-                <tr><td className="py-1.5 px-2">Acquisition Debt</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono text-amber-600 ${s.lev === levX ? 'bg-amber-50' : ''}`}>{s.debt === 0 ? 'S$0' : fmtK(s.debt)}</td>)}</tr>
-                <tr className="bg-gray-50 font-bold border-t-2 border-gray-200"><td className="py-1.5 px-2">Total Sources = EV</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono font-bold ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(EV)}</td>)}</tr>
-                <tr className="bg-green-50"><td className="py-1.5 px-2 font-bold text-green-700">Addl Cash-Out vs 0x</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-1.5 px-2 font-mono font-bold text-green-700 ${s.lev === levX ? 'bg-amber-50' : ''}`}>{s.lev === 0 ? 'S$0' : fmtK(s.addlCashOut)}</td>)}</tr>
-              </tbody>
-            </table>
-          </div>
+        {/* Summary table */}
+        <div className="mb-5">
+          <h4 className="text-sm font-bold text-gray-700 mb-2">Cash to Shareholders</h4>
+          <table className="w-full text-xs">
+            <tbody>
+              <tr><td className="py-1.5 px-2">Upfront to all shareholders</td><td className="text-right py-1.5 px-2 font-mono">{fmtK(UPFRONT)}</td></tr>
+              <tr className="bg-gray-50"><td className="py-1.5 px-2">(-) Mgmt reinvestment for 30%</td><td className="text-right py-1.5 px-2 font-mono text-blue-600">({fmtK(MGMT_REINVEST)})</td></tr>
+              <tr className="bg-green-50 border-t-2 border-gray-200"><td className="py-1.5 px-2 font-bold text-green-800">Net cash at close</td><td className="text-right py-1.5 px-2 font-mono font-bold text-green-800">{fmtK(NET_CASH_CLOSE)}</td></tr>
+              <tr><td className="py-1.5 px-2 text-gray-400">(+) Earnout (if targets met)</td><td className="text-right py-1.5 px-2 font-mono text-gray-400">{fmtK(EARNOUT_AMT)}</td></tr>
+              <tr className="bg-gray-50 font-bold"><td className="py-1.5 px-2">Total potential cash</td><td className="text-right py-1.5 px-2 font-mono font-bold">{fmtK(TOTAL_IF_EARNOUT)}</td></tr>
+            </tbody>
+          </table>
         </div>
 
         {/* Key point callout */}
         <div className="bg-blue-50 border-l-4 border-blue-400 p-3 text-xs text-gray-600 mb-5">
-          <strong className="text-gray-800">Key point for Gen-1s:</strong> Everyone receives S$40M for 100% of the group. Management reinvests a portion back for their 30% continuing stake. More debt at SPV = less reinvestment required = more cash in your pocket at close. The debt is serviced by the operating businesses — no personal liability for the family.
+          <strong className="text-gray-800">Key point for Gen-1s:</strong> Total consideration is capped at S$40M. You receive S$31.4M upfront. Management reinvests S$8.8M back for their 30% continuing stake, leaving <strong className="text-green-700">S$22.6M net cash</strong> at close. If earnout targets are met, an additional S$8.6M flows to shareholders over 2 years — bringing total potential cash to S$31.2M.
         </div>
 
         {/* ═══ 6-STEP WALKTHROUGH ═══ */}
@@ -842,38 +785,28 @@ function TermSheetTab() {
               <div className="w-0.5 flex-1 bg-blue-200 min-h-[16px]"></div>
             </div>
             <div className="pb-5 flex-1">
-              <div className="text-sm font-bold text-blue-900 mb-1">HoldCo raises S$40M to buy the group</div>
-              <div className="text-xs text-gray-500 mb-2">The money comes from equity (Movement + management) and optionally a bank loan. The more HoldCo borrows, the less equity is needed.</div>
+              <div className="text-sm font-bold text-blue-900 mb-1">HoldCo raises funds to pay {fmt(UPFRONT)} upfront to sellers</div>
+              <div className="text-xs text-gray-500 mb-2">The money comes from Movement equity, management reinvestment, bank debt, and excess cash from the target businesses.</div>
               <div className="bg-gray-50 rounded-xl p-4">
-                <div className="text-[11px] font-semibold text-gray-500 mb-1.5">SOURCES OF FUNDS</div>
+                <div className="text-[11px] font-semibold text-gray-500 mb-1.5">CONSIDERATION STRUCTURE</div>
                 <div className="flex h-9 rounded-md overflow-hidden mb-2">
-                  <div className="bg-blue-900 flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.movementEquity / EV) * 100}%` }}>
-                    {(active.movementEquity / EV) * 100 > 14 ? fmt(active.movementEquity) : ''}
+                  <div className="bg-green-600 flex items-center justify-center text-white text-[10px] font-bold" style={{ width: `${(UPFRONT / EV) * 100}%` }}>
+                    {fmt(UPFRONT)} upfront
                   </div>
-                  <div className="bg-blue-500 flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.mgmtEquity / EV) * 100}%` }}>
-                    {(active.mgmtEquity / EV) * 100 > 14 ? fmt(active.mgmtEquity) : ''}
+                  <div className="bg-purple-400 flex items-center justify-center text-white text-[10px] font-bold" style={{ width: `${(EARNOUT_AMT / EV) * 100}%` }}>
+                    {fmt(EARNOUT_AMT)}
                   </div>
-                  {active.debt > 0 && (
-                    <div className="bg-amber-500 flex items-center justify-center text-white text-[10px] font-bold transition-all" style={{ width: `${(active.debt / EV) * 100}%` }}>
-                      {(active.debt / EV) * 100 > 10 ? fmt(active.debt) : ''}
-                    </div>
-                  )}
                 </div>
                 <div className="flex gap-3 text-[10px] text-gray-500 mb-3">
-                  <span><span className="inline-block w-2 h-2 bg-blue-900 rounded-sm mr-1"></span>Movement</span>
-                  <span><span className="inline-block w-2 h-2 bg-blue-500 rounded-sm mr-1"></span>Mgmt Reinvestment</span>
-                  {active.debt > 0 && <span><span className="inline-block w-2 h-2 bg-amber-500 rounded-sm mr-1"></span>Bank Loan</span>}
+                  <span><span className="inline-block w-2 h-2 bg-green-600 rounded-sm mr-1"></span>Upfront at Close</span>
+                  <span><span className="inline-block w-2 h-2 bg-purple-400 rounded-sm mr-1"></span>Deferred Earnout (if targets met)</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 flex-wrap text-center">
-                  <div className="border-2 border-blue-900 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold text-blue-900">{fmt(active.movementEquity)}</div><div className="text-[10px] text-gray-400">Movement (70%)</div></div>
+                  <div className="border-2 border-green-500 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold text-green-700">{fmt(UPFRONT)}</div><div className="text-[10px] text-gray-400">Upfront to sellers</div></div>
                   <span className="text-gray-400 font-bold">+</span>
-                  <div className="border-2 border-blue-500 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold text-blue-500">{fmt(active.mgmtEquity)}</div><div className="text-[10px] text-gray-400">Mgmt (30%)</div></div>
-                  {active.debt > 0 && <>
-                    <span className="text-gray-400 font-bold">+</span>
-                    <div className="border-2 border-dashed border-amber-500 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold text-amber-600">{fmt(active.debt)}</div><div className="text-[10px] text-gray-400">Bank Loan</div></div>
-                  </>}
+                  <div className="border-2 border-dashed border-purple-400 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold text-purple-600">{fmt(EARNOUT_AMT)}</div><div className="text-[10px] text-gray-400">Earnout (deferred)</div></div>
                   <span className="text-gray-400 font-bold">=</span>
-                  <div className="border-2 border-gray-300 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold">S$40.0M</div><div className="text-[10px] text-gray-400">Total</div></div>
+                  <div className="border-2 border-gray-300 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold">S$40.0M</div><div className="text-[10px] text-gray-400">Total Consideration</div></div>
                 </div>
               </div>
             </div>
@@ -886,13 +819,13 @@ function TermSheetTab() {
               <div className="w-0.5 flex-1 bg-blue-200 min-h-[16px]"></div>
             </div>
             <div className="pb-5 flex-1">
-              <div className="text-sm font-bold text-blue-900 mb-1">HoldCo buys 100% of the group → S$40M paid to all shareholders</div>
-              <div className="text-xs text-gray-500 mb-2">Every current shareholder receives their share. This is the full agreed value.</div>
+              <div className="text-sm font-bold text-blue-900 mb-1">HoldCo buys 100% of the group → {fmt(UPFRONT)} paid upfront to all shareholders</div>
+              <div className="text-xs text-gray-500 mb-2">Every current shareholder receives their share of the upfront consideration. The remaining S$8.6M is deferred as earnout.</div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="flex items-center justify-center gap-3 flex-wrap text-center">
-                  <div className="border-2 border-blue-900 rounded-lg px-4 py-2.5 bg-white min-w-[120px]"><div className="text-base font-bold">S$40.0M</div><div className="text-[10px] text-gray-400">HoldCo pays</div></div>
+                  <div className="border-2 border-blue-900 rounded-lg px-4 py-2.5 bg-white min-w-[120px]"><div className="text-base font-bold">{fmt(UPFRONT)}</div><div className="text-[10px] text-gray-400">HoldCo pays at close</div></div>
                   <span className="text-xl text-gray-400">→</span>
-                  <div className="border-2 border-green-500 rounded-lg px-4 py-2.5 bg-green-50 min-w-[180px]"><div className="text-base font-bold text-green-700">S$40.0M to shareholders</div><div className="text-[10px] text-gray-500">Cash in your hands</div></div>
+                  <div className="border-2 border-green-500 rounded-lg px-4 py-2.5 bg-green-50 min-w-[180px]"><div className="text-base font-bold text-green-700">{fmt(UPFRONT)} to shareholders</div><div className="text-[10px] text-gray-500">Cash at close</div></div>
                 </div>
               </div>
             </div>
@@ -905,19 +838,16 @@ function TermSheetTab() {
               <div className="w-0.5 flex-1 bg-blue-200 min-h-[16px]"></div>
             </div>
             <div className="pb-5 flex-1">
-              <div className="text-sm font-bold text-blue-900 mb-1">Management reinvests a portion back for 30% ownership</div>
-              <div className="text-xs text-gray-500 mb-2">Of the S$40M you received, you put some back into HoldCo. The bank loan means you keep more.</div>
+              <div className="text-sm font-bold text-blue-900 mb-1">Management reinvests {fmt(MGMT_REINVEST)} back for 30% ownership</div>
+              <div className="text-xs text-gray-500 mb-2">Of the {fmt(UPFRONT)} upfront, management puts {fmt(MGMT_REINVEST)} back into HoldCo for their 30% continuing stake.</div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="flex items-center justify-center gap-2 flex-wrap text-center">
-                  <div className="border-2 border-green-500 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold">S$40.0M</div><div className="text-[10px] text-gray-400">You received</div></div>
+                  <div className="border-2 border-green-500 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold">{fmt(UPFRONT)}</div><div className="text-[10px] text-gray-400">Upfront received</div></div>
                   <span className="text-gray-400 font-bold text-lg">−</span>
-                  <div className="border-2 border-blue-500 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold text-blue-500">{fmt(active.mgmtEquity)}</div><div className="text-[10px] text-gray-400">You reinvest</div></div>
+                  <div className="border-2 border-blue-500 rounded-lg px-3 py-2 bg-white min-w-[100px]"><div className="text-base font-bold text-blue-500">{fmt(MGMT_REINVEST)}</div><div className="text-[10px] text-gray-400">Mgmt reinvests</div></div>
                   <span className="text-gray-400 font-bold text-lg">=</span>
-                  <div className="border-2 border-green-500 rounded-lg px-3 py-2 bg-green-50 min-w-[120px]"><div className="text-xl font-bold text-green-700">{fmt(active.netCashToShareholders)}</div><div className="text-[10px] text-gray-500">Cash you keep</div></div>
+                  <div className="border-2 border-green-500 rounded-lg px-3 py-2 bg-green-50 min-w-[120px]"><div className="text-xl font-bold text-green-700">{fmt(NET_CASH_CLOSE)}</div><div className="text-[10px] text-gray-500">Net cash at close</div></div>
                 </div>
-              </div>
-              <div className="bg-blue-50 border-l-3 border-blue-400 rounded-r-lg p-3 text-xs text-gray-600 mt-3">
-                <strong>Why not reinvest the full S$12M?</strong> Because the bank loan covers part of the S$40M purchase. Less equity is needed overall, so your 30% share costs less. At {levX === 0 ? 'no debt' : `${levX.toFixed(1)}x`} leverage, you save <strong className="text-green-700">{fmt(active.addlCashOut)}</strong> vs. no loan.
               </div>
             </div>
           </div>
@@ -929,15 +859,16 @@ function TermSheetTab() {
               <div className="w-0.5 flex-1 bg-blue-200 min-h-[16px]"></div>
             </div>
             <div className="pb-5 flex-1">
-              <div className="text-sm font-bold text-green-800 mb-1">You walk away with cash + 30% ownership + earnout</div>
+              <div className="text-sm font-bold text-green-800 mb-1">You walk away with {fmt(NET_CASH_CLOSE)} cash + 30% ownership + earnout potential</div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="flex items-center justify-center gap-3 flex-wrap text-center">
-                  <div className="border-2 border-green-500 rounded-lg px-3 py-2 bg-green-50 flex-1 max-w-[150px]"><div className="text-base font-bold text-green-700">{fmt(active.netCashToShareholders)}</div><div className="text-[10px] text-gray-500">Cash at close</div></div>
+                  <div className="border-2 border-green-500 rounded-lg px-3 py-2 bg-green-50 flex-1 max-w-[150px]"><div className="text-base font-bold text-green-700">{fmt(NET_CASH_CLOSE)}</div><div className="text-[10px] text-gray-500">Net cash at close</div></div>
                   <span className="text-gray-400 font-bold">+</span>
                   <div className="border-2 border-blue-500 rounded-lg px-3 py-2 bg-white flex-1 max-w-[150px]"><div className="text-base font-bold text-blue-500">30%</div><div className="text-[10px] text-gray-500">Ownership in unified group</div></div>
                   <span className="text-gray-400 font-bold">+</span>
-                  <div className="border-2 border-purple-300 rounded-lg px-3 py-2 bg-purple-50 flex-1 max-w-[150px]"><div className="text-base font-bold text-purple-600">S$8.6M</div><div className="text-[10px] text-gray-500">Earnout potential</div></div>
+                  <div className="border-2 border-purple-300 rounded-lg px-3 py-2 bg-purple-50 flex-1 max-w-[150px]"><div className="text-base font-bold text-purple-600">{fmt(EARNOUT_AMT)}</div><div className="text-[10px] text-gray-500">Earnout if targets met</div></div>
                 </div>
+                <div className="text-center mt-3 text-xs text-gray-500">Total potential cash: <strong className="text-green-700">{fmt(TOTAL_IF_EARNOUT)}</strong></div>
               </div>
             </div>
           </div>
@@ -963,33 +894,28 @@ function TermSheetTab() {
           </div>
         </div>
 
-        {/* ═══ LEVERAGE COMPARISON TABLE ═══ */}
+        {/* ═══ CONSIDERATION BREAKDOWN TABLE ═══ */}
         <div className="bg-white rounded-xl border-2 border-gray-200 p-6 mb-5">
-          <h3 className="text-base font-bold text-gray-900 mb-1">How Much Cash Do You Keep?</h3>
-          <p className="text-xs text-gray-500 mb-4">The same S$40M deal — the only difference is how much HoldCo borrows from the bank.</p>
+          <h3 className="text-base font-bold text-gray-900 mb-1">How Does the S$40M Flow?</h3>
+          <p className="text-xs text-gray-500 mb-4">Total consideration is capped at S$40M — split between upfront cash and deferred earnout.</p>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="bg-gray-50 text-gray-500">
                   <th className="text-left py-2 px-3 font-semibold">S$&apos;000</th>
-                  {scenarios.map(s => (
-                    <th key={s.lev} className={`text-right py-2 px-3 font-semibold ${s.lev === levX ? 'bg-amber-50 text-amber-800' : ''}`}>{s.lev === 0 ? 'No Debt' : `${s.lev.toFixed(1)}x EBITDA`}</th>
-                  ))}
+                  <th className="text-right py-2 px-3 font-semibold">Amount</th>
+                  <th className="text-left py-2 px-3 font-semibold">Timing</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td className="py-2 px-3">You receive (sale of 100%)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(EV)}</td>)}</tr>
-                <tr className="bg-gray-50"><td className="py-2 px-3">You reinvest (for 30% of HoldCo)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono text-blue-600 ${s.lev === levX ? 'bg-amber-50' : ''}`}>({fmtK(s.mgmtEquity)})</td>)}</tr>
-                <tr className="bg-green-50 border-t-2 border-gray-200"><td className="py-2 px-3 font-bold text-green-800">Cash you keep at close</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono font-bold text-green-800 ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.netCashToShareholders)}</td>)}</tr>
-                <tr><td className="py-2 px-3 text-gray-400">Earnout potential (if targets met)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono text-gray-400 ${s.lev === levX ? 'bg-amber-50' : ''}`}>8,606</td>)}</tr>
-                <tr className="bg-gray-50 font-bold"><td className="py-2 px-3">Total potential cash</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono font-bold ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.totalPotentialCash)}</td>)}</tr>
-                <tr><td colSpan={5} className="py-1 border-none"></td></tr>
-                <tr className="bg-gray-50"><td colSpan={5} className="py-1.5 px-3 text-[11px] font-bold text-gray-500 uppercase">SPV Funding Sources</td></tr>
-                <tr><td className="py-2 px-3">Movement equity (70%)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.movementEquity)}</td>)}</tr>
-                <tr className="bg-gray-50"><td className="py-2 px-3">Your reinvestment (30%)</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(s.mgmtEquity)}</td>)}</tr>
-                <tr><td className="py-2 px-3">Bank loan</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono text-amber-600 ${s.lev === levX ? 'bg-amber-50' : ''}`}>{s.debt === 0 ? '—' : fmtK(s.debt)}</td>)}</tr>
-                <tr className="bg-gray-50 font-bold"><td className="py-2 px-3">Total = EV</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono font-bold ${s.lev === levX ? 'bg-amber-50' : ''}`}>{fmtK(EV)}</td>)}</tr>
-                <tr className="bg-green-50"><td className="py-2 px-3 font-bold">Extra cash vs. no-debt scenario</td>{scenarios.map(s => <td key={s.lev} className={`text-right py-2 px-3 font-mono font-bold text-green-700 ${s.lev === levX ? 'bg-amber-50' : ''}`}>{s.lev === 0 ? '—' : `+${fmtK(s.addlCashOut)}`}</td>)}</tr>
+                <tr><td className="py-2 px-3">Upfront consideration to all shareholders</td><td className="text-right py-2 px-3 font-mono font-bold">{fmtK(UPFRONT)}</td><td className="py-2 px-3">At close</td></tr>
+                <tr className="bg-gray-50"><td className="py-2 px-3 text-blue-600">(-) Management reinvests for 30% SPV equity</td><td className="text-right py-2 px-3 font-mono text-blue-600">({fmtK(MGMT_REINVEST)})</td><td className="py-2 px-3">At close</td></tr>
+                <tr className="bg-green-50 border-t-2 border-gray-200"><td className="py-2 px-3 font-bold text-green-800">Net cash to all shareholders</td><td className="text-right py-2 px-3 font-mono font-bold text-green-800">{fmtK(NET_CASH_CLOSE)}</td><td className="py-2 px-3">At close</td></tr>
+                <tr><td colSpan={3} className="py-1 border-none"></td></tr>
+                <tr><td className="py-2 px-3 text-gray-400">Earnout — Year 1 (30%)</td><td className="text-right py-2 px-3 font-mono text-gray-400">2,582</td><td className="py-2 px-3 text-gray-400">Year 1</td></tr>
+                <tr className="bg-gray-50"><td className="py-2 px-3 text-gray-400">Earnout — Year 2 (70%)</td><td className="text-right py-2 px-3 font-mono text-gray-400">6,024</td><td className="py-2 px-3 text-gray-400">Year 2</td></tr>
+                <tr className="border-t-2 border-gray-200"><td className="py-2 px-3 font-bold">Total potential cash (if earnout met)</td><td className="text-right py-2 px-3 font-mono font-bold">{fmtK(TOTAL_IF_EARNOUT)}</td><td className="py-2 px-3"></td></tr>
+                <tr className="bg-gray-50"><td className="py-2 px-3 font-bold">Total consideration (capped)</td><td className="text-right py-2 px-3 font-mono font-bold">{fmtK(EV)}</td><td className="py-2 px-3"></td></tr>
               </tbody>
             </table>
           </div>
@@ -1037,72 +963,36 @@ function TermSheetTab() {
 
         {/* ═══ RETURNS SUMMARY ═══ */}
         <div className="bg-white rounded-xl border-2 border-green-200 p-6 mb-5">
-          <h3 className="text-base font-bold text-green-800 mb-1">Your 30% Stake — How Debt Improves Your Return</h3>
-          <p className="text-xs text-green-600 mb-4">Same business growth. Same exit value. Less cash committed = higher return on your investment.</p>
+          <h3 className="text-base font-bold text-green-800 mb-1">Your 30% Stake — What It Means</h3>
+          <p className="text-xs text-green-600 mb-4">Management reinvests {fmt(MGMT_REINVEST)} for a 30% stake in the unified group. Here&apos;s what that could be worth.</p>
           <p className="text-xs text-gray-500 mb-4"><strong>Assumptions:</strong> 5-year hold, revenue grows {REV_CAGR}% p.a., EBITDA margin stays at {EBITDA_MARGIN}%, loan fully repaid from cash flow.</p>
 
-          <div className="text-xs font-bold text-gray-600 mb-2">If the group exits at the same {ENTRY_MULT.toFixed(1)}x multiple (conservative — no re-rating):</div>
-          <div className="grid grid-cols-4 gap-2 mb-5">
-            {[
-              { lev: 'No Debt', irr: '5.5%', moic: '1.3x', style: 'border-gray-200 bg-gray-50', valColor: 'text-gray-500' },
-              { lev: '1.0x', irr: '9.7%', moic: '1.6x', style: 'border-blue-200 bg-blue-50', valColor: 'text-blue-600' },
-              { lev: '1.5x', irr: '12.3%', moic: '1.8x', style: 'border-green-200 bg-green-50', valColor: 'text-green-600' },
-              { lev: '2.0x', irr: '15.3%', moic: '2.0x', style: 'border-green-300 bg-green-100', valColor: 'text-green-700' },
-            ].map(c => (
-              <div key={c.lev} className={`border-2 rounded-lg p-3 text-center ${c.style}`}>
-                <div className={`text-xl font-bold ${c.valColor}`}>{c.irr}</div>
-                <div className="text-xs font-semibold mt-0.5">{c.moic} MOIC</div>
-                <div className="text-[10px] text-gray-500 mt-1">{c.lev}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-xs font-bold text-gray-600 mb-2">If the group re-rates to 7.0x at exit (reflecting a larger, unified platform):</div>
-          <div className="grid grid-cols-4 gap-2 mb-5">
-            {[
-              { lev: 'No Debt', irr: '10.3%', moic: '1.6x', style: 'border-gray-200 bg-gray-50', valColor: 'text-gray-500' },
-              { lev: '1.0x', irr: '14.7%', moic: '2.0x', style: 'border-blue-200 bg-blue-50', valColor: 'text-blue-600' },
-              { lev: '1.5x', irr: '17.4%', moic: '2.2x', style: 'border-green-200 bg-green-50', valColor: 'text-green-600' },
-              { lev: '2.0x', irr: '20.5%', moic: '2.5x', style: 'border-green-300 bg-green-100', valColor: 'text-green-700' },
-            ].map(c => (
-              <div key={c.lev} className={`border-2 rounded-lg p-3 text-center ${c.style}`}>
-                <div className={`text-xl font-bold ${c.valColor}`}>{c.irr}</div>
-                <div className="text-xs font-semibold mt-0.5">{c.moic} MOIC</div>
-                <div className="text-[10px] text-gray-500 mt-1">{c.lev}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Detailed returns table */}
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="bg-gray-50 text-gray-500">
                   <th className="text-left py-2 px-3 font-semibold">Your 30% stake (S$&apos;000)</th>
-                  <th className="text-right py-2 px-3 font-semibold">No Debt</th>
-                  <th className="text-right py-2 px-3 font-semibold">1.0x</th>
-                  <th className="text-right py-2 px-3 font-semibold">1.5x</th>
-                  <th className="text-right py-2 px-3 font-semibold">2.0x</th>
+                  <th className="text-right py-2 px-3 font-semibold">{ENTRY_MULT.toFixed(1)}x exit</th>
+                  <th className="text-right py-2 px-3 font-semibold">7.0x exit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td className="py-2 px-3">You reinvest today</td><td className="text-right py-2 px-3 font-mono font-bold">12,000</td><td className="text-right py-2 px-3 font-mono font-bold">9,848</td><td className="text-right py-2 px-3 font-mono font-bold">8,773</td><td className="text-right py-2 px-3 font-mono font-bold">7,697</td></tr>
-                <tr className="bg-gray-50"><td className="py-2 px-3">Your 30% at exit ({ENTRY_MULT.toFixed(1)}x)</td><td className="text-right py-2 px-3 font-mono text-green-700">15,665</td><td className="text-right py-2 px-3 font-mono text-green-700">15,665</td><td className="text-right py-2 px-3 font-mono text-green-700">15,665</td><td className="text-right py-2 px-3 font-mono text-green-700">15,665</td></tr>
-                <tr className="bg-green-50"><td className="py-2 px-3 font-bold">IRR ({ENTRY_MULT.toFixed(1)}x exit)</td><td className="text-right py-2 px-3 font-mono font-bold">5.5%</td><td className="text-right py-2 px-3 font-mono font-bold text-blue-600">9.7%</td><td className="text-right py-2 px-3 font-mono font-bold text-green-700">12.3%</td><td className="text-right py-2 px-3 font-mono font-bold text-green-700">15.3%</td></tr>
-                <tr className="bg-gray-50"><td className="py-2 px-3">Your 30% at exit (7.0x)</td><td className="text-right py-2 px-3 font-mono text-green-700">19,581</td><td className="text-right py-2 px-3 font-mono text-green-700">19,581</td><td className="text-right py-2 px-3 font-mono text-green-700">19,581</td><td className="text-right py-2 px-3 font-mono text-green-700">19,581</td></tr>
-                <tr className="bg-green-50"><td className="py-2 px-3 font-bold">IRR (7.0x exit)</td><td className="text-right py-2 px-3 font-mono font-bold">10.3%</td><td className="text-right py-2 px-3 font-mono font-bold text-blue-600">14.7%</td><td className="text-right py-2 px-3 font-mono font-bold text-green-700">17.4%</td><td className="text-right py-2 px-3 font-mono font-bold text-green-700">20.5%</td></tr>
+                <tr><td className="py-2 px-3">You reinvest today</td><td className="text-right py-2 px-3 font-mono font-bold">{fmtK(MGMT_REINVEST)}</td><td className="text-right py-2 px-3 font-mono font-bold">{fmtK(MGMT_REINVEST)}</td></tr>
+                <tr className="bg-gray-50"><td className="py-2 px-3">Your 30% at exit (Year 5)</td><td className="text-right py-2 px-3 font-mono text-green-700">15,665</td><td className="text-right py-2 px-3 font-mono text-green-700">19,581</td></tr>
+                <tr className="bg-green-50 border-t-2 border-gray-200"><td className="py-2 px-3 font-bold">Gain</td><td className="text-right py-2 px-3 font-mono font-bold text-green-700">+{fmtK(15665 - MGMT_REINVEST)}</td><td className="text-right py-2 px-3 font-mono font-bold text-green-700">+{fmtK(19581 - MGMT_REINVEST)}</td></tr>
+                <tr className="bg-green-50"><td className="py-2 px-3 font-bold">MOIC</td><td className="text-right py-2 px-3 font-mono font-bold text-green-700">{(15665 / MGMT_REINVEST).toFixed(1)}x</td><td className="text-right py-2 px-3 font-mono font-bold text-green-700">{(19581 / MGMT_REINVEST).toFixed(1)}x</td></tr>
               </tbody>
             </table>
           </div>
 
           <div className="bg-green-50 border-l-3 border-green-400 rounded-r-lg p-3 text-xs text-gray-600 mt-4">
-            <strong>Key takeaway:</strong> Your 30% stake is worth exactly the same at exit regardless of leverage. The difference is how much cash you locked up to get there. With a modest 1.5x loan, your annual return nearly <em>doubles</em> vs. no debt (12.3% vs. 5.5%) — while keeping an extra S$3.2M in your pocket today.
+            <strong>Key takeaway:</strong> Your {fmt(MGMT_REINVEST)} reinvestment buys a 30% stake in a unified, professionally managed group. Even at the same entry multiple ({ENTRY_MULT.toFixed(1)}x), business growth alone creates meaningful value. At a platform re-rating to 7.0x, the return is even more compelling.
           </div>
         </div>
 
         {/* ═══ SAFETY NOTE ═══ */}
         <div className="bg-green-50 border-l-4 border-green-400 p-4 text-xs text-gray-600 rounded-r-xl">
-          <strong className="text-gray-800">A note on safety:</strong> We understand the family has always run the business debt-free, and we respect that discipline. The loan we are proposing is conservative (1.0x–2.0x EBITDA) and sits on HoldCo — not on any individual. It is repaid from the group&apos;s strong operating cash flow (the same cash flow that has supported S$43M in backlog). No family member signs a personal guarantee. The businesses continue to operate exactly as before. The only difference is that more of your hard-earned value comes home as cash on day one.
+          <strong className="text-gray-800">A note on safety:</strong> Total consideration is capped at S$40M — there is no open-ended liability. The S$8.6M earnout is funded by the operating businesses&apos; future performance, not by any individual. No family member signs a personal guarantee. The businesses continue to operate exactly as before.
         </div>
       </Section>
 
@@ -1114,19 +1004,19 @@ function TermSheetTab() {
               <th className="text-left py-2 px-3 font-semibold">Component</th>
               <th className="text-right py-2 px-3 font-semibold">Amount (S$&apos;000)</th>
               <th className="text-left py-2 px-3 font-semibold">Timing</th>
-              <th className="text-left py-2 px-3 font-semibold">Funded By</th>
+              <th className="text-left py-2 px-3 font-semibold">Notes</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-blue-50"><td className="py-2 px-3">Movement Equity (70%)</td><td className="text-right py-2 px-3 font-mono">{fmtK(active.movementEquity)}</td><td className="py-2 px-3">Completion</td><td className="py-2 px-3">Movement fund</td></tr>
-            <tr><td className="py-2 px-3">Management Rollover (30%)</td><td className="text-right py-2 px-3 font-mono">{fmtK(active.mgmtEquity)}</td><td className="py-2 px-3">Completion</td><td className="py-2 px-3">Existing equity</td></tr>
-            <tr className="bg-green-50"><td className="py-2 px-3 font-bold text-green-800">Management Cash-Out</td><td className="text-right py-2 px-3 font-mono font-bold text-green-800">{fmtK(active.mgmtCashOut)}</td><td className="py-2 px-3">Completion</td><td className="py-2 px-3">Debt proceeds</td></tr>
-            <tr><td className="py-2 px-3">Earnout — Year 1 (30%)</td><td className="text-right py-2 px-3 font-mono">2,582</td><td className="py-2 px-3">Year 1</td><td className="py-2 px-3">HoldCo</td></tr>
-            <tr><td className="py-2 px-3">Earnout — Year 2 (70%)</td><td className="text-right py-2 px-3 font-mono">6,024</td><td className="py-2 px-3">Year 2</td><td className="py-2 px-3">HoldCo</td></tr>
-            <tr className="bg-gray-50 border-t-2 border-gray-200"><td className="py-2 px-3 font-bold">Total</td><td className="text-right py-2 px-3 font-mono font-bold">{fmtK(EV + 8606)}</td><td className="py-2 px-3"></td><td className="py-2 px-3"></td></tr>
+            <tr><td className="py-2 px-3 font-bold">Upfront to all shareholders</td><td className="text-right py-2 px-3 font-mono font-bold">{fmtK(UPFRONT)}</td><td className="py-2 px-3">Completion</td><td className="py-2 px-3">Cash at close</td></tr>
+            <tr className="bg-blue-50"><td className="py-2 px-3 pl-6 text-blue-700">of which: Mgmt reinvestment (30%)</td><td className="text-right py-2 px-3 font-mono text-blue-600">({fmtK(MGMT_REINVEST)})</td><td className="py-2 px-3">Completion</td><td className="py-2 px-3">Reinvested into SPV</td></tr>
+            <tr className="bg-green-50"><td className="py-2 px-3 font-bold text-green-800">Net cash to shareholders</td><td className="text-right py-2 px-3 font-mono font-bold text-green-800">{fmtK(NET_CASH_CLOSE)}</td><td className="py-2 px-3">Completion</td><td className="py-2 px-3">Cash home</td></tr>
+            <tr><td className="py-2 px-3">Earnout — Year 1 (30%)</td><td className="text-right py-2 px-3 font-mono">2,582</td><td className="py-2 px-3">Year 1</td><td className="py-2 px-3">EBITDA-linked</td></tr>
+            <tr className="bg-gray-50"><td className="py-2 px-3">Earnout — Year 2 (70%)</td><td className="text-right py-2 px-3 font-mono">6,024</td><td className="py-2 px-3">Year 2</td><td className="py-2 px-3">EBITDA-linked</td></tr>
+            <tr className="border-t-2 border-gray-200"><td className="py-2 px-3 font-bold">Total Consideration (capped)</td><td className="text-right py-2 px-3 font-mono font-bold">{fmtK(EV)}</td><td className="py-2 px-3"></td><td className="py-2 px-3"></td></tr>
           </tbody>
         </table>
-        <p className="text-[10px] text-gray-400 mt-2">Earnout at 100% achievement. Actual payouts scale proportionally between 80% floor and target.</p>
+        <p className="text-[10px] text-gray-400 mt-2">Earnout at 100% achievement. Actual payouts scale proportionally between 80% floor and target. Total consideration inclusive of earnout.</p>
       </Section>
 
       {/* Section 5: Earnout */}
