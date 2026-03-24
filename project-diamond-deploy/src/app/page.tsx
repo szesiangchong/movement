@@ -262,14 +262,9 @@ function EarnoutTab() {
     const yr1Pay = yr1Actual >= yr1Floor ? yr1Tranche * yr1Ratio : 0;
     const yr1Unpaid = yr1Tranche - yr1Pay;
     const yr1EbitdaShortfall = Math.max(0, yr1Hurdle - yr1Actual);
-    const yr1EbitdaExcess = Math.max(0, yr1Actual - yr1Hurdle);
 
-    // Year 2 — carry forward & carry backward
-    // Carry backward: Year 1 excess EBITDA credits toward Year 2 target
-    const yr2EffectiveHurdle = yr1EbitdaExcess > 0
-      ? Math.max(yr2Floor, yr2Hurdle - yr1EbitdaExcess)
-      : yr2Hurdle;
-    const yr2Ratio = Math.min(1, Math.max(0, (yr2Actual - yr2Floor) / (yr2EffectiveHurdle - yr2Floor)));
+    // Year 2 — carry forward only (no carry backward)
+    const yr2Ratio = Math.min(1, Math.max(0, (yr2Actual - yr2Floor) / (yr2Hurdle - yr2Floor)));
     const yr2BasePay = yr2Actual >= yr2Floor ? yr2Tranche * yr2Ratio : 0;
 
     // Carry forward: Year 1 shortfall only recoverable if Year 2 EXCEEDS its hurdle
@@ -282,8 +277,8 @@ function EarnoutTab() {
     const yr2Pay = Math.min(yr2Tranche + yr1Unpaid, yr2BasePay + yr1Recovery);
     const totalPaid = Math.min(DEFERRED_TOTAL, yr1Pay + yr2Pay);
     const yr1Status = yr1Actual >= yr1Hurdle ? "met" : yr1Actual >= yr1Floor ? "partial" : "missed";
-    const yr2Status = yr2Actual >= yr2EffectiveHurdle ? "met" : yr2Actual >= yr2Floor ? "partial" : "missed";
-    return { yr1Tranche, yr2Tranche, yr1Floor, yr2Floor, yr1Pay, yr1Unpaid, yr1EbitdaShortfall, yr1EbitdaExcess, yr2EffectiveHurdle, yr2BasePay, yr1Recovery, yr2Pay, totalPaid, yr1Status, yr2Status };
+    const yr2Status = yr2Actual >= yr2Hurdle ? "met" : yr2Actual >= yr2Floor ? "partial" : "missed";
+    return { yr1Tranche, yr2Tranche, yr1Floor, yr2Floor, yr1Pay, yr1Unpaid, yr1EbitdaShortfall, yr2BasePay, yr1Recovery, yr2Pay, totalPaid, yr1Status, yr2Status };
   }, [yr1Actual, yr2Actual]);
 
   const statusColors = { met: "bg-green-500", partial: "bg-yellow-500", missed: "bg-red-500" };
@@ -332,7 +327,7 @@ function EarnoutTab() {
 
   return (
     <div className="space-y-5">
-      <p className="text-sm text-gray-600">The earnout aligns the interests of both parties. {fmtFull(DEFERRED_TOTAL)} of the consideration is linked to EBITDA performance over the first two years, funded by HoldCo and paid in two tranches. Includes <strong>carry forward</strong> (Year 1 shortfall recoverable if Year 2 exceeds its target by the shortfall amount) and <strong>carry backward</strong> (Year 1 outperformance credits toward Year 2).</p>
+      <p className="text-sm text-gray-600">The earnout aligns the interests of both parties. {fmtFull(DEFERRED_TOTAL)} of the consideration is linked to EBITDA performance over the first two years, funded by HoldCo and paid in two tranches. Includes <strong>carry forward</strong> — if Year 1 falls short, Year 2 must exceed its own target by the EBITDA shortfall amount to recover the unpaid tranche.</p>
 
       {/* Structure boxes */}
       <div className="grid grid-cols-3 gap-4 text-center">
@@ -367,20 +362,18 @@ function EarnoutTab() {
             <div className="flex justify-between font-bold text-green-700"><span>Payable</span><span className="font-mono">{fmtFull(c.yr1Pay)}</span></div>
             {c.yr1Unpaid > 0 && <div className="flex justify-between text-orange-600"><span>Unpaid (carry forward)</span><span className="font-mono">{fmtFull(c.yr1Unpaid)}</span></div>}
             {c.yr1EbitdaShortfall > 0 && <div className="flex justify-between text-orange-500"><span>EBITDA gap to recover in Yr 2</span><span className="font-mono">{fmtFull(c.yr1EbitdaShortfall)}</span></div>}
-            {c.yr1EbitdaExcess > 0 && <div className="flex justify-between text-blue-600"><span>EBITDA excess (carry backward)</span><span className="font-mono">{fmtFull(c.yr1EbitdaExcess)}</span></div>}
           </div>
-          <p className="text-[10px] text-gray-400 mt-2 italic">Scales proportionally between floor and target. {c.yr1EbitdaShortfall > 0 ? `Year 2 must exceed its target by ${fmtFull(c.yr1EbitdaShortfall)} to recover the carried amount.` : c.yr1EbitdaExcess > 0 ? `Excess of ${fmtFull(c.yr1EbitdaExcess)} credits toward Year 2 target.` : 'Full tranche achieved.'}</p>
+          <p className="text-[10px] text-gray-400 mt-2 italic">Scales proportionally between floor and target. {c.yr1EbitdaShortfall > 0 ? `Year 2 must exceed its target by ${fmtFull(c.yr1EbitdaShortfall)} to recover the carried amount.` : 'Full tranche achieved.'}</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-4">
           <h4 className="font-semibold text-sm mb-2">Year 2 Payment</h4>
           <div className="text-xs space-y-1">
             <div className="flex justify-between"><span>Base tranche (70%)</span><span className="font-mono">{fmtFull(c.yr2Tranche)}</span></div>
-            {c.yr1EbitdaExcess > 0 && <div className="flex justify-between text-blue-600"><span>Effective target (after carry back)</span><span className="font-mono">{fmtFull(c.yr2EffectiveHurdle)}</span></div>}
             <div className="flex justify-between"><span>Base payout</span><span className="font-mono">{fmtFull(c.yr2BasePay)}</span></div>
             {c.yr1Recovery > 0 && <div className="flex justify-between text-green-600"><span>(+) Year 1 recovery</span><span className="font-mono">{fmtFull(c.yr1Recovery)}</span></div>}
             <div className="flex justify-between font-bold text-green-700 border-t border-gray-200 pt-1"><span>Total Year 2 Payable</span><span className="font-mono">{fmtFull(c.yr2Pay)}</span></div>
           </div>
-          <p className="text-[10px] text-gray-400 mt-2 italic">{c.yr1Unpaid > 0 ? `Year 1 carry of ${fmtFull(c.yr1Unpaid)} requires Year 2 EBITDA to exceed ${fmtFull(yr2Hurdle)} by ${fmtFull(c.yr1EbitdaShortfall)} (i.e., ${fmtFull(yr2Hurdle + c.yr1EbitdaShortfall)}) for full recovery.` : c.yr1EbitdaExcess > 0 ? `Year 1 outperformance reduces effective Year 2 target from ${fmtFull(yr2Hurdle)} to ${fmtFull(c.yr2EffectiveHurdle)}.` : 'Scales proportionally between floor and target.'}</p>
+          <p className="text-[10px] text-gray-400 mt-2 italic">{c.yr1Unpaid > 0 ? `Year 1 carry of ${fmtFull(c.yr1Unpaid)} requires Year 2 EBITDA to exceed ${fmtFull(yr2Hurdle)} by ${fmtFull(c.yr1EbitdaShortfall)} (i.e., ${fmtFull(yr2Hurdle + c.yr1EbitdaShortfall)}) for full recovery.` : 'Scales proportionally between floor and target.'}</p>
         </div>
       </div>
 
@@ -414,7 +407,7 @@ function HoldcoTab() {
               { name: "Carats & Co", rev: "S$20M", desc: "Signage Design & Build", color: "from-slate-500 to-slate-600",
                 holders: ["Albert 23.3%", "Raymond 23.3%", "Charlie 20.0%", "Ann 17.1%", "TH 8.7%", "Susie 7.7%"] },
               { name: "Gleamedia", rev: "S$6M", desc: "OOH Media", color: "from-slate-400 to-slate-500",
-                holders: ["Raymond 22%", "Ann 22%", "TH 22%", "Geng Hao 30%", "Keith 4%"] },
+                holders: ["Raymond 22%", "Albert 22%", "TH 22%", "Geng Hao 30%", "Keith 4%"] },
               { name: "Adactive", rev: "S$2M", desc: "Digital Kiosks / Software", color: "from-slate-400 to-slate-500",
                 holders: ["Yu Hang 50%", "Ann 25%", "Susie 25%"] },
             ].map(entity => (
@@ -929,7 +922,7 @@ function TermSheetTab() {
                 </div>
               </div>
               <div className="bg-blue-50 border-l-3 border-blue-400 rounded-r-lg p-3 text-xs text-gray-600 mt-3">
-                <strong>Why not reinvest the full {fmt(MGMT_VALUE)}?</strong> Because the bank loan covers part of the S$40M. Less equity is needed, so management&apos;s 30% share costs less. At {levX === 0 ? 'no debt' : `${levX.toFixed(1)}x`} leverage, reinvestment drops from {fmt(MGMT_VALUE)} to <strong className="text-blue-600">{fmt(active.mgmtEquity)}</strong>.
+                <strong>Why not reinvest the full {fmt(MGMT_VALUE)}?</strong> Because the bank loan covers part of the {fmt(UPFRONT)}. Less equity is needed, so management&apos;s 30% share costs less. At {levX === 0 ? 'no debt' : `${levX.toFixed(1)}x`} leverage, reinvestment drops from {fmt(MGMT_VALUE)} to <strong className="text-blue-600">{fmt(active.mgmtEquity)}</strong>.
               </div>
             </div>
           </div>
@@ -988,7 +981,6 @@ function TermSheetTab() {
             <tr><td className="py-2 px-3">Mgmt Forecast</td><td className="py-2 px-3 font-mono text-gray-400">{fmtFull(7890)}</td><td className="py-2 px-3 font-mono text-gray-400">{fmtFull(8522)}</td></tr>
             <tr className="bg-gray-50"><td className="py-2 px-3">Floor</td><td className="py-2 px-3" colSpan={2}>80% of target — below floor, zero payout</td></tr>
             <tr><td className="py-2 px-3">Carry Forward</td><td className="py-2 px-3" colSpan={2}>Year 1 EBITDA shortfall must be exceeded in Year 2 to recover unpaid tranche</td></tr>
-            <tr className="bg-gray-50"><td className="py-2 px-3">Carry Backward</td><td className="py-2 px-3" colSpan={2}>Year 1 EBITDA outperformance credits toward Year 2 target</td></tr>
             <tr className="font-bold border-t-2 border-gray-200"><td className="py-2 px-3">Total</td><td className="py-2 px-3" colSpan={2}>{fmtFull(DEFERRED_TOTAL)} (funded by HoldCo)</td></tr>
           </tbody>
         </table>
@@ -1000,7 +992,7 @@ function TermSheetTab() {
           <div className="space-y-3">
             <div className="bg-gray-50 rounded-xl p-4">
               <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 EBITDA targets are met?</div>
-              <div className="text-xs text-gray-600">A: Full earnout of {fmtFull(DEFERRED_TOTAL)} is paid — S$2.58M after Year 1 and S$6.02M after Year 2. Combined with the {fmt(UPFRONT)} upfront, total consideration reaches S$40.0M.</div>
+              <div className="text-xs text-gray-600">A: Full earnout of {fmtFull(DEFERRED_TOTAL)} is paid — S$2.58M after Year 1 and S$6.02M after Year 2. Combined with the {fmt(active.netCashToShareholders)} net upfront (after management reinvestment), total cash to shareholders reaches {fmt(active.totalPotentialCash)}.</div>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-4">
@@ -1019,13 +1011,8 @@ function TermSheetTab() {
             </div>
 
             <div className="bg-gray-50 rounded-xl p-4">
-              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 exceeds its target — does the excess help Year 2?</div>
-              <div className="text-xs text-gray-600">A: Yes — this is the <strong>carry backward</strong> mechanism. If Year 1 EBITDA exceeds the S$7.5M target (e.g., by S$300K), that S$300K excess credits toward Year 2, effectively lowering Year 2&apos;s target from S$8.0M to S$7.7M. This makes it easier for management to earn the full Year 2 tranche.</div>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-4">
               <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 EBITDA fall below the floor?</div>
-              <div className="text-xs text-gray-600">A: No earnout is payable. Total consideration received would be the {fmt(UPFRONT)} upfront amount only.</div>
+              <div className="text-xs text-gray-600">A: No earnout is payable. Total cash received would be the {fmt(active.netCashToShareholders)} net upfront amount only (after management reinvestment).</div>
             </div>
           </div>
         </div>
@@ -1046,8 +1033,8 @@ function TermSheetTab() {
             </div>
 
             <div className="bg-gray-50 rounded-xl p-4">
-              <div className="text-xs font-bold text-blue-800 mb-1">Q: Is the upfront payment of {fmt(UPFRONT)} unconditional?</div>
-              <div className="text-xs text-gray-600">A: Yes. The upfront cash consideration of {fmt(UPFRONT)} payable at completion is unconditional and not subject to clawback. The earnout is a separate, additional component — non-achievement of earnout targets does not affect the upfront payment already received.</div>
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: Is the upfront cash payment unconditional?</div>
+              <div className="text-xs text-gray-600">A: Yes. The net upfront cash of {fmt(active.netCashToShareholders)} (after management reinvestment of {fmt(active.mgmtEquity)}) payable at completion is unconditional and not subject to clawback. The earnout is a separate, additional component — non-achievement of earnout targets does not affect the upfront payment already received.</div>
             </div>
           </div>
         </div>
