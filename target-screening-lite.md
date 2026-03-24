@@ -6,6 +6,8 @@ You are an Investment Associate preparing a target screening memo for an investm
 
 **Output Format:** Present as an acquisition screening memo suitable for an internal pre-IC discussion. The reader should be able to form a preliminary view within 10 minutes of reading. This is the lite version — no Balance Sheet deep-dive, no standalone Next Steps section. DD priorities are consolidated into one section at the end. An LBO sketch is included as a high-level returns check, not a full model.
 
+**Formatting convention — data gap callouts:** Throughout the memo, where the CIM or available data is materially incomplete for a section (e.g., no BU-level margin splits, no audited balance sheet, no forecasted revenue by BU), insert a **⚠️ callout box** (full-width, yellow/amber background) stating what is missing and what needs to be requested. Do not bury data gaps in prose paragraphs. The reader should be able to scan the memo and immediately identify all information gaps by visual formatting alone.
+
 ---
 
 > **RECOMMENDED ACTION** — Place at the very top of the memo, in a full-width blockquote callout box.
@@ -14,23 +16,30 @@ State one of three postures: **Accelerate** (pursue aggressively — prioritise 
 
 **Critical framing principle:** The question is: *does the industry look attractive and does the company look attractive enough to accelerate finding out more?* At the screening stage, we will always have incomplete information — missing BU-level margins, unaudited figures, unconfirmed contract terms. **Lack of information alone is NOT a reason to Hold.** Hold means something structurally concerning has been identified that could invalidate the thesis (e.g., a core asset is expiring, the business is structurally shrinking, regulatory risk threatens the model). If the industry is attractive and the company has a genuine moat, the default posture is **Accelerate** with specific hard gates — binary, answerable questions that must be resolved in Week 1-2 before LOI.
 
-Write **one dense paragraph** (4-6 sentences) in the blockquote box. Lead with the posture and the hard gates (if any). Reference specific findings: returns profile, market positioning, moat quality, key risks. The reader should be able to read this box alone and know: (1) are we pursuing this, (2) what must be true for us to proceed, and (3) what kills the deal. End with urgency/timing context — why move now, what happens if we don't.
+Structure as two parts in the blockquote box:
+
+1. **Positive thesis paragraph** (3-4 sentences). Lead with the posture. Reference specific findings: market positioning, entry terms, moat quality, key value drivers. The reader should know *why* we like this.
+
+2. **Stress-test bullets** (2-3 bullets). Preface with "However, a few angles worth stress-testing:" These are the counterarguments you'd expect IC to raise — specific, falsifiable concerns, not generic risk language. Each bullet should name the concern, state what is unproven or assumed, and explain why it matters. These are not reasons to Hold — they are the angles that, if they don't hold up in DD, would change the thesis.
+
+The reader should be able to read this box alone and know: (1) are we pursuing this, (2) what's the positive case, (3) what could go wrong, and (4) whether the risks are DD-resolvable or structural.
 
 ---
 
 ### Key Takeaways
 
-Place immediately after the Recommended Action box. Provide **5-6 punchy bullets** — the key takeaways a reader needs before going deeper. These should be **conviction-driven and purposeful** — each bullet should build the case for or against the recommended action. Think of these as the bullets you'd put on the first slide of an IC deck.
+Place immediately after the Recommended Action box. Provide **5-7 punchy bullets** — the key takeaways a reader needs before going deeper. These should be **conviction-driven and purposeful** — each bullet should build the case for or against the recommended action. Think of these as the bullets you'd put on the first slide of an IC deck.
 
 Each bullet should be a distinct angle and should answer "so what does this mean for our decision":
+- **Entry opportunity** — why is this available to us now? Succession, dislocation, seller motivation. Include specific terms (multiple, discount, stake %).
 - **Industry attractiveness** — is this a market we want to be in? Structural tailwinds, regulatory moat, demand visibility
-- **Company moat** — what creates switching costs or defensibility? Is it real or overstated?
-- **Entry opportunity** — why is this available to us now? Succession, dislocation, seller motivation
+- **Company moat** — what creates switching costs or defensibility? Is it real or overstated? Be specific about the moat mechanism (platform, scale, switching costs), not generic.
+- **Contracted revenue / earnings visibility** — what is the contracted revenue base? How long does it last? What is the runway, and where does it taper? State the lowest-hanging fruit to extend or grow the contracted base.
 - **Primary value creation lever** — what is the single biggest thing new ownership can do that current ownership hasn't?
-- **GATE 1** — the most critical structural risk, framed as a binary question with a clear resolution path and timeline
-- **GATE 2** — the second structural risk (if applicable), same framing
+- **To verify [topic 1]** — where the thesis depends on an unverified assumption, frame it as a verification gate. State what metric or data point is needed, why the current data is incomplete, and what specifically to ask for. These are not blockers — they are items that strengthen or weaken the thesis once resolved. Use the prefix "To verify:" to distinguish from structural gates.
+- **To verify [topic 2]** — second verification item (if applicable), same framing.
 
-Mark gates with ⚠️. Mark strengths with ✓. These are not informational summaries — they are arguments.
+Mark verification items with "To verify:" prefix. Mark strengths with descriptive headers (e.g., "Genuine moat:", "Clear entry opportunity:"). These are not informational summaries — they are arguments.
 
 ---
 
@@ -47,8 +56,12 @@ If the target has multiple BUs or service lines, explain how they interrelate. D
 - Which BU gets the group "in the door" (the entry point)?
 - Which BU converts that entry into recurring revenue (the cash engine)?
 - Which BU adds the highest-margin or highest-multiple layer (the multiple driver)?
-- What is the reinforcing loop — how does each BU feed the next?
-- What is the limitation — where does the loop break or fail to scale?
+
+After the bullet descriptions, write two explicit paragraphs:
+
+**Reinforcing loop:** Write one sentence showing how each BU feeds the next in a virtuous cycle (e.g., "Onsite programs establish the employer relationship → vouchers expand coverage to remote workforce → adjacency services increase wallet share and contract stickiness → contracted multi-year agreements lock in ARR → scale drives procurement leverage and margin expansion").
+
+**Limitation:** Write one sentence on where the loop breaks (e.g., "The loop breaks if adjacency services don't convert — without multi-product, the business remains seasonal and single-product. Partner delivery model for adjacencies means margin sharing and less operational control").
 
 ---
 
@@ -87,6 +100,8 @@ Present as a table:
 - Identify which service lines are growing vs. declining and why
 - Flag if the CIM does not break revenue by BU or service line — this is a Day 1 DD ask
 
+If the CIM does not provide BU-level margin splits or forecasted revenue contribution by BU, insert a **⚠️ callout box** flagging these as Day 1 DD asks. Do not bury data gaps in prose — make them visually distinct.
+
 ---
 
 ## 5. Notable Projects & Client Portfolio
@@ -119,13 +134,15 @@ Present as a single table. Every row must end with a VP-level observation — no
 - Format: `[Source Name, Year](URL)` — always include the hyperlink, not just the name.
 - If a figure is a published number (e.g. market research report), cite the report with a direct link.
 - If a figure is derived/estimated (e.g. SOM where no published data exists), mark as `[ASSUMPTION]` and include a **derivation note** below the table explaining the methodology (e.g. "TAM × segment share × fee-as-%-of-contract-value"). Cross-reference with at least one published data point.
-- SOM should cite the target's own financials (e.g. "AFS FY2025").
+- SOM should cite the target's own financials as the baseline (e.g. "AFS FY2025") plus the CIM projections or management guidance that support the near-term capture estimate. SOM is NOT current revenue — it is the realistic near-term addressable revenue given current infrastructure, contracted pipeline, and planned expansion.
 
 | Level | Market Segment | Size | CAGR | Observations | Source |
 |---|---|---|---|---|---|
 | **TAM** | [Broadest relevant market] | | | *Why does this matter for exit / strategic interest?* | [Report, Year](URL) |
 | **SAM** | [Segments the company competes in] | | | *What does this growth rate mean for the platform thesis?* | [ASSUMPTION] — see derivation below |
-| **SOM** | [Realistic near-term capture] | | | *Current share % — can we double through organic + M&A?* | AFS [Year] |
+| **SOM** | [Realistic near-term capture given current infrastructure, pipeline, and planned expansion] | | | *Current share % — what is the realistic 2-3 year revenue target? How much can we capture through organic growth + M&A + new product attach?* | AFS [Year]; CIM projections |
+
+**Critical SOM note:** SOM is NOT current revenue. Current revenue is a data point, not a market sizing output. SOM is the realistic near-term revenue the company can capture given: (1) current infrastructure and capacity, (2) contracted pipeline and renewal rates, (3) planned geographic or product expansion, and (4) acquisition integration (if applicable). State the growth trajectory from current revenue to SOM and the CAGR implied. Example: "Current revenue A$8.9m → SOM A$20-25m over 2-3 years (18% CAGR), driven by Medimobile synergies, geographic expansion, and multi-product adjacencies."
 
 **SAM derivation note** (required if SAM is estimated):
 > State the methodology: e.g. "Total construction demand × public infra share × supervision fee as % of contract value." Show the calculation with ranges. Cite the data inputs. Flag what needs to be validated in DD.
@@ -144,8 +161,8 @@ Include regional or macro growth context where relevant — construction market 
 
 Present as a **single table** covering all three tiers. Use tier headers as row separators. The columns are designed to surface the key IC questions in one scan: who competes, who can be acquired, who can bundle/integrate, where they overlap, and how dangerous they are.
 
-| Tier | Competitor | Owner (Acquirable?) | Can Bundle [Key Capability]? | Project / Client Overlap | Threat to [Target] |
-|---|---|---|---|---|---|
+| Tier | Competitor | Owner (Acquirable?) | Can Bundle [Key Capability]? | Project / Client Overlap | Threat to [Target] | Volume / Market Share |
+|---|---|---|---|---|---|---|
 | **Tier 1 — Direct** | | | | | |
 | | [Name] | [Parent] — **Yes/No** | **Yes/No.** [What they can bundle.] | [Specific mandates, clients, segments] | **HIGH/MOD/LOW.** [One-line: why they're dangerous or not.] |
 | **Tier 2 — Adjacent** | | | | | |
@@ -157,6 +174,7 @@ Present as a **single table** covering all three tiers. Use tier headers as row 
 - **Owner (Acquirable?):** State the parent entity and whether the competitor could realistically be acquired by a PE buyer. If most competitors are subsidiaries of listed/GLC groups, this drives scarcity value for an independent target — state explicitly.
 - **Can Bundle [Key Capability]?:** Adapt the column header to the deal's key competitive risk. For QPS: "Can Bundle D+S?" (design + supervise). For media: "Can Replicate 3-BU Model?" For tech: "Has Proprietary Platform?" The column should capture whether the competitor can offer the integrated/bundled package that threatens the target's standalone positioning.
 - **Threat to [Target]:** Rate as HIGH / MODERATE / LOW / NIL. One sentence explaining the mechanism: *why* they are (or aren't) a threat. Not generic — specific to the target's client base, geography, or procurement dynamics.
+- **Volume / Market Share:** Where data is available, include the competitor's volume (units, contracts, vaccinations, revenue, etc.) and implied market share %. This anchors the competitive positioning in numbers rather than qualitative assessments. If the target has acquired a competitor, show the pre- and post-acquisition combined figure to illustrate consolidation impact.
 
 **After the table, write a combined Observations & Moat paragraph** (one dense paragraph) that covers: (1) defensibility today, (2) the moat archetype and its key dimension — switching costs, pricing power, or operational alpha (rate the strongest one as HIGH/MOD/LOW with one-sentence justification), (3) the structural vulnerability — what is inherently wrong with the business model (not external threats — internal structural issues), and (4) scarcity — is the target one of few acquirable assets at this scale?
 
@@ -164,12 +182,14 @@ Close with **DD asks** for management: *"Who do you lose to, and why?"* plus any
 
 ### 6.4 Preliminary Risks & Mitigants
 
-**Thesis Killers:** The 3 things that would make us walk away. Frame as: *"It's 5 years from now and the deal failed — why?"* Write each as a two-sentence outcome statement: (1) what specifically went wrong, and (2) the consequence for what we actually bought. Example format: "[Risk event happened]. [Consequence — what the business became vs. what we paid for]."
+**Thesis Killers:** The 3-4 things that would make us walk away. Frame as: *"It's 5 years from now and the deal failed — why?"* Write each as a two-sentence outcome statement: (1) what specifically went wrong, and (2) the consequence for what we actually bought. Example format: "[Risk event happened]. [Consequence — what the business became vs. what we paid for]."
 
-**Commercial Diligence Roadmap:** Present as a table:
+For businesses with <20 FTE or significant founder dependency, expand the key-person thesis killer to cover: (1) what specific functions the founder performs that cannot be easily replaced, (2) what their post-transaction economic alignment looks like (% ownership pre vs. post, vesting, earnout), and (3) whether a middle management layer exists to absorb departure risk. A founder selling down from X% to Y% while remaining operational is a different risk profile than a founder fully exiting — state which it is and why it matters for incentive alignment over the hold period.
 
-| Risk | DD Action | Timeline |
-|---|---|---|
+**Commercial Diligence Roadmap:** Present as a table with 5-7 rows. Each DD Action must be specific and actionable (e.g., "Interview 5-10 legacy clients; validate nurse retention; review platform migration timeline"), not generic (e.g., "conduct management interviews"). Cover at minimum: (1) budget achievability, (2) acquisition integration, (3) key contract renewals, (4) adjacency/new product economics, (5) key-person risk, (6) platform/technology diligence, (7) supply chain stability.
+
+| Risk | DD Action |
+|---|---|
 
 ---
 
@@ -177,9 +197,11 @@ Close with **DD asks** for management: *"Who do you lose to, and why?"* plus any
 
 All figures in S$'000 (or local currency equivalent). Every number must cite its source.
 
-### Historical (Audited):
+### Historical (Standalone):
 
-Present a **single integrated table** covering P&L, EBITDA build-up, and normalisation adjustments. Revenue must be broken down by service line / BU — do not present a single consolidated revenue line without the underlying split.
+Present **two separate tables**: (1) Historical covering the last 2-3 fiscal years of the **standalone** entity (pre-acquisition, pre-step-change), and (2) Budget/Forecast for the current or next fiscal year, inclusive of any acquisitions or step-changes. The separation is critical — combining pre- and post-acquisition figures in one table obscures organic performance and makes trend analysis meaningless.
+
+**Historical table:** A single integrated table covering P&L, EBITDA build-up, and normalisation adjustments. Revenue must be broken down by service line / BU — do not present a single consolidated revenue line without the underlying split.
 
 | Metric (S$'000) | FY [Year-2] | FY [Year-1] | FY [Current] | Source |
 |---|---|---|---|---|
@@ -239,6 +261,22 @@ After the historical table, provide **3-5 concise bullet observations** covering
 4. **Cost structure signal:** What is the split between employee costs and subcontractor/outsourced costs? Is the ratio shifting? If subcontractor reliance is increasing, this is a margin compression driver *and* a value creation opportunity (in-sourcing).
 5. **Owner extraction:** Dividend payout ratio, related party charges, director compensation — what is being extracted pre-sale, and what flows back to EBITDA post-acquisition?
 
+### Budget / Forecast (Current Year):
+
+If the entry year includes a material step-change (acquisition, new product launch, restructuring), present the budget as a **separate table** from historical. Add a **Notes** column — flag key assumptions inline (e.g., "Inclusive of [acquisition]", "Low-hanging fruit to cross-sell [product] to [acquisition] client base").
+
+If the entry EBITDA used in the deal valuation differs from normalised EBITDA (e.g., due to management incentive structures, earnout accruals, or one-off integration costs), **state both figures and explain the delta**. Example: "The entry EBITDA of A$3.1m includes management incentive bonus structure. The normalised EBITDA of A$3.54m excludes incentives based on the prior deal structure. The A$441k difference represents the management incentive to be re-structured under the continuation vehicle."
+
+| Metric | FY [Current]B | Notes |
+|---|---|---|
+| **Revenue** | | Inclusive of [acquisition] |
+| *[Service Line 1]* | | |
+| *[Service Line 2]* | | [Cross-sell opportunity note] |
+| *[Service Line 3]* | | |
+| **EBITDA** | | |
+| **EBITDA Margin %** | | |
+| **EBITDA incl. mgmt incentive** | | [If applicable — state the deal EBITDA basis] |
+
 ### Management Projections (from CIM, if available):
 
 | Metric (S$'000) | FY [Year+1] | FY [Year+2] | FY [Year+3] | FY [Year+4] | FY [Year+5] | Source |
@@ -251,6 +289,8 @@ If projections are not available, note this as a data gap.
 ## 8. Balance Sheet & Working Capital
 
 Present **two tables** — a balance sheet summary and a working capital efficiency table. All figures from audited AFS.
+
+**Limited data handling:** If the CIM does not provide audited financial statements or a detailed balance sheet, insert a **⚠️ callout box** stating: "Limited data. The CIM does not provide [specific missing items]. Below is inferred from CIM disclosures." Do not fabricate a full balance sheet from incomplete data — present what is available and flag what must be requested in DD.
 
 ### Balance Sheet:
 
