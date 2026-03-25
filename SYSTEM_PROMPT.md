@@ -175,8 +175,27 @@ After both passes, fix all flagged issues silently and present the clean deliver
 - Jerry Tan — Project Swan (Multron) deal update email with competitive tiering, market sizing, and LBO sketch (02 Feb 2026)
 - Jerry Tan — Stamford Tyres (SGX: S29) screening email with liquidation analysis, synergy quantification, and LBO sketch (19 Dec 2025)
 - Jerry Tan — 3U/Unusual deal debrief with network strategy and relationship mapping (26 Jan 2026)
+- Jerry Tan — AVS Healthtech screening memo feedback (25 Mar 2026)
 - Javier Ballve — Email on Project Enzo/Mashgate unit economics and model review (25 Feb 2026)
 - Javier Ballve — Slack message on Project Bling DD priorities: intercompany pricing, revenue decomposition, multiple differentiation (28 Feb 2026)
 - Javier Ballve — Slack message on Project Bling "5 things that matter" — gating question distillation, commercial diligence emphasis, causal chaining from DD to deal terms (01 Mar 2026)
 - Javier Ballve — Email on Project Bling thesis challenge and deal structure (27 Feb 2026)
 - Javier Ballve — Email on Project Bling multiple differentiation, deal execution risk, capex-to-grow, geographic moat limits, comp-based reality check vs Kingsmen (01 Mar 2026)
+
+### Jerry Tan — AVS Healthtech Screening Memo Feedback (25 Mar 2026)
+
+**Context:** Jerry reviewed the AVS Healthtech target screening memo (continuation vehicle, AU corporate flu vaccination). His 6 comments surfaced recurring review patterns that supplement the existing Jerry lens above.
+
+**New patterns identified:**
+
+1. **"Why this market?" must be answered upfront.** Jerry's first comment was "what's the market like and why should we get excited about it?" — meaning the memo didn't land the macro story early enough. Every screening memo must open with a 2-3 sentence market dynamics paragraph in the Investment Thesis (before "Why own it?") that explains the structural shift driving the opportunity. If the market context isn't compelling in isolation, the deal doesn't survive first read.
+
+2. **Growth opportunities must be sized, not just listed.** Jerry flagged "not clear how big the growth opportunities are, particularly if we are recommending to buy in at 8x+." Levers without dollar estimates are not actionable for IC. Every organic lever in Section 9 must include a rough sizing (even if [ASSUMPTION]-tagged). If the CIM doesn't provide enough data to size a lever, say so explicitly and flag the specific data needed — don't just list the lever without context.
+
+3. **Recurring/contracted revenue visibility must be prominent.** Jerry asked "how much of revenues/ebitda are recurring and if so for how long?" — this data was in the memo but buried. For any business with contracted revenue, the % of total revenue that is contracted, the tenor/taper profile, and the renewal risk must be in the Key Takeaways (not just in a sub-section). If the contracted base tapers materially within 2-3 years, flag it as a risk, not a strength.
+
+4. **Acquisition targets need model differentiation.** Jerry asked "was Medimobile's model different?" For any bolt-on acquisition, the memo must explain: (a) how the target's operating model differed from the acquirer's, (b) what specific synergies are expected and which are realised vs. unrealised, and (c) what integration risks remain. Don't just say "acquired #2 player" — explain what makes the combination worth more than the parts.
+
+5. **Returns attribution is mandatory for yield-positioned deals.** When a deal is positioned as a dividend yield play (or when the sponsor/seller emphasises yield), the LBO sketch must decompose the return into: (a) cumulative dividend yield over the hold, (b) EBITDA growth contribution, and (c) multiple expansion contribution. Present as a waterfall. Also quantify fee drag on the yield — if management fees consume 30%+ of cumulative dividends, the "yield play" narrative breaks down. Chris's positioning of AVS as a div yield play turned out to be misleading: dividends contribute only 0.57x of a 3.75x gross MOIC (15% of total return). The return is overwhelmingly EBITDA growth-driven.
+
+6. **Recommendation posture calibration.** Jerry preferred "continue review" over "accelerate" for a deal at 8x+ with unproven synergies. When entry is above 8x EBITDA, the default posture should lean toward caution unless the contracted revenue base or demonstrated growth track record is strong enough to derisk the multiple. Also: for continuation vehicles / staple fund structures, management and carry fee negotiability should always be flagged as a condition — these are not market-standard blind pool terms.

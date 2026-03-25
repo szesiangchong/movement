@@ -50,6 +50,8 @@ Summarise in 1-2 short paragraphs:
 - Operating model (asset-light vs. asset-heavy, in-house vs. outsourced)
 - Any notable inflection points (pivots, expansions, carve-outs)
 
+If the target has made a material acquisition, explain: (a) how the acquired entity's operating model differed from the acquirer's (e.g., "Medimobile was almost entirely onsite nurse deployment — no voucher channel, no proprietary platform"), (b) what specific synergies are expected and which are realised vs. unrealised, and (c) what integration risks remain. Don't just say "acquired #2 player" — explain what makes the combination worth more than the parts.
+
 ### How the Business Units Work Together
 
 If the target has multiple BUs or service lines, explain how they interrelate. Don't just list them — explain the value chain:
@@ -67,12 +69,13 @@ After the bullet descriptions, write two explicit paragraphs:
 
 ## 2. Investment Thesis
 
-**Keep this concise. 2-3 short paragraphs maximum.**
+**Keep this concise. 3-4 short paragraphs maximum.**
 
-Structure as three questions:
-1. **Why own it?** Not "good company" — why is ownership value-accretive? What creates switching costs or defensibility?
-2. **Why now?** What seller circumstance, market dislocation, or capacity signal creates the entry opportunity?
-3. **Exit story?** Enter at Xx as "[current label]." Exit at Yx as "[reframed label]." Who buys this in 3-5 years? What is the mechanism for multiple arbitrage?
+Structure as four questions:
+1. **Why this market?** (2-3 sentences) What structural shift is happening that makes this sector attractive for PE right now? This is not the TAM/SAM from Section 6 — this is the 30-second elevator pitch for why the market itself is interesting. Example: "Flu vaccination delivery is shifting from GPs to pharmacies and corporate providers. The 'Other Vaccinators' channel is the fastest-growing segment. AVS is the #1 player in this channel." If the market context isn't compelling in isolation, the deal doesn't survive first read.
+2. **Why own it?** Not "good company" — why is ownership value-accretive? What creates switching costs or defensibility?
+3. **Why now?** What seller circumstance, market dislocation, or capacity signal creates the entry opportunity?
+4. **Exit story?** Enter at Xx as "[current label]." Exit at Yx as "[reframed label]." Who buys this in 3-5 years? What is the mechanism for multiple arbitrage?
 
 ---
 
@@ -352,6 +355,8 @@ Present as a table:
 
 For each lever: state the specific action, explain the mechanism (how it creates EBITDA), and estimate the impact. Be specific — not "improve pricing" but "raise Adactive licence fees 5-10% on near-monopoly installed base."
 
+**Sizing is mandatory, not optional.** Every organic lever must include an estimated revenue or EBITDA impact range, even if rough. Use the format: "[X]k units × A$[Y] per unit = A$[Z]m" or "[X]% of [base] = A$[Y]m". If the CIM does not provide enough data to size a lever, flag it as a follow-up item with the specific data points needed. An unsized lever is not actionable for IC — particularly when recommending entry above 8x EBITDA.
+
 ### Buy & Build
 
 2-3 bullet points on bolt-on logic and multiple arbitrage mechanism. State the entry label → exit label reframing and implied multiple expansion.
@@ -478,6 +483,21 @@ Present two scenarios side by side. **Use Year 5 computed EBITDA (growing), not 
 3×4 matrix: Entry multiples (rows) × Exit multiples (columns). Show Sponsor MoIC in each cell, with a "Sponsor Eq." column showing how the equity cheque changes by entry multiple. Highlight the base case cell (entry = C6, exit = C17) with blue fill.
 
 Close with 2-3 sentences: what the spread between scenarios tells you (i.e. the value of proving the platform thesis), whether the floor return is acceptable, and what the key assumption risk is.
+
+### G. Returns Attribution (required for yield-positioned deals)
+
+If the deal is positioned as a dividend yield play, or if the sponsor/seller emphasises cash-on-cash yield, decompose the total MoIC into three components:
+
+| Component | Contribution to MOIC | % of Total Return |
+|---|---|---|
+| Cumulative dividend yield (hold period) | X.Xx | X% |
+| EBITDA growth (entry → exit EBITDA at constant multiple) | X.Xx | X% |
+| Multiple expansion (entry → exit multiple at constant EBITDA) | X.Xx | X% |
+| **Total Gross MOIC** | **X.Xx** | **100%** |
+
+Also quantify fee drag on the yield: total management fees over the hold period as a % of cumulative dividends. If management fees consume 25%+ of cumulative dividends, the "yield play" narrative is misleading and should be flagged.
+
+For continuation vehicles and staple fund structures, always flag management and carry fee negotiability as a condition — these are not market-standard blind pool terms when applied to a single known asset.
 
 
 
