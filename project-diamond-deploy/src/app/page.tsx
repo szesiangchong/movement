@@ -997,7 +997,7 @@ function TermSheetTab() {
 
             <div className="bg-gray-50 rounded-xl p-4">
               <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA is below the target but above the floor (80%)?</div>
-              <div className="text-xs text-gray-600">A: The Year 1 tranche (S$2.58M) pays out proportionally between the floor and target. The unpaid portion carries forward, but recovering it requires Year 2 to <strong>exceed</strong> its own S$8.0M target by the EBITDA shortfall amount. For example, if Year 1 misses by S$300K, Year 2 needs to hit S$8.3M (not just S$8.0M) to fully recover the carried amount.</div>
+              <div className="text-xs text-gray-600">A: The Year 1 tranche (S$2.58M) pays out <strong>proportionally</strong> based on where EBITDA lands between the floor (S$6.0M) and the target (S$7.5M). The formula is: <em>Payout = (Actual − Floor) ÷ (Target − Floor) × Tranche</em>. For example, if Year 1 EBITDA is S$7.0M: payout = (7.0 − 6.0) ÷ (7.5 − 6.0) × S$2.58M = <strong>66.7% × S$2.58M = S$1.72M</strong>. The unpaid S$0.86M carries forward, but recovering it requires Year 2 to <strong>exceed</strong> its own S$8.0M target by the EBITDA shortfall (S$0.5M in this case). Year 2 would need S$8.5M to fully recover the carried amount.</div>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-4">
