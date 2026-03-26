@@ -125,7 +125,26 @@ Add a **"So what"** paragraph after the table: What does the project portfolio r
 
 ## 6. Market Overview
 
-### 6.1 Market Size
+Open with a consolidated **Sources:** line immediately below the section header, listing all sources used in this section. Format: "Sources: [Source 1] (metric). [Source 2] (metric). ..." This lets the reader assess data quality at a glance before reading the analysis.
+
+### 6.1 Growth Opportunity Sizing
+
+Before presenting market tables, size the **specific organic growth levers** available to the target. Each lever must include a quantified estimate using the format: `[volume] × [conversion/adoption rate] × [ASP or unit value] = [revenue/EBITDA impact]`. This answers the IC question "how big are the growth opportunities?" with numbers, not narratives.
+
+Present as **numbered bullets** (4-6 items), each one line:
+1. **[Lever name]:** [volume] × [rate] × [price] = [impact]. Brief context.
+2. **[Lever name]:** [metric] = [impact]. Brief context.
+3. ...
+
+Close with the management's own projection as a benchmark: "Management projects [current revenue] to [target revenue] and [current EBITDA] to [target EBITDA] over [N] years (Slide [X]), but no EBITDA bridge by lever provided. To follow-up."
+
+If the CIM does not provide enough data to size a lever, state what data is missing and flag as a DD ask. An unsized opportunity is not actionable for IC.
+
+### 6.2 Market Size
+
+**For single-product businesses**, use the TAM/SAM/SOM framework below. **For multi-product platform businesses** with multiple service lines at different stages of maturity, use the **Addressable Opportunity by Service Line** table instead (or in addition).
+
+#### Option A: TAM/SAM/SOM (single-product)
 
 Present as a single table. Every row must end with a VP-level observation — not a description, but an *investment implication.*
 
@@ -154,13 +173,35 @@ Follow with a **Segment-Level Breakdown** table mapping each segment to the rele
 
 Include regional or macro growth context where relevant — construction market size, smart city trends, regulatory catalysts.
 
-### 6.2 Right to Play & Right to Win
+#### Option B: Addressable Opportunity by Service Line (multi-product)
+
+For businesses with 3+ service lines at varying maturity stages, present a **tiered service-line table** showing current state vs. 5-year outlook for each line. Group into maturity tiers with section headers as row separators.
+
+| Service Line | Market Size (A$) | Current (FY25/26) | 5-Year Outlook | Source |
+|---|---|---|---|---|
+| **CORE — ESTABLISHED** | | | | |
+| [Line 1] | [AU market size] | [Current volume + revenue] | [Projected volume + revenue] | [Source] |
+| [Line 2] | [AU market size] | [Current volume + revenue] | [Projected volume + revenue] | [Source] |
+| **LAUNCHING — PROOF OF CONCEPT** | | | | |
+| [Line 3] | [AU market size] | [Pre-launch or minimal] | [Projected if X% adoption] | [Source] |
+| **FUTURE — UNDER EVALUATION** | | | | |
+| [Line 4] | [AU market size] | Not launched | [Potential if proven] | [Source] |
+| **TOTAL — Target Revenue** | | [Current total] | [CIM Year 5 target] | CIM Slide [X] |
+| **TOTAL — Addressable Market** | | [Sum of current addressable] | [Sum of 5-year addressable] | [Note if unverified] |
+
+**Table rules:**
+- Keep cell text punchy — fragments, not sentences. Volume metrics (doses, units, clients) alongside A$ figures.
+- Market Size column must have clear A$ figures that can be summed. If the market is defined differently for different lines (total AU market vs. workplace-addressable niche), state the basis.
+- TOTAL rows at the bottom must be bold/highlighted. Two totals: (1) target's own revenue trajectory, and (2) total addressable market across all lines.
+- Source every row. Mark unverified adjacency sizing as "[ASSUMPTION] — sizing unverified".
+
+### 6.3 Right to Play & Right to Win
 
 - **Right to Play:** What gives this company permission to compete (licences, certifications, track record, relationships)?
 - **Right to Win:** What gives this company an edge over competitors (proprietary capability, cost advantage, regulatory moat, installed base)?
 - **What They Lack:** What capability gaps or structural weaknesses limit their ability to capture more of the SAM?
 
-### 6.3 Competitive Landscape & Structural Moat
+### 6.4 Competitive Landscape & Structural Moat
 
 Present as a **single table** covering all three tiers. Use tier headers as row separators. The columns are designed to surface the key IC questions in one scan: who competes, who can be acquired, who can bundle/integrate, where they overlap, and how dangerous they are.
 
@@ -183,7 +224,7 @@ Present as a **single table** covering all three tiers. Use tier headers as row 
 
 Close with **DD asks** for management: *"Who do you lose to, and why?"* plus any data gaps.
 
-### 6.4 Preliminary Risks & Mitigants
+### 6.5 Preliminary Risks & Mitigants
 
 **Thesis Killers:** The 3-4 things that would make us walk away. Frame as: *"It's 5 years from now and the deal failed — why?"* Write each as a two-sentence outcome statement: (1) what specifically went wrong, and (2) the consequence for what we actually bought. Example format: "[Risk event happened]. [Consequence — what the business became vs. what we paid for]."
 
