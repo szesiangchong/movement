@@ -9,7 +9,7 @@ const fmt = (n: number) => "S$" + (Math.abs(n) >= 1000 ? (n / 1000).toFixed(1) +
 const fmtK = (n: number) => "S$" + Math.round(n).toLocaleString("en-SG");
 // Full dollar formatter: converts S$'000 to full dollars (e.g. 8000 -> "S$8,000,000")
 const fmtFull = (n: number) => "S$" + (n * 1000).toLocaleString("en-SG", { maximumFractionDigits: 0 });
-const TABS = ["Value to Shareholders", "Earnout", "Group Structure", "Timeline & Key DD Topics", "Term Sheet"];
+const TABS = ["Value to Shareholders", "Earnout", "Group Structure", "Timeline & Key DD Topics", "Term Sheet", "Family Overview"];
 
 // Hard-coded assumptions (not shown to family)
 const EV = 40000;
@@ -1137,6 +1137,376 @@ function TermSheetTab() {
 }
 
 // ════════════════════════════════════════════════════════════════════════
+// TAB 6 — FAMILY OVERVIEW (layman-friendly summary + leadership framework)
+// ════════════════════════════════════════════════════════════════════════
+function FamilyOverviewTab() {
+  const UPFRONT = 31400;
+  const EARNOUT_AMT = 8600;
+  const EBITDA = 7172;
+  const [levX, setLevX] = useState(1.5);
+
+  const active = useMemo(() => {
+    const debt = levX * EBITDA;
+    const totalEquity = UPFRONT - debt;
+    const movementEquity = totalEquity * 0.70;
+    const mgmtEquity = totalEquity * 0.30;
+    const netCash = UPFRONT - mgmtEquity;
+    return { debt, totalEquity, movementEquity, mgmtEquity, netCash };
+  }, [levX]);
+
+  const FamilySection = ({ title, icon, children, defaultOpen = true }: { title: string; icon: string; children: React.ReactNode; defaultOpen?: boolean }) => {
+    const [open, setOpen] = useState(defaultOpen);
+    return (
+      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden mb-5 shadow-sm">
+        <button onClick={() => setOpen(!open)} className="w-full flex items-center gap-3 px-6 py-4 hover:bg-gray-50 transition-colors text-left">
+          <span className="text-xl">{icon}</span>
+          <span className="font-bold text-base text-gray-900 flex-1">{title}</span>
+          <span className={`text-gray-400 transition-transform ${open ? '' : '-rotate-90'}`}>▼</span>
+        </button>
+        {open && <div className="px-6 pb-6 border-t border-gray-100">{children}</div>}
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-5">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-2xl p-6 text-white text-center">
+        <h2 className="text-xl font-bold mb-2">Partnership Proposal — For the CARATS Family</h2>
+        <p className="text-blue-200 text-sm max-w-2xl mx-auto">A straightforward explanation of how this partnership works, what it means for the family financially, and how we plan to grow the business together.</p>
+      </div>
+
+      {/* 1. What are we proposing? */}
+      <FamilySection title="What Are We Proposing?" icon="🤝">
+        <div className="mt-3 space-y-4">
+          <p className="text-sm text-gray-700 leading-relaxed">Movement would like to partner with the CARATS family by acquiring a <strong>70% stake</strong> in all three businesses — Carats & Co, Gleamedia, and Adactive — while the <strong>management team retains 30%</strong> and continues running the day-to-day operations.</p>
+          <p className="text-sm text-gray-700 leading-relaxed">All three businesses will sit under one holding company (&quot;HoldCo&quot;), making it simpler to manage the group as a whole. This replaces the current setup of three separate companies with different shareholdings.</p>
+          <div className="bg-blue-50 rounded-xl p-4 mt-3">
+            <div className="text-sm font-semibold text-blue-900 mb-2">The agreed value of the group is S$40 million</div>
+            <p className="text-xs text-gray-600">This is based on approximately 5.6 times the group&apos;s earnings (EBITDA) of S$7.17 million in FY2025. The final number may adjust slightly after we complete our financial review together.</p>
+          </div>
+        </div>
+      </FamilySection>
+
+      {/* 2. How much cash will the family receive? */}
+      <FamilySection title="How Much Cash Will the Family Receive?" icon="💰">
+        <div className="mt-3 space-y-4">
+          <p className="text-sm text-gray-700 leading-relaxed">The total consideration of S$40 million is split into two parts:</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-green-50 rounded-xl p-5 border border-green-200">
+              <div className="text-2xl font-bold text-green-700">{fmt(UPFRONT)}</div>
+              <div className="text-sm font-semibold text-green-800 mt-1">Paid upfront at closing</div>
+              <p className="text-xs text-gray-600 mt-2">This is the amount paid to all shareholders on day one. It&apos;s unconditional — once received, it cannot be clawed back regardless of future performance.</p>
+            </div>
+            <div className="bg-purple-50 rounded-xl p-5 border border-purple-200">
+              <div className="text-2xl font-bold text-purple-700">{fmt(EARNOUT_AMT)}</div>
+              <div className="text-sm font-semibold text-purple-800 mt-1">Earnout — paid over 2 years</div>
+              <p className="text-xs text-gray-600 mt-2">An additional payment linked to the business hitting agreed profit targets. Think of it as a bonus for continued strong performance. Paid from the company&apos;s own cash flow, not out of anyone&apos;s pocket.</p>
+            </div>
+          </div>
+
+          <p className="text-sm text-gray-700 leading-relaxed">Because management reinvests part of their proceeds to hold their 30% stake in HoldCo, the <strong>net cash the family takes home at closing</strong> depends on how the deal is financed:</p>
+
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-bold text-gray-500">Financing scenario:</span>
+            {[1.0, 1.5, 2.0].map(l => (
+              <button key={l} onClick={() => setLevX(l)}
+                className={`px-4 py-2 rounded-lg text-xs font-bold border-2 transition-all ${levX === l ? 'bg-blue-900 text-white border-blue-900' : 'border-gray-300 text-gray-600 hover:border-blue-900'}`}>
+                {l.toFixed(1)}x
+              </button>
+            ))}
+          </div>
+
+          <div className="bg-gray-50 rounded-xl p-5">
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-lg font-bold text-green-700">{fmt(active.netCash)}</div>
+                <div className="text-[11px] text-gray-500 mt-1">Net cash at closing</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold text-blue-500">{fmt(active.mgmtEquity)}</div>
+                <div className="text-[11px] text-gray-500 mt-1">Reinvested for 30%</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold text-purple-600">{fmt(EARNOUT_AMT)}</div>
+                <div className="text-[11px] text-gray-500 mt-1">Potential earnout</div>
+              </div>
+            </div>
+            <div className="text-center mt-3 pt-3 border-t border-gray-200">
+              <div className="text-xs text-gray-500">If all targets are met, total cash to shareholders:</div>
+              <div className="text-xl font-bold text-gray-900 mt-1">{fmt(active.netCash + EARNOUT_AMT)}</div>
+            </div>
+          </div>
+
+          <div className="bg-amber-50 border-l-4 border-amber-400 p-4 text-sm text-gray-700">
+            <strong>Why doesn&apos;t the family just get the full S$40M in cash?</strong> Because management keeps 30% of the company. Instead of cashing out completely, they put some of their proceeds back in — this means they have &quot;skin in the game&quot; and are financially aligned with Movement to grow the business. The more debt the company takes on (safely), the less management needs to reinvest, and the more cash comes home.
+          </div>
+        </div>
+      </FamilySection>
+
+      {/* 3. How does the earnout work? */}
+      <FamilySection title="How Does the Earnout Work?" icon="📊">
+        <div className="mt-3 space-y-4">
+          <p className="text-sm text-gray-700 leading-relaxed">The S$8.6M earnout rewards the family for continued strong performance. It&apos;s paid in two instalments based on EBITDA (essentially profit before interest, tax, and accounting adjustments):</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="rounded-xl border border-gray-200 p-4">
+              <div className="text-sm font-bold text-gray-900 mb-2">Year 1 — S$2.58M (30%)</div>
+              <div className="text-xs text-gray-600 space-y-1.5">
+                <p><strong>Target:</strong> EBITDA of S$7.5M</p>
+                <p><strong>Minimum threshold:</strong> S$6.0M (80% of target)</p>
+                <p>Hit the target → full S$2.58M is paid</p>
+                <p>Between S$6.0M and S$7.5M → partial payment, scaled proportionally</p>
+                <p>Below S$6.0M → no payment for this year, but the amount carries forward</p>
+              </div>
+            </div>
+            <div className="rounded-xl border border-gray-200 p-4">
+              <div className="text-sm font-bold text-gray-900 mb-2">Year 2 — S$6.02M (70%)</div>
+              <div className="text-xs text-gray-600 space-y-1.5">
+                <p><strong>Target:</strong> EBITDA of S$8.0M</p>
+                <p><strong>Minimum threshold:</strong> S$6.4M (80% of target)</p>
+                <p>Same scaling as Year 1 — proportional between threshold and target</p>
+                <p>Plus: if Year 1 fell short, you can recover it in Year 2 if EBITDA <em>exceeds</em> the Year 2 target</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 rounded-xl p-4">
+            <div className="text-sm font-bold text-blue-900 mb-2">How does the &quot;proportional&quot; scaling actually work?</div>
+            <p className="text-xs text-gray-700 mb-2">The formula is straightforward: <strong>Payout = (Actual EBITDA − Minimum) ÷ (Target − Minimum) × Tranche</strong></p>
+            <div className="bg-white rounded-lg p-3 text-xs text-gray-700">
+              <p className="font-semibold mb-1">Worked example — Year 1 EBITDA comes in at S$7.0M:</p>
+              <p>Payout = (7.0M − 6.0M) ÷ (7.5M − 6.0M) × S$2.58M</p>
+              <p>= S$1.0M ÷ S$1.5M × S$2.58M</p>
+              <p>= <strong>66.7% × S$2.58M = S$1.72M paid</strong></p>
+              <p className="mt-2 text-gray-500">The remaining S$0.86M carries forward to Year 2. To recover it, Year 2 EBITDA needs to exceed S$8.0M by the shortfall amount (S$0.5M), i.e. hit at least S$8.5M.</p>
+            </div>
+          </div>
+
+          <div className="bg-green-50 border-l-4 border-green-400 p-4 text-sm text-gray-700">
+            <strong>Important:</strong> The earnout targets (S$7.5M and S$8.0M) are set <em>below</em> management&apos;s own forecasts of S$7.89M and S$8.52M. This means that if the business performs in line with what the team expects, the full earnout should be achieved.
+          </div>
+        </div>
+      </FamilySection>
+
+      {/* 4. What protections does the family have? */}
+      <FamilySection title="What Protections Does the Family Have?" icon="🛡️">
+        <div className="mt-3 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-2">Guaranteed exit path</div>
+              <p className="text-xs text-gray-600">After a lock-up period (3–5 years), the 30% holders have a <strong>put option</strong> — the right to sell their shares to Movement at fair market value, determined by an independent valuation. No more being stuck in an illiquid private company.</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-2">Right of first refusal</div>
+              <p className="text-xs text-gray-600">If any 30% holder wants to sell their shares, Movement has the right to buy them first. This prevents unwanted third parties from entering the shareholder base.</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-2">Tag-along rights</div>
+              <p className="text-xs text-gray-600">If Movement ever sells its 70% stake to someone else, the family has the right to sell their 30% <strong>on the same terms and at the same price</strong>. You won&apos;t be left behind with a new majority owner you didn&apos;t choose.</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-2">Board representation & oversight</div>
+              <p className="text-xs text-gray-600">A seat on the board is reserved for continuing management. Major decisions — large spending, new debt, key hires — require board approval, giving the family a voice in how the company is run.</p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 italic">Detailed mechanics for all of the above will be set out in the shareholders&apos; agreement (SHA) and sale and purchase agreement (SPA).</p>
+        </div>
+      </FamilySection>
+
+      {/* 5. Growth Vision */}
+      <FamilySection title="Where Do We See the Group Going?" icon="🚀">
+        <div className="mt-3 space-y-4">
+          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 text-sm text-gray-700">
+            <em>The growth plan below represents Movement&apos;s initial thinking, to be further discussed and refined with Management. We see three clear avenues for growth — one for each business unit.</em>
+          </div>
+
+          {/* Carats */}
+          <div className="rounded-xl border-2 border-red-200 p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-sm font-bold text-red-600">1</div>
+              <div>
+                <div className="text-sm font-bold text-red-700">Carats & Co — Regional Signage Leader</div>
+                <div className="text-[11px] text-gray-500">Core business • ~S$20M revenue</div>
+              </div>
+            </div>
+            <div className="text-xs text-gray-700 space-y-2 ml-10">
+              <p><strong>Organic growth:</strong> Leverage the S$43M backlog and long-term Stellar Ace/Lifestyle contracts (through 2033–2034) as a stable base. Focus on winning more institutional clients — transit operators, airports, commercial landlords — and extend into adjacent services like digital signage integration and smart wayfinding.</p>
+              <p><strong>Regional expansion:</strong> Replicate the Singapore model in Malaysia and Australia, where infrastructure-led signage demand is growing. Enter via partnerships with local contractors or through targeted acquisitions of smaller signage firms that provide an instant client base and local licences.</p>
+              <p><strong>Margin improvement:</strong> Standardise fabrication processes and invest in modular signage systems that reduce per-project engineering hours. Rationalise the subcontractor base to improve procurement terms.</p>
+            </div>
+          </div>
+
+          {/* Gleamedia */}
+          <div className="rounded-xl border-2 border-orange-200 p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm font-bold text-orange-600">2</div>
+              <div>
+                <div className="text-sm font-bold text-orange-700">Gleamedia — Scale the Media Network</div>
+                <div className="text-[11px] text-gray-500">OOH media & advertising • ~S$6M revenue • 1.18x book-to-bill</div>
+              </div>
+            </div>
+            <div className="text-xs text-gray-700 space-y-2 ml-10">
+              <p><strong>Supply-side — more screens, more locations:</strong> Penetrate more landlords and venue operators (malls, transit hubs, commercial buildings) with a capex-light model — Gleamedia provides the media management expertise; the landlord provides the location. Target a 2–3x expansion of the installed screen base over 5 years without proportional capital outlay.</p>
+              <p><strong>Demand-side — more advertisers, higher yields:</strong> Build a dedicated sales team to pitch national and regional advertisers. Offer programmatic buying options (automated, data-driven ad placement) to attract digital-native advertisers who currently bypass traditional OOH. Package cross-network deals — advertisers buy presence across multiple locations in a single campaign.</p>
+              <p><strong>Data monetisation:</strong> Equip screens with anonymised audience measurement (footfall, dwell time, demographic profiling via Adactive&apos;s camera analytics). Advertisers pay a premium for measurable impressions versus traditional &quot;eyeball guesses.&quot;</p>
+            </div>
+          </div>
+
+          {/* Adactive */}
+          <div className="rounded-xl border-2 border-yellow-200 p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-sm font-bold text-yellow-600">3</div>
+              <div>
+                <div className="text-sm font-bold text-yellow-700">Adactive — The Tech Layer That Goes Global First</div>
+                <div className="text-[11px] text-gray-500">Digital kiosks & software • ~S$2M revenue • capex-light</div>
+              </div>
+            </div>
+            <div className="text-xs text-gray-700 space-y-2 ml-10">
+              <p><strong>International expansion via existing OOH networks:</strong> Adactive&apos;s software is capex-light and platform-based, making it the natural first mover for overseas growth. Target partnerships with established international OOH operators — Clear Channel, JCDecaux, Moove Media — who already have the physical infrastructure but need digital interactivity and content management software.</p>
+              <p><strong>Cross-functional value within the group:</strong> Bundle Adactive&apos;s capabilities with the other BUs to offer integrated solutions that competitors can&apos;t easily replicate: digital wayfinding powered by Carats&apos; signage installations, camera analytics integrated with Gleamedia&apos;s media screens to track real-time personalised impressions, and interactive kiosks that serve as both information points and advertising platforms.</p>
+              <p><strong>Recurring revenue shift:</strong> Transition from one-off hardware installation revenue towards recurring SaaS licensing — annual software subscriptions, content management platform fees, and analytics dashboards. This improves revenue predictability and increases the business&apos;s value over time.</p>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 rounded-xl p-4 text-xs text-gray-600">
+            <strong className="text-gray-800">The integrated advantage:</strong> Separately, each BU competes in its own market. Together, the group offers something unique — an end-to-end solution from physical signage design and build (Carats), to media sales and network management (Gleamedia), to interactive digital technology (Adactive). This integrated platform is harder to replicate and more valuable to clients and partners.
+          </div>
+        </div>
+      </FamilySection>
+
+      {/* 6. Next-Gen Leadership Development */}
+      <FamilySection title="Next-Generation Leadership Development" icon="🌱">
+        <div className="mt-3 space-y-4">
+          <p className="text-sm text-gray-700 leading-relaxed">A key part of this partnership is supporting the next generation of leaders within the CARATS family. Movement has deep experience working alongside family businesses through generational transitions — we want to make sure the 2nd generation is set up to succeed, with real responsibilities and clear milestones.</p>
+
+          {/* 4 Pillars */}
+          <div className="text-sm font-bold text-gray-900 mb-1">How We Assess Readiness — 4 Pillars</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">1</div>
+                <div className="text-sm font-bold text-blue-900">Running the Numbers</div>
+              </div>
+              <p className="text-xs text-gray-700 ml-9">Each candidate takes ownership of a business unit or major initiative with real financial targets — revenue, margins, cash flow. Not advisory, but direct accountability for results against a plan they helped build.</p>
+            </div>
+            <div className="rounded-xl border border-purple-200 bg-purple-50 p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold">2</div>
+                <div className="text-sm font-bold text-purple-900">Thinking Ahead</div>
+              </div>
+              <p className="text-xs text-gray-700 ml-9">Each candidate develops a 5-year growth plan for their area — new markets, new capabilities, potential partnerships or acquisitions. Movement provides the frameworks and market data to pressure-test their thinking.</p>
+            </div>
+            <div className="rounded-xl border border-green-200 bg-green-50 p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold">3</div>
+                <div className="text-sm font-bold text-green-900">Working Across the Group</div>
+              </div>
+              <p className="text-xs text-gray-700 ml-9">Rotate candidates across BUs or assign cross-functional projects — for example, leading a joint Gleamedia + Carats initiative on integrated media offerings. Whoever leads the group one day needs to work across all three businesses, not just their own.</p>
+            </div>
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-full bg-amber-600 text-white flex items-center justify-center text-xs font-bold">4</div>
+                <div className="text-sm font-bold text-amber-900">Representing the Group</div>
+              </div>
+              <p className="text-xs text-gray-700 ml-9">Candidates lead key client relationships, bank discussions, and partner conversations — with Movement&apos;s coaching. The question: can they represent the group externally with confidence to clients, lenders, and potential partners?</p>
+            </div>
+          </div>
+
+          {/* How Movement Helps */}
+          <div className="text-sm font-bold text-gray-900 mt-4 mb-2">How Movement Supports This Process</div>
+          <div className="space-y-3">
+            <div className="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+              <div className="w-6 h-6 rounded-full bg-blue-900 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+              <div>
+                <div className="text-sm font-bold text-gray-900">Governance & accountability</div>
+                <p className="text-xs text-gray-600 mt-0.5">We help establish a proper board with independent oversight and quarterly performance reviews against agreed KPIs — transparent and fair across all candidates.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+              <div className="w-6 h-6 rounded-full bg-blue-900 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+              <div>
+                <div className="text-sm font-bold text-gray-900">Mentorship from our team</div>
+                <p className="text-xs text-gray-600 mt-0.5">Movement&apos;s senior team provides direct guidance on financial discipline, strategic planning, and execution. The 2nd generation gets hands-on exposure to institutional thinking and best practices.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+              <div className="w-6 h-6 rounded-full bg-blue-900 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+              <div>
+                <div className="text-sm font-bold text-gray-900">Real stretch assignments</div>
+                <p className="text-xs text-gray-600 mt-0.5">We co-design 12–18 month assignments with TH — for example, &quot;launch Gleamedia into one new market&quot; or &quot;improve Carats maintenance revenue by 20%.&quot; These are real tests with real consequences, not training exercises.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+              <div className="w-6 h-6 rounded-full bg-blue-900 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">✓</div>
+              <div>
+                <div className="text-sm font-bold text-gray-900">Best practices from outside</div>
+                <p className="text-xs text-gray-600 mt-0.5">Movement brings in learnings from other portfolio companies and industries, so the 2nd generation can see what &quot;great&quot; looks like beyond the family business.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Timeline */}
+          <div className="text-sm font-bold text-gray-900 mt-4 mb-2">Suggested Timeline</div>
+          <div className="relative">
+            {[
+              { phase: "Months 1–3", title: "Setup", desc: "Define roles, KPIs, and stretch assignments — collaboratively with TH", color: "bg-blue-600" },
+              { phase: "Months 3–15", title: "Execute & Review", desc: "Candidates execute their assignments with quarterly check-ins and performance reviews", color: "bg-purple-600" },
+              { phase: "Month 18", title: "Assessment", desc: "Formal assessment and recommendation on leadership readiness", color: "bg-green-600" },
+              { phase: "Months 18–24", title: "Transition", desc: "Selected candidate moves into deputy CEO role, with TH transitioning to an advisory capacity", color: "bg-amber-600" },
+            ].map((item, i) => (
+              <div key={i} className="flex gap-4 mb-1">
+                <div className="flex flex-col items-center">
+                  <div className={`w-3 h-3 rounded-full ${item.color} shrink-0 mt-1.5`}></div>
+                  {i < 3 && <div className="w-0.5 flex-1 bg-gray-200 min-h-[24px]"></div>}
+                </div>
+                <div className="pb-4">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-[10px] font-bold text-white px-2 py-0.5 rounded-full ${item.color}`}>{item.phase}</span>
+                    <span className="text-sm font-bold text-gray-900">{item.title}</span>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-0.5">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </FamilySection>
+
+      {/* 7. What happens next? */}
+      <FamilySection title="What Happens Next?" icon="📋">
+        <div className="mt-3 space-y-3">
+          <p className="text-sm text-gray-700 leading-relaxed">If the family is comfortable with the broad terms, the next steps are:</p>
+          <div className="space-y-2">
+            {[
+              { step: "1", title: "Letter of Intent (LOI)", desc: "We put the key terms in writing. This is non-binding but signals mutual intent and starts a period of exclusivity." },
+              { step: "2", title: "Due Diligence (6–8 weeks)", desc: "Both sides do their homework. We review the financials, contracts, and operations. You get to know us better. This is a collaborative process, not an interrogation." },
+              { step: "3", title: "Final Agreement (SPA)", desc: "Once DD is complete and everyone is satisfied, we draft the formal sale and purchase agreement with all the detailed terms." },
+              { step: "4", title: "Closing", desc: "Sign the papers, complete the transaction, and begin the new chapter together." },
+            ].map(item => (
+              <div key={item.step} className="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+                <div className="w-7 h-7 rounded-full bg-blue-900 text-white flex items-center justify-center text-xs font-bold shrink-0">{item.step}</div>
+                <div>
+                  <div className="text-sm font-bold text-gray-900">{item.title}</div>
+                  <p className="text-xs text-gray-600 mt-0.5">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-gray-500 mt-3">Indicative timeline: 14–16 weeks from LOI to closing, subject to the pace of due diligence and mutual agreement on final terms.</p>
+        </div>
+      </FamilySection>
+
+      {/* Footer note */}
+      <div className="text-[10px] text-gray-400 text-center py-4">
+        This document is for discussion purposes only and does not constitute a binding offer. All terms are indicative and subject to due diligence, definitive documentation, and mutual agreement.
+      </div>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
 // PASSWORD GATE
 // ════════════════════════════════════════════════════════════════════════
 const PASS_HASH = "8e1e3e1c88e04ede7c0a4a449e44f2ab1e877f60c17b2193c8914aecd11f196f";
@@ -1211,7 +1581,7 @@ function PasswordGate({ children }: { children: React.ReactNode }) {
 // ════════════════════════════════════════════════════════════════════════
 function Dashboard() {
   const [tab, setTab] = useState(0);
-  const content = [<ValueTab key={0} />, <EarnoutTab key={1} />, <HoldcoTab key={2} />, <TimelineTab key={3} />, <TermSheetTab key={4} />];
+  const content = [<ValueTab key={0} />, <EarnoutTab key={1} />, <HoldcoTab key={2} />, <TimelineTab key={3} />, <TermSheetTab key={4} />, <FamilyOverviewTab key={5} />];
 
   return (
     <div className="max-w-5xl mx-auto p-4 bg-gray-50 min-h-screen">
