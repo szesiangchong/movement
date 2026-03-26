@@ -257,14 +257,14 @@ function EarnoutTab() {
     const yr1Floor = yr1Hurdle * 0.8;
     const yr2Floor = yr2Hurdle * 0.8;
 
-    // Year 1 payout — proportional between floor and target
-    const yr1Ratio = Math.min(1, Math.max(0, (yr1Actual - yr1Floor) / (yr1Hurdle - yr1Floor)));
+    // Year 1 payout — pro-rata: actual ÷ target (below floor = zero)
+    const yr1Ratio = yr1Actual >= yr1Hurdle ? 1 : yr1Actual >= yr1Floor ? yr1Actual / yr1Hurdle : 0;
     const yr1Pay = yr1Actual >= yr1Floor ? yr1Tranche * yr1Ratio : 0;
     const yr1Unpaid = yr1Tranche - yr1Pay;
     const yr1EbitdaShortfall = Math.max(0, yr1Hurdle - yr1Actual);
 
     // Year 2 — carry forward only (no carry backward)
-    const yr2Ratio = Math.min(1, Math.max(0, (yr2Actual - yr2Floor) / (yr2Hurdle - yr2Floor)));
+    const yr2Ratio = yr2Actual >= yr2Hurdle ? 1 : yr2Actual >= yr2Floor ? yr2Actual / yr2Hurdle : 0;
     const yr2BasePay = yr2Actual >= yr2Floor ? yr2Tranche * yr2Ratio : 0;
 
     // Carry forward: Year 1 shortfall only recoverable if Year 2 EXCEEDS its hurdle
@@ -363,7 +363,7 @@ function EarnoutTab() {
             {c.yr1Unpaid > 0 && <div className="flex justify-between text-orange-600"><span>Unpaid (carry forward)</span><span className="font-mono">{fmtFull(c.yr1Unpaid)}</span></div>}
             {c.yr1EbitdaShortfall > 0 && <div className="flex justify-between text-orange-500"><span>EBITDA gap to recover in Yr 2</span><span className="font-mono">{fmtFull(c.yr1EbitdaShortfall)}</span></div>}
           </div>
-          <p className="text-[10px] text-gray-400 mt-2 italic">Scales proportionally between floor and target. {c.yr1EbitdaShortfall > 0 ? `Year 2 must exceed its target by ${fmtFull(c.yr1EbitdaShortfall)} to recover the carried amount.` : 'Full tranche achieved.'}</p>
+          <p className="text-[10px] text-gray-400 mt-2 italic">Pro-rata: payout = actual ÷ target × tranche. Below floor = zero. {c.yr1EbitdaShortfall > 0 ? `Year 2 must exceed its target by ${fmtFull(c.yr1EbitdaShortfall)} to recover the carried amount.` : 'Full tranche achieved.'}</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-4">
           <h4 className="font-semibold text-sm mb-2">Year 2 Payment</h4>
@@ -373,7 +373,7 @@ function EarnoutTab() {
             {c.yr1Recovery > 0 && <div className="flex justify-between text-green-600"><span>(+) Year 1 recovery</span><span className="font-mono">{fmtFull(c.yr1Recovery)}</span></div>}
             <div className="flex justify-between font-bold text-green-700 border-t border-gray-200 pt-1"><span>Total Year 2 Payable</span><span className="font-mono">{fmtFull(c.yr2Pay)}</span></div>
           </div>
-          <p className="text-[10px] text-gray-400 mt-2 italic">{c.yr1Unpaid > 0 ? `Year 1 carry of ${fmtFull(c.yr1Unpaid)} requires Year 2 EBITDA to exceed ${fmtFull(yr2Hurdle)} by ${fmtFull(c.yr1EbitdaShortfall)} (i.e., ${fmtFull(yr2Hurdle + c.yr1EbitdaShortfall)}) for full recovery.` : 'Scales proportionally between floor and target.'}</p>
+          <p className="text-[10px] text-gray-400 mt-2 italic">{c.yr1Unpaid > 0 ? `Year 1 carry of ${fmtFull(c.yr1Unpaid)} requires Year 2 EBITDA to exceed ${fmtFull(yr2Hurdle)} by ${fmtFull(c.yr1EbitdaShortfall)} (i.e., ${fmtFull(yr2Hurdle + c.yr1EbitdaShortfall)}) for full recovery.` : 'Pro-rata: payout = actual ÷ target × tranche. Below floor = zero.'}</p>
         </div>
       </div>
 
@@ -997,7 +997,7 @@ function TermSheetTab() {
 
             <div className="bg-gray-50 rounded-xl p-4">
               <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA is below the target but above the floor (80%)?</div>
-              <div className="text-xs text-gray-600">A: The Year 1 tranche (S$2.58M) pays out <strong>proportionally</strong> based on where EBITDA lands between the floor (S$6.0M) and the target (S$7.5M). The formula is: <em>Payout = (Actual − Floor) ÷ (Target − Floor) × Tranche</em>. For example, if Year 1 EBITDA is S$7.0M: payout = (7.0 − 6.0) ÷ (7.5 − 6.0) × S$2.58M = <strong>66.7% × S$2.58M = S$1.72M</strong>. The unpaid S$0.86M carries forward, but recovering it requires Year 2 to <strong>exceed</strong> its own S$8.0M target by the EBITDA shortfall (S$0.5M in this case). Year 2 would need S$8.5M to fully recover the carried amount.</div>
+              <div className="text-xs text-gray-600">A: The Year 1 tranche (S$2.58M) pays out <strong>pro-rata</strong> based on the percentage of the target achieved. The formula is: <em>Payout = (Actual ÷ Target) × Tranche</em>. For example, if Year 1 EBITDA is S$7.0M: payout = S$7.0M ÷ S$7.5M × S$2.58M = <strong>93.3% × S$2.58M = S$2.41M</strong>. The unpaid S$0.17M carries forward, but recovering it requires Year 2 to <strong>exceed</strong> its own S$8.0M target by the EBITDA shortfall (S$0.5M in this case). Year 2 would need S$8.5M to fully recover the carried amount.</div>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-4">
@@ -1257,7 +1257,7 @@ function FamilyOverviewTab() {
                 <p><strong>Target:</strong> EBITDA of S$7.5M</p>
                 <p><strong>Minimum threshold:</strong> S$6.0M (80% of target)</p>
                 <p>Hit the target → full S$2.58M is paid</p>
-                <p>Between S$6.0M and S$7.5M → partial payment, scaled proportionally</p>
+                <p>Between S$6.0M and S$7.5M → pro-rata payout (actual ÷ target × tranche)</p>
                 <p>Below S$6.0M → no payment for this year, but the amount carries forward</p>
               </div>
             </div>
@@ -1266,26 +1266,64 @@ function FamilyOverviewTab() {
               <div className="text-xs text-gray-600 space-y-1.5">
                 <p><strong>Target:</strong> EBITDA of S$8.0M</p>
                 <p><strong>Minimum threshold:</strong> S$6.4M (80% of target)</p>
-                <p>Same scaling as Year 1 — proportional between threshold and target</p>
+                <p>Same pro-rata scaling as Year 1</p>
                 <p>Plus: if Year 1 fell short, you can recover it in Year 2 if EBITDA <em>exceeds</em> the Year 2 target</p>
               </div>
             </div>
           </div>
 
           <div className="bg-blue-50 rounded-xl p-4">
-            <div className="text-sm font-bold text-blue-900 mb-2">How does the &quot;proportional&quot; scaling actually work?</div>
-            <p className="text-xs text-gray-700 mb-2">The formula is straightforward: <strong>Payout = (Actual EBITDA − Minimum) ÷ (Target − Minimum) × Tranche</strong></p>
+            <div className="text-sm font-bold text-blue-900 mb-2">How does the pro-rata scaling actually work?</div>
+            <p className="text-xs text-gray-700 mb-2">The formula is straightforward: <strong>Payout = (Actual EBITDA ÷ Target EBITDA) × Tranche</strong></p>
             <div className="bg-white rounded-lg p-3 text-xs text-gray-700">
               <p className="font-semibold mb-1">Worked example — Year 1 EBITDA comes in at S$7.0M:</p>
-              <p>Payout = (7.0M − 6.0M) ÷ (7.5M − 6.0M) × S$2.58M</p>
-              <p>= S$1.0M ÷ S$1.5M × S$2.58M</p>
-              <p>= <strong>66.7% × S$2.58M = S$1.72M paid</strong></p>
-              <p className="mt-2 text-gray-500">The remaining S$0.86M carries forward to Year 2. To recover it, Year 2 EBITDA needs to exceed S$8.0M by the shortfall amount (S$0.5M), i.e. hit at least S$8.5M.</p>
+              <p>Payout = S$7.0M ÷ S$7.5M × S$2.58M</p>
+              <p>= <strong>93.3% × S$2.58M = S$2.41M paid</strong></p>
+              <p className="mt-2 text-gray-500">The remaining S$0.17M carries forward to Year 2. To recover it, Year 2 EBITDA needs to exceed S$8.0M by the shortfall amount (S$0.5M), i.e. hit at least S$8.5M.</p>
             </div>
           </div>
 
           <div className="bg-green-50 border-l-4 border-green-400 p-4 text-sm text-gray-700">
             <strong>Important:</strong> The earnout targets (S$7.5M and S$8.0M) are set <em>below</em> management&apos;s own forecasts of S$7.89M and S$8.52M. This means that if the business performs in line with what the team expects, the full earnout should be achieved.
+          </div>
+
+          {/* Q&A Scenarios */}
+          <div className="mt-2">
+            <h4 className="text-sm font-bold text-gray-700 mb-3">Common Questions</h4>
+            <div className="space-y-3">
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 targets are met?</div>
+                <div className="text-xs text-gray-600">A: The full S$8.6M earnout is paid — S$2.58M after Year 1 and S$6.02M after Year 2. Combined with the ~{fmt(active.netCash)} net cash received upfront (after management reinvestment), total cash to shareholders reaches ~{fmt(active.netCash + EARNOUT_AMT)}.</div>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA is below the target but above the minimum (80%)?</div>
+                <div className="text-xs text-gray-600">A: You receive a pro-rata portion of the Year 1 tranche based on the percentage of the target achieved. For example, S$7.0M EBITDA = 93.3% of the S$7.5M target, so 93.3% × S$2.58M = S$2.41M is paid. The remaining S$0.17M carries forward — to recover it, Year 2 EBITDA must <strong>exceed</strong> its own S$8.0M target by the shortfall amount (S$0.5M in this case, i.e. Year 2 needs S$8.5M).</div>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA falls below the minimum threshold (S$6.0M)?</div>
+                <div className="text-xs text-gray-600">A: No Year 1 earnout is paid. The full S$2.58M carries forward, but the EBITDA gap is large — Year 2 would need to exceed S$8.0M by the full shortfall amount (up to S$1.5M if Year 1 hit the floor, i.e. Year 2 would need S$9.5M) to fully recover. Partial recovery is proportional to how much Year 2 exceeds its target.</div>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 is missed but Year 2 hits exactly S$8.0M?</div>
+                <div className="text-xs text-gray-600">A: Year 2 hitting its target earns the full Year 2 tranche (S$6.02M), but does <strong>not</strong> recover any of the Year 1 shortfall. Recovery only begins when Year 2 EBITDA <strong>exceeds</strong> S$8.0M — the carried amount is earned back proportionally to how far above the target Year 2 goes.</div>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both years fall below the minimum threshold?</div>
+                <div className="text-xs text-gray-600">A: No earnout is payable. Total cash received would be the ~{fmt(active.netCash)} net upfront amount only (after management reinvestment).</div>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs font-bold text-blue-800 mb-1">Q: How is EBITDA measured — and who decides?</div>
+                <div className="text-xs text-gray-600">A: EBITDA will be prepared by management and reviewed by an independent accounting firm agreed by both parties. The exact definition of &quot;Adjusted EBITDA&quot; will be agreed during due diligence — covering adjustments for one-off items, management fees, and other normalisations to ensure a fair and consistent basis.</div>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs font-bold text-blue-800 mb-1">Q: Does management keep running the business during the earnout period?</div>
+                <div className="text-xs text-gray-600">A: Yes. Management retains day-to-day operational control, subject to agreed reserved matters. This ensures management has a fair opportunity to hit the targets. If there&apos;s a disagreement on the earnout calculation, it gets referred to an independent accounting firm whose decision is final.</div>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="text-xs font-bold text-blue-800 mb-1">Q: Is the upfront cash guaranteed regardless of earnout results?</div>
+                <div className="text-xs text-gray-600">A: Yes. The ~{fmt(active.netCash)} net cash at closing is unconditional and cannot be clawed back. The earnout is a separate, additional component — missing earnout targets does not affect the upfront payment already received.</div>
+              </div>
+            </div>
           </div>
         </div>
       </FamilySection>
@@ -1311,7 +1349,9 @@ function FamilyOverviewTab() {
               <p className="text-xs text-gray-600">A seat on the board is reserved for continuing management. Major decisions — large spending, new debt, key hires — require board approval, giving the family a voice in how the company is run.</p>
             </div>
           </div>
-          <p className="text-xs text-gray-500 italic">Detailed mechanics for all of the above will be set out in the shareholders&apos; agreement (SHA) and sale and purchase agreement (SPA).</p>
+          <div className="bg-red-50 border-l-4 border-red-400 p-3 text-xs text-red-800 font-semibold">
+            <strong>Important:</strong> Detailed mechanics for all of the above will be set out in the shareholders&apos; agreement (SHA) and sale and purchase agreement (SPA).
+          </div>
         </div>
       </FamilySection>
 
@@ -1319,7 +1359,7 @@ function FamilyOverviewTab() {
       <FamilySection title="Where Do We See the Group Going?" icon="🚀">
         <div className="mt-3 space-y-4">
           <div className="bg-blue-50 border-l-4 border-blue-400 p-4 text-sm text-gray-700">
-            <em>The growth plan below represents Movement&apos;s initial thinking, to be further discussed and refined with Management. We see three clear avenues for growth — one for each business unit.</em>
+            <strong>To be further discussed and refined with Management during due diligence.</strong>
           </div>
 
           {/* Carats */}
@@ -1332,7 +1372,7 @@ function FamilyOverviewTab() {
               </div>
             </div>
             <div className="text-xs text-gray-700 space-y-2 ml-10">
-              <p><strong>Organic growth:</strong> Leverage the S$43M backlog and long-term Stellar Ace/Lifestyle contracts (through 2033–2034) as a stable base. Focus on winning more institutional clients — transit operators, airports, commercial landlords — and extend into adjacent services like digital signage integration and smart wayfinding.</p>
+              <p><strong>Organic growth:</strong> Leverage the S$51M backlog and long-term Stellar Ace/Lifestyle contracts (through 2033–2034) as a stable base. Focus on winning more institutional clients — transit operators, airports, commercial landlords — and extend into adjacent services like digital signage integration and smart wayfinding.</p>
               <p><strong>Regional expansion:</strong> Replicate the Singapore model in Malaysia and Australia, where infrastructure-led signage demand is growing. Enter via partnerships with local contractors or through targeted acquisitions of smaller signage firms that provide an instant client base and local licences.</p>
               <p><strong>Margin improvement:</strong> Standardise fabrication processes and invest in modular signage systems that reduce per-project engineering hours. Rationalise the subcontractor base to improve procurement terms.</p>
             </div>
@@ -1344,11 +1384,11 @@ function FamilyOverviewTab() {
               <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm font-bold text-orange-600">2</div>
               <div>
                 <div className="text-sm font-bold text-orange-700">Gleamedia — Scale the Media Network</div>
-                <div className="text-[11px] text-gray-500">OOH media & advertising • ~S$6M revenue • 1.18x book-to-bill</div>
+                <div className="text-[11px] text-gray-500">OOH media & advertising • ~S$6M revenue</div>
               </div>
             </div>
             <div className="text-xs text-gray-700 space-y-2 ml-10">
-              <p><strong>Supply-side — more screens, more locations:</strong> Penetrate more landlords and venue operators (malls, transit hubs, commercial buildings) with a capex-light model — Gleamedia provides the media management expertise; the landlord provides the location. Target a 2–3x expansion of the installed screen base over 5 years without proportional capital outlay.</p>
+              <p><strong>Supply-side — more screens, more locations:</strong> Penetrate more landlords and venue operators (malls, transit hubs, commercial buildings) with a capex-light model — Gleamedia provides the media management expertise; the landlord provides the location. Target a 2–3x expansion of the installed screen base over 5 years.</p>
               <p><strong>Demand-side — more advertisers, higher yields:</strong> Build a dedicated sales team to pitch national and regional advertisers. Offer programmatic buying options (automated, data-driven ad placement) to attract digital-native advertisers who currently bypass traditional OOH. Package cross-network deals — advertisers buy presence across multiple locations in a single campaign.</p>
               <p><strong>Data monetisation:</strong> Equip screens with anonymised audience measurement (footfall, dwell time, demographic profiling via Adactive&apos;s camera analytics). Advertisers pay a premium for measurable impressions versus traditional &quot;eyeball guesses.&quot;</p>
             </div>
@@ -1366,7 +1406,6 @@ function FamilyOverviewTab() {
             <div className="text-xs text-gray-700 space-y-2 ml-10">
               <p><strong>International expansion via existing OOH networks:</strong> Adactive&apos;s software is capex-light and platform-based, making it the natural first mover for overseas growth. Target partnerships with established international OOH operators — Clear Channel, JCDecaux, Moove Media — who already have the physical infrastructure but need digital interactivity and content management software.</p>
               <p><strong>Cross-functional value within the group:</strong> Bundle Adactive&apos;s capabilities with the other BUs to offer integrated solutions that competitors can&apos;t easily replicate: digital wayfinding powered by Carats&apos; signage installations, camera analytics integrated with Gleamedia&apos;s media screens to track real-time personalised impressions, and interactive kiosks that serve as both information points and advertising platforms.</p>
-              <p><strong>Recurring revenue shift:</strong> Transition from one-off hardware installation revenue towards recurring SaaS licensing — annual software subscriptions, content management platform fees, and analytics dashboards. This improves revenue predictability and increases the business&apos;s value over time.</p>
             </div>
           </div>
 
@@ -1475,6 +1514,114 @@ function FamilyOverviewTab() {
       </FamilySection>
 
       {/* 7. What happens next? */}
+      {/* Purchase Price Adjustments */}
+      <FamilySection title="Purchase Price Adjustments" icon="⚖️" defaultOpen={false}>
+        <div className="mt-3 space-y-4">
+          <p className="text-sm text-gray-700 leading-relaxed">The S$40M enterprise value is the headline number, but the final amount paid may be adjusted slightly based on the company&apos;s actual financial position at closing. This is standard in transactions like this and protects both sides.</p>
+
+          <div className="space-y-3">
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-1">Working Capital Adjustment</div>
+              <p className="text-xs text-gray-600">The business needs a certain level of &quot;working capital&quot; (cash tied up in day-to-day operations — money owed by customers, money owed to suppliers, etc.) to run normally. We&apos;ll agree on a target level of working capital during due diligence. If the actual working capital at closing is higher or lower than this target, the purchase price adjusts dollar-for-dollar up or down.</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-1">Net Debt / Cash Adjustment</div>
+              <p className="text-xs text-gray-600">The final price is adjusted for the actual amount of debt (loans, borrowings) and cash on the balance sheet at closing, compared to the reference numbers used in the valuation. More cash than expected = price goes up; more debt = price comes down.</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-1">True-Up After Closing</div>
+              <p className="text-xs text-gray-600">After the deal closes, accountants prepare a final set of &quot;completion accounts&quot; to confirm the exact working capital and net debt/cash figures. Any difference from what was estimated at closing gets trued up — either party pays or receives the difference. This ensures no one is short-changed.</p>
+            </div>
+          </div>
+        </div>
+      </FamilySection>
+
+      {/* Governance & Shareholder Rights */}
+      <FamilySection title="Governance & Shareholder Rights" icon="🏛️" defaultOpen={false}>
+        <div className="mt-3 space-y-4">
+          <p className="text-sm text-gray-700 leading-relaxed">The new HoldCo will have a proper board and governance structure. This gives the family a formal voice in how the company is run, alongside Movement.</p>
+
+          <div className="space-y-3">
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-1">Board of Directors</div>
+              <p className="text-xs text-gray-600">Movement appoints the majority of the board. One seat is reserved for continuing management (likely TH or Raymond). The board oversees major decisions and strategic direction.</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-1">Reserved Matters</div>
+              <p className="text-xs text-gray-600">Certain big decisions require board approval (not just Movement acting alone). These include: large capital expenditures, taking on new debt, related-party transactions, dividend policy, hiring/firing key executives, entering material contracts, and any change of business direction.</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-1">Information Rights</div>
+              <p className="text-xs text-gray-600">All shareholders receive monthly management accounts, quarterly board reports, and annual audited financial statements. Full transparency on how the business is performing.</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-1">Anti-Dilution Protection</div>
+              <p className="text-xs text-gray-600">If the company issues new shares, existing shareholders have the right to participate proportionally to maintain their ownership percentage. Your 30% stays at 30%.</p>
+            </div>
+          </div>
+        </div>
+      </FamilySection>
+
+      {/* Due Diligence & Conditions */}
+      <FamilySection title="Due Diligence & Conditions" icon="🔍" defaultOpen={false}>
+        <div className="mt-3 space-y-4">
+          <p className="text-sm text-gray-700 leading-relaxed">Before the deal can close, both sides need to complete their homework. This is a collaborative process — not an interrogation — designed to make sure everyone is comfortable proceeding.</p>
+
+          <div className="bg-gray-50 rounded-xl p-4">
+            <div className="text-sm font-bold text-gray-900 mb-2">What We&apos;ll Be Looking At</div>
+            <div className="text-xs text-gray-600 space-y-1.5">
+              <p><strong>(1) 5-year growth plan</strong> — revenue pipeline sustainability, where the business is headed</p>
+              <p><strong>(2) Business unit economics</strong> — how each of Carats, Gleamedia, and Adactive performs on its own</p>
+              <p><strong>(3) Earnings quality</strong> — normalised EBITDA after removing one-off items and intercompany adjustments</p>
+              <p><strong>(4) Working capital & balance sheet</strong> — receivables, payables, cash requirements</p>
+              <p><strong>(5) Legal & structural</strong> — contracts, IP, regulatory, employment matters</p>
+              <p><strong>(6) Leadership continuity</strong> — ensuring the right people are in the right roles going forward</p>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 rounded-xl p-4">
+            <div className="text-sm font-bold text-gray-900 mb-2">Conditions to Closing</div>
+            <p className="text-xs text-gray-600">The deal is subject to: satisfactory completion of due diligence, no material adverse change in the business, confirmation of audited FY2025 results, formalised transfer pricing across all entities, and key management retention agreements being in place.</p>
+          </div>
+
+          <p className="text-xs text-gray-500">Indicative DD period: 6–8 weeks from LOI execution.</p>
+        </div>
+      </FamilySection>
+
+      {/* Financing */}
+      <FamilySection title="Financing" icon="🏦" defaultOpen={false}>
+        <div className="mt-3 space-y-4">
+          <div className="space-y-3">
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-1">Movement&apos;s Capital</div>
+              <p className="text-xs text-gray-600">Movement is backed by patient, family-office capital. There is no financing contingency — this deal does not depend on us raising money from third parties. When we commit, we can close.</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-1">Acquisition Debt</div>
+              <p className="text-xs text-gray-600">We expect to use a senior secured loan at the HoldCo level of 1.0x–2.0x EBITDA (roughly S$7M–S$14M). Indicative terms: ~4.0% interest per year, repaid over 5 years. This debt benefits the family — more debt means management needs to reinvest less, so more cash comes home at closing.</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-sm font-bold text-gray-900 mb-1">No Personal Guarantees</div>
+              <p className="text-xs text-gray-600">The debt sits at the company level and is serviced by operating cash flow. No management shareholder is personally liable or required to guarantee the loan.</p>
+            </div>
+          </div>
+        </div>
+      </FamilySection>
+
+      {/* Exclusivity */}
+      <FamilySection title="Exclusivity" icon="🔒" defaultOpen={false}>
+        <div className="mt-3 space-y-4">
+          <p className="text-sm text-gray-700 leading-relaxed">If the family agrees to proceed, we would ask for an exclusivity period of <strong>4 months</strong> from signing the LOI. During this time:</p>
+          <div className="text-xs text-gray-700 space-y-2">
+            <p>• The company and its shareholders would stop discussions with any other potential buyers or investors</p>
+            <p>• No soliciting or entertaining alternative offers during the exclusivity period</p>
+            <p>• If an unsolicited approach comes in from a third party, the company would promptly let Movement know</p>
+          </div>
+          <p className="text-xs text-gray-500">This is standard for transactions like this — it gives both sides the confidence to invest significant time and resources into due diligence and negotiations without the risk of the process being derailed.</p>
+        </div>
+      </FamilySection>
+
+      {/* What Happens Next */}
       <FamilySection title="What Happens Next?" icon="📋">
         <div className="mt-3 space-y-3">
           <p className="text-sm text-gray-700 leading-relaxed">If the family is comfortable with the broad terms, the next steps are:</p>
