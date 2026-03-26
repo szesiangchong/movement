@@ -1140,19 +1140,9 @@ function TermSheetTab() {
 // TAB 6 — FAMILY OVERVIEW (layman-friendly summary + leadership framework)
 // ════════════════════════════════════════════════════════════════════════
 function FamilyOverviewTab() {
-  const UPFRONT = 31400;
+  const UPFRONT_CASH = 19400;
+  const ROLLOVER = 12000;
   const EARNOUT_AMT = 8600;
-  const EBITDA = 7172;
-  const [levX, setLevX] = useState(1.5);
-
-  const active = useMemo(() => {
-    const debt = levX * EBITDA;
-    const totalEquity = UPFRONT - debt;
-    const movementEquity = totalEquity * 0.70;
-    const mgmtEquity = totalEquity * 0.30;
-    const netCash = UPFRONT - mgmtEquity;
-    return { debt, totalEquity, movementEquity, mgmtEquity, netCash };
-  }, [levX]);
 
   const FamilySection = ({ title, icon, children, defaultOpen = true }: { title: string; icon: string; children: React.ReactNode; defaultOpen?: boolean }) => {
     const [open, setOpen] = useState(defaultOpen);
@@ -1191,56 +1181,28 @@ function FamilyOverviewTab() {
       {/* 2. How much cash will the family receive? */}
       <FamilySection title="How Much Cash Will the Family Receive?" icon="💰">
         <div className="mt-3 space-y-4">
-          <p className="text-sm text-gray-700 leading-relaxed">The total consideration of S$40 million is split into two parts:</p>
+          <p className="text-sm text-gray-700 leading-relaxed">The total consideration of S$40 million is split into three parts:</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-green-50 rounded-xl p-5 border border-green-200">
-              <div className="text-2xl font-bold text-green-700">{fmt(UPFRONT)}</div>
+              <div className="text-2xl font-bold text-green-700">S$19.4M</div>
               <div className="text-sm font-semibold text-green-800 mt-1">Paid upfront at closing</div>
-              <p className="text-xs text-gray-600 mt-2">This is the amount paid to all shareholders on day one. It&apos;s unconditional — once received, it cannot be clawed back regardless of future performance.</p>
+            </div>
+            <div className="bg-blue-50 rounded-xl p-5 border border-blue-200">
+              <div className="text-2xl font-bold text-blue-700">S$12.0M</div>
+              <div className="text-sm font-semibold text-blue-800 mt-1">30% rollover into HoldCo</div>
             </div>
             <div className="bg-purple-50 rounded-xl p-5 border border-purple-200">
               <div className="text-2xl font-bold text-purple-700">{fmt(EARNOUT_AMT)}</div>
               <div className="text-sm font-semibold text-purple-800 mt-1">Earnout — paid over 2 years</div>
-              <p className="text-xs text-gray-600 mt-2">An additional payment linked to the business hitting agreed profit targets. Think of it as a bonus for continued strong performance. Paid from the company&apos;s own cash flow, not out of anyone&apos;s pocket.</p>
             </div>
-          </div>
-
-          <p className="text-sm text-gray-700 leading-relaxed">Because management reinvests part of their proceeds to hold their 30% stake in HoldCo, the <strong>net cash the family takes home at closing</strong> depends on how the deal is financed:</p>
-
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-bold text-gray-500">Financing scenario:</span>
-            {[1.0, 1.5, 2.0].map(l => (
-              <button key={l} onClick={() => setLevX(l)}
-                className={`px-4 py-2 rounded-lg text-xs font-bold border-2 transition-all ${levX === l ? 'bg-blue-900 text-white border-blue-900' : 'border-gray-300 text-gray-600 hover:border-blue-900'}`}>
-                {l.toFixed(1)}x
-              </button>
-            ))}
           </div>
 
           <div className="bg-gray-50 rounded-xl p-5">
-            <div className="grid grid-cols-3 gap-4 text-center">
-              <div>
-                <div className="text-lg font-bold text-green-700">{fmt(active.netCash)}</div>
-                <div className="text-[11px] text-gray-500 mt-1">Net cash at closing</div>
-              </div>
-              <div>
-                <div className="text-lg font-bold text-blue-500">{fmt(active.mgmtEquity)}</div>
-                <div className="text-[11px] text-gray-500 mt-1">Reinvested for 30%</div>
-              </div>
-              <div>
-                <div className="text-lg font-bold text-purple-600">{fmt(EARNOUT_AMT)}</div>
-                <div className="text-[11px] text-gray-500 mt-1">Potential earnout</div>
-              </div>
+            <div className="text-center">
+              <div className="text-xs text-gray-500">If all earnout targets are met, total consideration to shareholders:</div>
+              <div className="text-xl font-bold text-gray-900 mt-1">S$40.0M</div>
             </div>
-            <div className="text-center mt-3 pt-3 border-t border-gray-200">
-              <div className="text-xs text-gray-500">If all targets are met, total cash to shareholders:</div>
-              <div className="text-xl font-bold text-gray-900 mt-1">{fmt(active.netCash + EARNOUT_AMT)}</div>
-            </div>
-          </div>
-
-          <div className="bg-amber-50 border-l-4 border-amber-400 p-4 text-sm text-gray-700">
-            <strong>Why doesn&apos;t the family just get the full S$40M in cash?</strong> Because management keeps 30% of the company. Instead of cashing out completely, they put some of their proceeds back in — this means they have &quot;skin in the game&quot; and are financially aligned with Movement to grow the business. The more debt the company takes on (safely), the less management needs to reinvest, and the more cash comes home.
           </div>
         </div>
       </FamilySection>
@@ -1293,7 +1255,7 @@ function FamilyOverviewTab() {
             <div className="space-y-3">
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 targets are met?</div>
-                <div className="text-xs text-gray-600">A: The full S$8.6M earnout is paid — S$2.58M after Year 1 and S$6.02M after Year 2. Combined with the ~{fmt(active.netCash)} net cash received upfront (after management reinvestment), total cash to shareholders reaches ~{fmt(active.netCash + EARNOUT_AMT)}.</div>
+                <div className="text-xs text-gray-600">A: The full S$8.6M earnout is paid — S$2.58M after Year 1 and S$6.02M after Year 2. Combined with the S$19.4M upfront cash, total cash to shareholders reaches S$28.0M (plus the 30% continuing stake in HoldCo).</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA is below the target but above the minimum (80%)?</div>
@@ -1309,7 +1271,7 @@ function FamilyOverviewTab() {
               </div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both years fall below the minimum threshold?</div>
-                <div className="text-xs text-gray-600">A: No earnout is payable. Total cash received would be the ~{fmt(active.netCash)} net upfront amount only (after management reinvestment).</div>
+                <div className="text-xs text-gray-600">A: No earnout is payable. Total cash received would be the S$19.4M upfront amount only (plus the 30% continuing stake in HoldCo).</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="text-xs font-bold text-blue-800 mb-1">Q: How is EBITDA measured — and who decides?</div>
@@ -1321,7 +1283,7 @@ function FamilyOverviewTab() {
               </div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="text-xs font-bold text-blue-800 mb-1">Q: Is the upfront cash guaranteed regardless of earnout results?</div>
-                <div className="text-xs text-gray-600">A: Yes. The ~{fmt(active.netCash)} net cash at closing is unconditional and cannot be clawed back. The earnout is a separate, additional component — missing earnout targets does not affect the upfront payment already received.</div>
+                <div className="text-xs text-gray-600">A: Yes. The S$19.4M upfront cash at closing is unconditional and cannot be clawed back. The earnout is a separate, additional component — missing earnout targets does not affect the upfront payment already received.</div>
               </div>
             </div>
           </div>
