@@ -699,7 +699,7 @@ function TermSheetTab() {
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
             <h2 className="text-lg font-bold tracking-wide">Term Sheet Outline</h2>
-            <p className="text-blue-200 text-xs mt-0.5">IC Discussion Draft — Strictly Confidential</p>
+            <p className="text-blue-200 text-xs mt-0.5">Discussion Draft — Strictly Confidential</p>
           </div>
           <div className="flex gap-4 text-xs text-blue-200">
             <span>EV: S$40.0M</span>
@@ -715,13 +715,14 @@ function TermSheetTab() {
           <Row label="Target">Carats & Co Pte Ltd, Gleamedia Pte Ltd, and Adactive Pte Ltd</Row>
           <Row label="Parties">Newly formed HoldCo (SPV) — Movement 70% / Existing Shareholders 30%</Row>
           <Row label="Transaction">100% of all operating entities consolidated into HoldCo. Existing shareholders receive cash and/or rollover equity at agreed group valuation.</Row>
-          <Row label="Enterprise Value">{fmtFull(EV)} (~{ENTRY_MULT.toFixed(1)}x unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)})</Row>
+          <Row label="Enterprise Value">{fmtFull(EV)} (~{ENTRY_MULT.toFixed(1)}x unaudited FY2025 EBITDA of {fmtFull(EBITDA_2025)}). Assumes FY2025 audited EBITDA of no less than S$7,172,000</Row>
           <Row label="Equity Value">Subject to independent financial due diligence on debt, cash, and working capital positions at completion</Row>
           <Row label="Payment">Combination of upfront cash consideration and deferred earnout. Final amounts determined per EV-to-equity bridge adjustments.</Row>
           <Row label="Basis">Cash-free, debt-free, subject to normalised working capital</Row>
+          <Row label="Adjustments">Equity value derived from EV-to-equity bridge (less debt, working capital normalisation, operating reserve; plus unrestricted cash). Final positions confirmed through independent financial due diligence, calculated on a consistent basis as at the locked box date of 31 March 2026.</Row>
         </div>
         <div className="mt-3 bg-blue-50 border-l-4 border-blue-400 p-3 text-xs text-gray-600">
-          <strong className="text-gray-800">Valuation note:</strong> Subject to independent financial due diligence. Final EV may be adjusted based on audited FY2025 results and working capital true-up at completion.
+          <strong className="text-gray-800">Valuation note:</strong> Subject to independent financial due diligence. Final EV may be adjusted based on audited FY2025 results and working capital true-up at completion. We suggest a locked box date of [31 March 2026] for better transaction certainty, with no material cash leakage from that date until completion except as mutually agreed.
         </div>
       </Section>
 
@@ -1032,6 +1033,7 @@ function TermSheetTab() {
             <tr><td className="py-2 px-3">Mgmt Forecast</td><td className="py-2 px-3 font-mono text-gray-400">{fmtFull(7890)}</td><td className="py-2 px-3 font-mono text-gray-400">{fmtFull(8522)}</td><td className="py-2 px-3"></td></tr>
             <tr className="bg-gray-50"><td className="py-2 px-3">Floor</td><td className="py-2 px-3 font-mono">S$6,000,000 (80% of target)</td><td className="py-2 px-3 font-mono">S$6,400,000 (80% of target)</td><td className="py-2 px-3"></td></tr>
             <tr><td className="py-2 px-3">Pro Rata Scaling</td><td className="py-2 px-3" colSpan={3}>Earnout scales proportionally with performance. The full amount is payable when the target is achieved. Any balance carries forward to Year 2.</td></tr>
+            <tr className="bg-gray-50"><td className="py-2 px-3">Measurement</td><td className="py-2 px-3" colSpan={3}>EBITDA for earnout purposes calculated on the same normalised basis agreed during due diligence. Any disagreements on the calculation may be referred to an independent accounting firm appointed by Holdco.</td></tr>
           </tbody>
         </table>
 
@@ -1114,6 +1116,8 @@ function TermSheetTab() {
           <Row label="Info Rights">Monthly management accounts, quarterly board reporting, annual audited statements</Row>
           <Row label="Anti-Dilution">Pre-emptive rights on new issuances to enable maintaining of pro rata ownership</Row>
           <Row label="Sale of Shares">Standard put/call options pegged to fair market value formula, with right-of-first-refusal and tag-along rights for existing shareholders on any sale by other shareholders. Timing and trigger conditions to be agreed by all shareholders during due diligence.</Row>
+          <Row label="Management Continuity">Continuing family shareholders involved in day-to-day operations will enter into service agreements with the Group on mutually agreed terms, to be finalised during due diligence. Movement is committed to continuity and stability for all team members.</Row>
+          <Row label="Ordinary Course">Between signing and completion, the Group continues to operate in the normal course of business. Any material commitments, contracts, or expenditures outside of the ordinary course require prior discussion with Movement.</Row>
         </div>
       </Section>
 
@@ -1132,7 +1136,7 @@ function TermSheetTab() {
               <p className="text-gray-400 italic">Indicative list for illustration only, actual diligence scope to be determined in consultation with professional advisors</p>
             </div>
           </Row>
-          <Row label="Conditions">Satisfactory due diligence; no material adverse change; audited FY2025 confirmation; formalised transfer pricing; key leadership continuity arrangements agreed; any other key material findings from diligence</Row>
+          <Row label="Conditions">Satisfactory due diligence; no material adverse change; audited FY2025 confirmation; formalised transfer pricing; key leadership continuity arrangements agreed; any other key material findings from diligence; locked box compliance confirmed as at [31 March 2026]</Row>
         </div>
       </Section>
 
@@ -1145,14 +1149,14 @@ function TermSheetTab() {
       </Section>
 
       {/* Section 9: Timeline */}
-      <Section title="7. Indicative Timeline (~4 months)" tag="STANDARD" defaultOpen={false}>
+      <Section title="7. Indicative Timeline (~4 months from LOI signing)" tag="STANDARD" defaultOpen={false}>
         <table className="w-full text-xs mt-3">
           <thead><tr className="bg-gray-50 text-gray-500"><th className="text-left py-2 px-3 font-semibold">Phase</th><th className="text-left py-2 px-3 font-semibold">Activity</th><th className="text-left py-2 px-3 font-semibold">Weeks</th></tr></thead>
           <tbody>
             <tr><td className="py-2 px-3 font-bold text-blue-800">LOI</td><td className="py-2 px-3">Submit draft, discussion & agreement</td><td className="py-2 px-3 font-mono">W1–3</td></tr>
             <tr className="bg-gray-50"><td className="py-2 px-3 font-bold text-purple-800">DD</td><td className="py-2 px-3">All workstreams (financial, legal, tax, commercial and operational)</td><td className="py-2 px-3 font-mono">W4–11</td></tr>
             <tr><td className="py-2 px-3 font-bold text-green-800">SPA</td><td className="py-2 px-3">Agreement drafting, leadership alignment</td><td className="py-2 px-3 font-mono">W10–13</td></tr>
-            <tr className="bg-gray-50"><td className="py-2 px-3 font-bold text-emerald-800">Close</td><td className="py-2 px-3">Signing & closing</td><td className="py-2 px-3 font-mono">W14–15</td></tr>
+            <tr className="bg-gray-50"><td className="py-2 px-3 font-bold text-emerald-800">Close</td><td className="py-2 px-3">Signing & closing</td><td className="py-2 px-3 font-mono">W14–16</td></tr>
           </tbody>
         </table>
       </Section>
