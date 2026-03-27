@@ -639,6 +639,64 @@ function TermSheetTab() {
 
   return (
     <div className="space-y-4">
+      {/* How Movement Views this Opportunity */}
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-950 to-blue-900 px-5 py-4">
+          <h2 className="text-base font-bold text-white tracking-wide">How Movement Views this Opportunity</h2>
+        </div>
+        <div className="px-5 py-4">
+          <div className="bg-blue-950 rounded-lg px-4 py-3 mb-5">
+            <p className="text-xs text-blue-100 leading-relaxed"><strong className="text-white">Movement</strong> is a private investment firm backed by a global family office with generational time horizons. Through our affiliates including DVC Partners, we have invested in and grown 40+ companies across Europe, North America and Asia, with ~65% of recent transactions being add-on acquisitions to existing portfolio companies.</p>
+          </div>
+          <div className="grid grid-cols-3 gap-5">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+                </div>
+                <h3 className="text-sm font-bold text-gray-900">Partnership, Not Just Capital</h3>
+              </div>
+              <ul className="space-y-1.5 text-xs text-gray-700">
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Movement + family as co-owners (70/30)</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Board representation</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Continuation of culture and team</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Access to Movement&apos;s network</li>
+              </ul>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+                </div>
+                <h3 className="text-sm font-bold text-gray-900">Unlocking Growth Together</h3>
+              </div>
+              <ul className="space-y-1.5 text-xs text-gray-700">
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Overseas expansion</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Regional delivery (CKD/installer model)</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Technology and digital (AI, cybersecurity)</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Production capacity</li>
+              </ul>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                </div>
+                <h3 className="text-sm font-bold text-gray-900">Building the Next Generation</h3>
+              </div>
+              <ul className="space-y-1.5 text-xs text-gray-700">
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Business transformation (stretch goals)</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Organisation transformation (Gen-2 leaders)</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Assessment and progression (criteria developed collaboratively)</li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-5 bg-gray-50 rounded-lg px-4 py-3">
+            <p className="text-xs text-gray-700 leading-relaxed">We see Carats not as a signage fabricator but as a potential regional leader providing integrated visual solutions. <strong>The partnership is designed so that when we succeed together, the 30% continuing stake could be worth multiples of its entry value.</strong></p>
+          </div>
+        </div>
+      </div>
+
       {/* Header banner */}
       <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-xl p-5 text-white">
         <div className="flex items-center justify-between flex-wrap gap-2">
@@ -988,7 +1046,7 @@ function TermSheetTab() {
             <p className="font-semibold mb-1">Worked example — Year 1 EBITDA comes in at S$7.0M (below S$7.5M Target and above S$6.0M Floor):</p>
             <p>Earnout = S$7.0M ÷ S$7.5M × S$2.58M</p>
             <p>= <strong>93.3% × S$2.58M = S$2.41M</strong></p>
-            <p className="mt-2 text-gray-500">The remaining S$0.17M carries forward to Year 2. To unlock this amount, Year 2 EBITDA needs to exceed S$8.0M by the shortfall amount (S$0.5M), i.e. achieve at least S$8.5M.</p>
+            <p className="mt-2 text-gray-500">The remaining S$0.17M (S$2.58M less S$2.41M) carries forward to Year 2. To unlock this amount, Year 2 EBITDA needs to exceed S$8.0M by the shortfall amount (S$0.5M), i.e. achieve at least S$8.5M.</p>
           </div>
         </div>
 
@@ -1223,7 +1281,7 @@ function FamilyOverviewTab() {
               <p className="font-semibold mb-1">Worked example — Year 1 EBITDA comes in at S$7.0M:</p>
               <p>Payout = S$7.0M ÷ S$7.5M × S$2.58M</p>
               <p>= <strong>93.3% × S$2.58M = S$2.41M paid</strong></p>
-              <p className="mt-2 text-gray-500">The remaining S$0.17M carries forward to Year 2. To recover it, Year 2 EBITDA needs to exceed S$8.0M by the shortfall amount (S$0.5M), i.e. hit at least S$8.5M.</p>
+              <p className="mt-2 text-gray-500">The remaining S$0.17M (S$2.58M less S$2.41M) carries forward to Year 2. To recover it, Year 2 EBITDA needs to exceed S$8.0M by the shortfall amount (S$0.5M), i.e. hit at least S$8.5M.</p>
             </div>
           </div>
 
@@ -1241,7 +1299,7 @@ function FamilyOverviewTab() {
               </div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA is below the target but above the minimum (80%)?</div>
-                <div className="text-xs text-gray-600">A: You receive a pro-rata portion of the Year 1 tranche based on the percentage of the target achieved. For example, S$7.0M EBITDA = 93.3% of the S$7.5M target, so 93.3% × S$2.58M = S$2.41M is paid. The remaining S$0.17M carries forward — to recover it, Year 2 EBITDA must <strong>exceed</strong> its own S$8.0M target by the shortfall amount (S$0.5M in this case, i.e. Year 2 needs S$8.5M).</div>
+                <div className="text-xs text-gray-600">A: You receive a pro-rata portion of the Year 1 tranche based on the percentage of the target achieved. For example, S$7.0M EBITDA = 93.3% of the S$7.5M target, so 93.3% × S$2.58M = S$2.41M is paid. The remaining S$0.17M (S$2.58M less S$2.41M) carries forward — to recover it, Year 2 EBITDA must <strong>exceed</strong> its own S$8.0M target by the shortfall amount (S$0.5M in this case, i.e. Year 2 needs S$8.5M).</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA falls below the minimum threshold (S$6.0M)?</div>
