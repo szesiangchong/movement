@@ -1068,6 +1068,11 @@ function TermSheetTab() {
             </div>
 
             <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 2 EBITDA falls between the target and floor?</div>
+              <div className="text-xs text-gray-600">A: The Year 2 tranche (S$6.02M) pays out <strong>pro rata</strong> based on the percentage of the target achieved, using the same formula: <em>Earnout = (Actual ÷ Target) × Tranche</em>. Any unpaid balance carries forward to Year 3, which uses the same target (S$8.0M) and floor (S$6.4M) as Year 2.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
               <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 EBITDA fall below the floor?</div>
               <div className="text-xs text-gray-600">A: No earnout is payable for either year. The upfront cash received at closing (i.e. S$19.4M in our example) remains unaffected.</div>
             </div>
@@ -1155,7 +1160,7 @@ function TermSheetTab() {
       {/* Section 8: Exclusivity */}
       <Section title="8. Exclusivity" tag="CORE" defaultOpen={false}>
         <div className="mt-3 space-y-4">
-          <p className="text-sm text-gray-700 leading-relaxed">If the family is keen to proceed, we would request an exclusivity period of <strong>4 months</strong> from signing the LOI. During this time:</p>
+          <p className="text-sm text-gray-700 leading-relaxed">If the family is keen to proceed, we would request an exclusivity period of 4 months from signing the LOI. During this time:</p>
           <div className="text-xs text-gray-700 space-y-2">
             <p>The company and its shareholders would cease discussions with any other potential buyers or investors</p>
             <p>No soliciting or entertaining alternative offers during the exclusivity period</p>
@@ -1606,7 +1611,7 @@ function FamilyOverviewTab() {
       {/* Exclusivity */}
       <FamilySection title="Exclusivity" icon="🔒" defaultOpen={false}>
         <div className="mt-3 space-y-4">
-          <p className="text-sm text-gray-700 leading-relaxed">If the family agrees to proceed, we would ask for an exclusivity period of <strong>4 months</strong> from signing the LOI. During this time:</p>
+          <p className="text-sm text-gray-700 leading-relaxed">If the family agrees to proceed, we would ask for an exclusivity period of 4 months from signing the LOI. During this time:</p>
           <div className="text-xs text-gray-700 space-y-2">
             <p>• The company and its shareholders would stop discussions with any other potential buyers or investors</p>
             <p>• No soliciting or entertaining alternative offers during the exclusivity period</p>
