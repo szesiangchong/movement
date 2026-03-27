@@ -735,8 +735,154 @@ function TermSheetTab() {
         </div>
       </Section>
 
-      {/* Section 3: SPV STRUCTURE & ROLLOVER — CORE */}
-      <Section title="3. SPV Structure & Management Rollover" tag="CORE">
+
+      {/* Section 3: Earnout Structure */}
+      <Section title="3. Earnout Structure" tag="STANDARD" defaultOpen={false}>
+        <table className="w-full text-xs mt-3">
+          <thead><tr className="bg-gray-50 text-gray-500"><th className="text-left py-2 px-3 font-semibold">Parameter</th><th className="text-left py-2 px-3 font-semibold">Year 1</th><th className="text-left py-2 px-3 font-semibold">Year 2</th><th className="text-left py-2 px-3 font-semibold">Total Earnout</th></tr></thead>
+          <tbody>
+            <tr><td className="py-2 px-3">Tranche</td><td className="py-2 px-3 font-mono">30% (S$2.58M)</td><td className="py-2 px-3 font-mono">70% (S$6.02M)</td><td className="py-2 px-3 font-mono">S$8,600,000 (if all Targets achieved)</td></tr>
+            <tr className="bg-gray-50"><td className="py-2 px-3">EBITDA Target</td><td className="py-2 px-3 font-mono">{fmtFull(7500)}</td><td className="py-2 px-3 font-mono">{fmtFull(8000)}</td><td className="py-2 px-3"></td></tr>
+            <tr><td className="py-2 px-3">Mgmt Forecast</td><td className="py-2 px-3 font-mono text-gray-400">{fmtFull(7890)}</td><td className="py-2 px-3 font-mono text-gray-400">{fmtFull(8522)}</td><td className="py-2 px-3"></td></tr>
+            <tr className="bg-gray-50"><td className="py-2 px-3">Floor</td><td className="py-2 px-3 font-mono">S$6,000,000 (80% of target)</td><td className="py-2 px-3 font-mono">S$6,400,000 (80% of target)</td><td className="py-2 px-3"></td></tr>
+            <tr><td className="py-2 px-3">Pro Rata Scaling</td><td className="py-2 px-3" colSpan={3}>Earnout scales proportionally with performance. The full amount is payable when the target is achieved. Any balance carries forward to Year 2.</td></tr>
+            <tr className="bg-gray-50"><td className="py-2 px-3">Measurement</td><td className="py-2 px-3" colSpan={3}>EBITDA for earnout purposes calculated on the same normalised basis agreed during due diligence. Any disagreements on the calculation may be referred to an independent accounting firm appointed by Holdco.</td></tr>
+          </tbody>
+        </table>
+
+        {/* Worked Example */}
+        <div className="mt-5 bg-blue-50 rounded-xl p-5">
+          <div className="text-sm font-bold text-blue-900 mb-2">How does the pro rata scaling work?</div>
+          <p className="text-xs text-gray-700 mb-3">The formula is: <strong>Earnout = (Actual EBITDA ÷ Target EBITDA) × Tranche</strong></p>
+          <div className="bg-white rounded-lg p-4 text-xs text-gray-700">
+            <p className="font-semibold mb-1">Worked example — Year 1 EBITDA comes in at S$7.0M (below S$7.5M Target and above S$6.0M Floor):</p>
+            <p>Earnout = S$7.0M ÷ S$7.5M × S$2.58M</p>
+            <p>= <strong>93.3% × S$2.58M = S$2.41M</strong></p>
+            <p className="mt-2 text-gray-500">The remaining S$0.17M (S$2.58M less S$2.41M) carries forward to Year 2. To unlock this amount, Year 2 EBITDA needs to exceed S$8.0M by the shortfall amount (S$0.5M), i.e. achieve at least S$8.5M.</p>
+          </div>
+        </div>
+
+        {/* Q&A Scenarios */}
+        <div className="mt-5">
+          <h4 className="text-sm font-bold text-gray-700 mb-3">Scenarios — Q&A</h4>
+
+          <div className="space-y-3">
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 EBITDA targets are met?</div>
+              <div className="text-xs text-gray-600">A: Full earnout of {fmtFull(DEFERRED_TOTAL)} is paid — S$2.58M after Year 1 and S$6.02M after Year 2.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA is below the target but above the floor (80%)?</div>
+              <div className="text-xs text-gray-600">A: The Year 1 tranche (S$2.58M) pays out <strong>pro rata</strong> based on the percentage of the target achieved. The formula is: <em>Earnout = (Actual ÷ Target) × Tranche</em>. For example, if Year 1 EBITDA is S$7.0M: earnout = S$7.0M ÷ S$7.5M × S$2.58M = <strong>93.3% × S$2.58M = S$2.41M</strong>. The unpaid S$0.17M carries forward, but recovering it requires Year 2 to <strong>exceed</strong> its own S$8.0M target by the EBITDA shortfall in Year 1 (S$0.5M in this case). Year 2 would need S$8.5M to fully recover the carried amount.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA falls below the floor (80% of target)?</div>
+              <div className="text-xs text-gray-600">A: No Year 1 earnout is paid, and there is also no carry forward or recovery in Year 2.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 2 EBITDA falls between the target and floor?</div>
+              <div className="text-xs text-gray-600">A: The Year 2 tranche (S$6.02M) pays out <strong>pro rata</strong> based on the percentage of the target achieved, using the same formula: <em>Earnout = (Actual ÷ Target) × Tranche</em>. Any unpaid balance carries forward to Year 3, which uses the same target (S$8.0M) and floor (S$6.4M) as Year 2.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 EBITDA fall below the floor?</div>
+              <div className="text-xs text-gray-600">A: No earnout is payable for either year. The upfront cash received at closing (i.e. S$19.4M in our example) remains unaffected.</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mechanics & Protections */}
+        <div className="mt-5">
+          <h4 className="text-sm font-bold text-gray-700 mb-3">Mechanics & Protections</h4>
+
+          <div className="space-y-3">
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: How is EBITDA measured for earnout purposes — and who decides?</div>
+              <div className="text-xs text-gray-600">A: EBITDA for earnout measurement will be prepared by the finance team and agreed upon by all shareholders (Movement and Family). The definition of EBITDA will be mutually agreed during due diligence — this will specify how various EBITDA components such as one-off/non-recurring items, management fees, intercompany charges, and other normalisations are treated to ensure a fair and consistent basis of measurement. In the unlikely event where parties are not able to agree on how Year 1 and Year 2 EBITDA are calculated, we can involve an independent accounting firm to verify the amounts against the pre-agreed formula.</div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4">
+              <div className="text-xs font-bold text-blue-800 mb-1">Q: Is the upfront cash payment unconditional?</div>
+              <div className="text-xs text-gray-600">A: Yes. The upfront cash payable at completion is unconditional. The earnout is a separate, additional component — non-achievement of earnout targets does not affect the upfront payment already received.</div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* Section 5: Purchase Price Adjustments */}
+
+      {/* Section 4: Governance */}
+      <Section title="4. Governance & Shareholder Rights" tag="STANDARD" defaultOpen={false}>
+        <div className="mt-3">
+          <Row label="Board">Number of Board Seats to be agreed by all shareholders. Majority appointed by Movement, including the Chairman position.</Row>
+          <Row label="Reserved Matters">Capex above threshold, new indebtedness, related-party transactions, dividend policy, key executive hires/terminations, material contracts, change of business</Row>
+          <Row label="Info Rights">Monthly management accounts, quarterly board reporting, annual audited statements</Row>
+          <Row label="Anti-Dilution">Pre-emptive rights on new issuances to enable maintaining of pro rata ownership</Row>
+          <Row label="Sale of Shares">Standard put/call options pegged to fair market value formula, with right-of-first-refusal and tag-along rights for existing shareholders on any sale by other shareholders. Timing and trigger conditions to be agreed by all shareholders during due diligence.</Row>
+          <Row label="Management Continuity">Continuing family shareholders involved in day-to-day operations will enter into service agreements with the Group on mutually agreed terms, to be finalised during due diligence. Movement is committed to continuity and stability for all team members.</Row>
+          <Row label="Ordinary Course">Between signing and completion, the Group continues to operate in the normal course of business.</Row>
+        </div>
+      </Section>
+
+      {/* Section 5: DD & Conditions */}
+      <Section title="5. Due Diligence & Conditions Precedent" tag="STANDARD" defaultOpen={false}>
+        <div className="mt-3">
+          <Row label="DD Scope">Financial, legal, tax, commercial, and operational. 3–4 months indicative period post-LOI execution.</Row>
+          <Row label="Key Focus">
+            <div className="space-y-1">
+              <p>(1) 5-year growth plan & revenue pipeline sustainability</p>
+              <p>(2) BU economics — standalone and go-forward</p>
+              <p>(3) Earnings quality — normalised EBITDA, intercompany eliminations</p>
+              <p>(4) Working capital & balance sheet — receivables ageing, cash requirements</p>
+              <p>(5) Legal & structural — contracts, IP, regulatory, employment</p>
+              <p>(6) Leadership continuity & team alignment</p>
+              <p className="text-gray-400 italic">Indicative list for illustration only, actual diligence scope to be determined in consultation with professional advisors</p>
+            </div>
+          </Row>
+          <Row label="Conditions">Satisfactory due diligence; no material adverse change; audited FY2025 confirmation; formalised transfer pricing; key leadership continuity arrangements agreed; any other key material findings from diligence; locked box compliance confirmed as at [31 March 2026]</Row>
+        </div>
+      </Section>
+
+      {/* Section 6: Funding Sources */}
+      <Section title="6. Funding Sources" tag="STANDARD" defaultOpen={false}>
+        <div className="mt-3">
+          <Row label="Equity">Movement fund (patient capital, MAS-approved family office domiciled in Singapore). No financing contingency.</Row>
+          <Row label="Transaction Financing">Potential senior-secured debt at HoldCo level. Quantum and financing terms to be discussed and decided amongst shareholders during diligence.</Row>
+        </div>
+      </Section>
+
+      {/* Section 7: Indicative Timeline */}
+      <Section title="7. Indicative Timeline (~4 months from LOI signing)" tag="STANDARD" defaultOpen={false}>
+        <table className="w-full text-xs mt-3">
+          <thead><tr className="bg-gray-50 text-gray-500"><th className="text-left py-2 px-3 font-semibold">Phase</th><th className="text-left py-2 px-3 font-semibold">Activity</th><th className="text-left py-2 px-3 font-semibold">Weeks</th></tr></thead>
+          <tbody>
+            <tr><td className="py-2 px-3 font-bold text-blue-800">LOI</td><td className="py-2 px-3">Submit draft, discussion & agreement</td><td className="py-2 px-3 font-mono">W1–3</td></tr>
+            <tr className="bg-gray-50"><td className="py-2 px-3 font-bold text-purple-800">DD</td><td className="py-2 px-3">All workstreams (financial, legal, tax, commercial and operational)</td><td className="py-2 px-3 font-mono">W4–11</td></tr>
+            <tr><td className="py-2 px-3 font-bold text-green-800">SPA</td><td className="py-2 px-3">Agreement drafting, leadership alignment</td><td className="py-2 px-3 font-mono">W10–13</td></tr>
+            <tr className="bg-gray-50"><td className="py-2 px-3 font-bold text-emerald-800">Close</td><td className="py-2 px-3">Signing & closing</td><td className="py-2 px-3 font-mono">W14–16</td></tr>
+          </tbody>
+        </table>
+      </Section>
+
+      {/* Section 8: Exclusivity */}
+      <Section title="8. Exclusivity" tag="CORE" defaultOpen={false}>
+        <div className="mt-3 space-y-4">
+          <p className="text-sm text-gray-700 leading-relaxed">If the family is keen to proceed, we would request an exclusivity period of 4 months from signing the LOI. During this time:</p>
+          <div className="text-xs text-gray-700 space-y-2">
+            <p>The company and its shareholders would cease discussions with any other potential buyers or investors</p>
+            <p>No soliciting or entertaining alternative offers during the exclusivity period</p>
+            <p>If an unsolicited approach comes in from a third party, the company would promptly let Movement know</p>
+          </div>
+          <p className="text-xs text-gray-500">This is standard for transactions like this — it gives both sides the confidence to invest significant time and resources into due diligence and negotiations.</p>
+        </div>
+      </Section>
+      <div className="border-t-2 border-dashed border-gray-300 my-6" />
+
+      {/* Section 9: SPV Structure & Management Rollover */}
+      <Section title="9. SPV Structure & Management Rollover" tag="CORE">
         <p className="text-xs text-gray-500 mt-3 mb-4">
           Illustrative total consideration of S$40M — comprising <strong className="text-gray-800">{fmt(UPFRONT)} upfront</strong> at close and <strong className="text-gray-800">{fmt(EARNOUT_AMT)} deferred earnout</strong> over 2 years. The SPV raises {fmt(UPFRONT)} at closing (equity + debt) to pay the upfront consideration; the earnout is paid later from operating cash flow. Management <strong className="text-gray-800">reinvests</strong> a portion of their proceeds back into the SPV for their 30% continuing stake. The more debt at SPV level, the less equity is needed — meaning <strong className="text-green-700">less reinvestment and more cash to the family at close</strong>.
         </p>
@@ -1023,154 +1169,12 @@ function TermSheetTab() {
 
       </Section>
 
-      {/* Section 3: Earnout Structure */}
-      <Section title="3. Earnout Structure" tag="STANDARD" defaultOpen={false}>
-        <table className="w-full text-xs mt-3">
-          <thead><tr className="bg-gray-50 text-gray-500"><th className="text-left py-2 px-3 font-semibold">Parameter</th><th className="text-left py-2 px-3 font-semibold">Year 1</th><th className="text-left py-2 px-3 font-semibold">Year 2</th><th className="text-left py-2 px-3 font-semibold">Total Earnout</th></tr></thead>
-          <tbody>
-            <tr><td className="py-2 px-3">Tranche</td><td className="py-2 px-3 font-mono">30% (S$2.58M)</td><td className="py-2 px-3 font-mono">70% (S$6.02M)</td><td className="py-2 px-3 font-mono">S$8,600,000 (if all Targets achieved)</td></tr>
-            <tr className="bg-gray-50"><td className="py-2 px-3">EBITDA Target</td><td className="py-2 px-3 font-mono">{fmtFull(7500)}</td><td className="py-2 px-3 font-mono">{fmtFull(8000)}</td><td className="py-2 px-3"></td></tr>
-            <tr><td className="py-2 px-3">Mgmt Forecast</td><td className="py-2 px-3 font-mono text-gray-400">{fmtFull(7890)}</td><td className="py-2 px-3 font-mono text-gray-400">{fmtFull(8522)}</td><td className="py-2 px-3"></td></tr>
-            <tr className="bg-gray-50"><td className="py-2 px-3">Floor</td><td className="py-2 px-3 font-mono">S$6,000,000 (80% of target)</td><td className="py-2 px-3 font-mono">S$6,400,000 (80% of target)</td><td className="py-2 px-3"></td></tr>
-            <tr><td className="py-2 px-3">Pro Rata Scaling</td><td className="py-2 px-3" colSpan={3}>Earnout scales proportionally with performance. The full amount is payable when the target is achieved. Any balance carries forward to Year 2.</td></tr>
-            <tr className="bg-gray-50"><td className="py-2 px-3">Measurement</td><td className="py-2 px-3" colSpan={3}>EBITDA for earnout purposes calculated on the same normalised basis agreed during due diligence. Any disagreements on the calculation may be referred to an independent accounting firm appointed by Holdco.</td></tr>
-          </tbody>
-        </table>
-
-        {/* Worked Example */}
-        <div className="mt-5 bg-blue-50 rounded-xl p-5">
-          <div className="text-sm font-bold text-blue-900 mb-2">How does the pro rata scaling work?</div>
-          <p className="text-xs text-gray-700 mb-3">The formula is: <strong>Earnout = (Actual EBITDA ÷ Target EBITDA) × Tranche</strong></p>
-          <div className="bg-white rounded-lg p-4 text-xs text-gray-700">
-            <p className="font-semibold mb-1">Worked example — Year 1 EBITDA comes in at S$7.0M (below S$7.5M Target and above S$6.0M Floor):</p>
-            <p>Earnout = S$7.0M ÷ S$7.5M × S$2.58M</p>
-            <p>= <strong>93.3% × S$2.58M = S$2.41M</strong></p>
-            <p className="mt-2 text-gray-500">The remaining S$0.17M (S$2.58M less S$2.41M) carries forward to Year 2. To unlock this amount, Year 2 EBITDA needs to exceed S$8.0M by the shortfall amount (S$0.5M), i.e. achieve at least S$8.5M.</p>
-          </div>
-        </div>
-
-        {/* Q&A Scenarios */}
-        <div className="mt-5">
-          <h4 className="text-sm font-bold text-gray-700 mb-3">Scenarios — Q&A</h4>
-
-          <div className="space-y-3">
-            <div className="bg-gray-50 rounded-xl p-4">
-              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 EBITDA targets are met?</div>
-              <div className="text-xs text-gray-600">A: Full earnout of {fmtFull(DEFERRED_TOTAL)} is paid — S$2.58M after Year 1 and S$6.02M after Year 2.</div>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-4">
-              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA is below the target but above the floor (80%)?</div>
-              <div className="text-xs text-gray-600">A: The Year 1 tranche (S$2.58M) pays out <strong>pro rata</strong> based on the percentage of the target achieved. The formula is: <em>Earnout = (Actual ÷ Target) × Tranche</em>. For example, if Year 1 EBITDA is S$7.0M: earnout = S$7.0M ÷ S$7.5M × S$2.58M = <strong>93.3% × S$2.58M = S$2.41M</strong>. The unpaid S$0.17M carries forward, but recovering it requires Year 2 to <strong>exceed</strong> its own S$8.0M target by the EBITDA shortfall in Year 1 (S$0.5M in this case). Year 2 would need S$8.5M to fully recover the carried amount.</div>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-4">
-              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 1 EBITDA falls below the floor (80% of target)?</div>
-              <div className="text-xs text-gray-600">A: No Year 1 earnout is paid, and there is also no carry forward or recovery in Year 2.</div>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-4">
-              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if Year 2 EBITDA falls between the target and floor?</div>
-              <div className="text-xs text-gray-600">A: The Year 2 tranche (S$6.02M) pays out <strong>pro rata</strong> based on the percentage of the target achieved, using the same formula: <em>Earnout = (Actual ÷ Target) × Tranche</em>. Any unpaid balance carries forward to Year 3, which uses the same target (S$8.0M) and floor (S$6.4M) as Year 2.</div>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-4">
-              <div className="text-xs font-bold text-blue-800 mb-1">Q: What if both Year 1 and Year 2 EBITDA fall below the floor?</div>
-              <div className="text-xs text-gray-600">A: No earnout is payable for either year. The upfront cash received at closing (i.e. S$19.4M in our example) remains unaffected.</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Mechanics & Protections */}
-        <div className="mt-5">
-          <h4 className="text-sm font-bold text-gray-700 mb-3">Mechanics & Protections</h4>
-
-          <div className="space-y-3">
-            <div className="bg-gray-50 rounded-xl p-4">
-              <div className="text-xs font-bold text-blue-800 mb-1">Q: How is EBITDA measured for earnout purposes — and who decides?</div>
-              <div className="text-xs text-gray-600">A: EBITDA for earnout measurement will be prepared by the finance team and agreed upon by all shareholders (Movement and Family). The definition of EBITDA will be mutually agreed during due diligence — this will specify how various EBITDA components such as one-off/non-recurring items, management fees, intercompany charges, and other normalisations are treated to ensure a fair and consistent basis of measurement. In the unlikely event where parties are not able to agree on how Year 1 and Year 2 EBITDA are calculated, we can involve an independent accounting firm to verify the amounts against the pre-agreed formula.</div>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-4">
-              <div className="text-xs font-bold text-blue-800 mb-1">Q: Is the upfront cash payment unconditional?</div>
-              <div className="text-xs text-gray-600">A: Yes. The upfront cash payable at completion is unconditional. The earnout is a separate, additional component — non-achievement of earnout targets does not affect the upfront payment already received.</div>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* Section 5: Purchase Price Adjustments */}
-      <Section title="5. Purchase Price Adjustments" tag="STANDARD" defaultOpen={false}>
+      {/* Section 10: Purchase Price Adjustments */}
+      <Section title="10. Purchase Price Adjustments" tag="STANDARD" defaultOpen={false}>
         <div className="mt-3">
           <Row label="NWC Adjustment">All payments of the Purchase Price shall be subject to a net working capital adjustment. The applicable target net working capital (&quot;NWC Target&quot;) shall be agreed to by the Parties following the completion of the Purchaser&apos;s financial due diligence.</Row>
           <Row label="Net Debt / Cash">Final equity value adjusted for actual net debt (or net cash) at completion versus the reference balance used in the EV-to-equity bridge.</Row>
           <Row label="True-Up">Completion accounts to be prepared post-close. Any variance between actual NWC and the agreed NWC Target will result in a dollar-for-dollar adjustment to the Purchase Price (up or down).</Row>
-        </div>
-      </Section>
-
-      {/* Section 4: Governance */}
-      <Section title="4. Governance & Shareholder Rights" tag="STANDARD" defaultOpen={false}>
-        <div className="mt-3">
-          <Row label="Board">Number of Board Seats to be agreed by all shareholders. Majority appointed by Movement, including the Chairman position.</Row>
-          <Row label="Reserved Matters">Capex above threshold, new indebtedness, related-party transactions, dividend policy, key executive hires/terminations, material contracts, change of business</Row>
-          <Row label="Info Rights">Monthly management accounts, quarterly board reporting, annual audited statements</Row>
-          <Row label="Anti-Dilution">Pre-emptive rights on new issuances to enable maintaining of pro rata ownership</Row>
-          <Row label="Sale of Shares">Standard put/call options pegged to fair market value formula, with right-of-first-refusal and tag-along rights for existing shareholders on any sale by other shareholders. Timing and trigger conditions to be agreed by all shareholders during due diligence.</Row>
-          <Row label="Management Continuity">Continuing family shareholders involved in day-to-day operations will enter into service agreements with the Group on mutually agreed terms, to be finalised during due diligence. Movement is committed to continuity and stability for all team members.</Row>
-          <Row label="Ordinary Course">Between signing and completion, the Group continues to operate in the normal course of business.</Row>
-        </div>
-      </Section>
-
-      {/* Section 5: DD & Conditions */}
-      <Section title="5. Due Diligence & Conditions Precedent" tag="STANDARD" defaultOpen={false}>
-        <div className="mt-3">
-          <Row label="DD Scope">Financial, legal, tax, commercial, and operational. 3–4 months indicative period post-LOI execution.</Row>
-          <Row label="Key Focus">
-            <div className="space-y-1">
-              <p>(1) 5-year growth plan & revenue pipeline sustainability</p>
-              <p>(2) BU economics — standalone and go-forward</p>
-              <p>(3) Earnings quality — normalised EBITDA, intercompany eliminations</p>
-              <p>(4) Working capital & balance sheet — receivables ageing, cash requirements</p>
-              <p>(5) Legal & structural — contracts, IP, regulatory, employment</p>
-              <p>(6) Leadership continuity & team alignment</p>
-              <p className="text-gray-400 italic">Indicative list for illustration only, actual diligence scope to be determined in consultation with professional advisors</p>
-            </div>
-          </Row>
-          <Row label="Conditions">Satisfactory due diligence; no material adverse change; audited FY2025 confirmation; formalised transfer pricing; key leadership continuity arrangements agreed; any other key material findings from diligence; locked box compliance confirmed as at [31 March 2026]</Row>
-        </div>
-      </Section>
-
-      {/* Section 6: Funding Sources */}
-      <Section title="6. Funding Sources" tag="STANDARD" defaultOpen={false}>
-        <div className="mt-3">
-          <Row label="Equity">Movement fund (patient capital, MAS-approved family office domiciled in Singapore). No financing contingency.</Row>
-          <Row label="Transaction Financing">Potential senior-secured debt at HoldCo level. Quantum and financing terms to be discussed and decided amongst shareholders during diligence.</Row>
-        </div>
-      </Section>
-
-      {/* Section 9: Timeline */}
-      <Section title="7. Indicative Timeline (~4 months from LOI signing)" tag="STANDARD" defaultOpen={false}>
-        <table className="w-full text-xs mt-3">
-          <thead><tr className="bg-gray-50 text-gray-500"><th className="text-left py-2 px-3 font-semibold">Phase</th><th className="text-left py-2 px-3 font-semibold">Activity</th><th className="text-left py-2 px-3 font-semibold">Weeks</th></tr></thead>
-          <tbody>
-            <tr><td className="py-2 px-3 font-bold text-blue-800">LOI</td><td className="py-2 px-3">Submit draft, discussion & agreement</td><td className="py-2 px-3 font-mono">W1–3</td></tr>
-            <tr className="bg-gray-50"><td className="py-2 px-3 font-bold text-purple-800">DD</td><td className="py-2 px-3">All workstreams (financial, legal, tax, commercial and operational)</td><td className="py-2 px-3 font-mono">W4–11</td></tr>
-            <tr><td className="py-2 px-3 font-bold text-green-800">SPA</td><td className="py-2 px-3">Agreement drafting, leadership alignment</td><td className="py-2 px-3 font-mono">W10–13</td></tr>
-            <tr className="bg-gray-50"><td className="py-2 px-3 font-bold text-emerald-800">Close</td><td className="py-2 px-3">Signing & closing</td><td className="py-2 px-3 font-mono">W14–16</td></tr>
-          </tbody>
-        </table>
-      </Section>
-
-      {/* Section 8: Exclusivity */}
-      <Section title="8. Exclusivity" tag="CORE" defaultOpen={false}>
-        <div className="mt-3 space-y-4">
-          <p className="text-sm text-gray-700 leading-relaxed">If the family is keen to proceed, we would request an exclusivity period of 4 months from signing the LOI. During this time:</p>
-          <div className="text-xs text-gray-700 space-y-2">
-            <p>The company and its shareholders would cease discussions with any other potential buyers or investors</p>
-            <p>No soliciting or entertaining alternative offers during the exclusivity period</p>
-            <p>If an unsolicited approach comes in from a third party, the company would promptly let Movement know</p>
-          </div>
-          <p className="text-xs text-gray-500">This is standard for transactions like this — it gives both sides the confidence to invest significant time and resources into due diligence and negotiations.</p>
         </div>
       </Section>
 
@@ -1739,7 +1743,7 @@ function Dashboard() {
       <header className="text-center py-3 mb-4">
         <h1 className="text-2xl font-bold text-blue-900 tracking-tight">PROJECT DIAMOND</h1>
         <p className="text-xs text-gray-400 mt-0.5">Preliminary Discussion &mdash; Confidential</p>
-        <p className="text-[11px] text-gray-500 mt-3 max-w-2xl mx-auto leading-relaxed italic">Movement is pleased to present this Partnership Proposal, reflecting our commitment to a lasting partnership with both generations<br />of the CARATS family to drive the Group&apos;s next chapter of growth.</p>
+        <p className="text-[11px] text-gray-500 mt-3 max-w-3xl mx-auto leading-relaxed italic">Movement is pleased to present this Partnership Proposal, reflecting our commitment to a lasting partnership with both generations<br />of the CARATS family to drive the Group&apos;s next chapter of growth.</p>
       </header>
       <div className="flex gap-1 mb-5 bg-white rounded-xl p-1 shadow-sm border border-gray-200">
         {TABS.map((t, i) => (
