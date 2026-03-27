@@ -641,9 +641,6 @@ function TermSheetTab() {
     <div className="space-y-4">
       {/* How we envisage a partnership with you */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-950 to-blue-900 px-5 py-4">
-          <h2 className="text-base font-bold text-white tracking-wide">How we envisage a partnership with you</h2>
-        </div>
         <div className="px-5 py-4">
           <div className="bg-blue-950 rounded-lg px-4 py-3 mb-5">
             <p className="text-xs text-blue-100 leading-relaxed"><strong className="text-white">Movement</strong> is a private investment firm backed by a global family office with generational time horizons. Through our affiliates including DVC Partners, we have invested in and grown 40+ companies across Europe, North America and Asia, with ~65% of recent transactions being add-on acquisitions to existing portfolio companies.</p>
