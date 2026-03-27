@@ -1117,7 +1117,7 @@ function TermSheetTab() {
           <Row label="Anti-Dilution">Pre-emptive rights on new issuances to enable maintaining of pro rata ownership</Row>
           <Row label="Sale of Shares">Standard put/call options pegged to fair market value formula, with right-of-first-refusal and tag-along rights for existing shareholders on any sale by other shareholders. Timing and trigger conditions to be agreed by all shareholders during due diligence.</Row>
           <Row label="Management Continuity">Continuing family shareholders involved in day-to-day operations will enter into service agreements with the Group on mutually agreed terms, to be finalised during due diligence. Movement is committed to continuity and stability for all team members.</Row>
-          <Row label="Ordinary Course">Between signing and completion, the Group continues to operate in the normal course of business. Any material commitments, contracts, or expenditures outside of the ordinary course require prior discussion with Movement.</Row>
+          <Row label="Ordinary Course">Between signing and completion, the Group continues to operate in the normal course of business.</Row>
         </div>
       </Section>
 
