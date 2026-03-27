@@ -652,42 +652,42 @@ function TermSheetTab() {
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+                  <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 24 24"><path d="M16.48 10.41c-.39.39-1.04.39-1.43 0l-4.47-4.46-7.05 7.04-.66-.63a3 3 0 010-4.24l4.24-4.24a3 3 0 014.24 0L16.48 8.97a1 1 0 010 1.44zm-4.47 3.13l4.47 4.46.66.63a3 3 0 000-4.24l-4.24-4.24a3 3 0 00-4.24 0L3.53 15.28a1 1 0 000 1.44c.39.39 1.04.39 1.43 0l7.05-7.04z" /><path d="M20.47 7.5l-3-3a1 1 0 00-1.41 0l-1.06 1.06 4.41 4.41 1.06-1.06a1 1 0 000-1.41zM3.53 16.5l3 3a1 1 0 001.41 0l1.06-1.06-4.41-4.41-1.06 1.06a1 1 0 000 1.41z" /></svg>
                 </div>
                 <h3 className="text-sm font-bold text-gray-900">Partnership, Not Just Capital</h3>
               </div>
-              <ul className="space-y-1.5 text-xs text-gray-700">
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Movement + family as co-owners (70/30)</li>
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Board representation</li>
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Continuation of culture and team</li>
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Access to Movement&apos;s network</li>
+              <ul className="space-y-2.5 text-xs text-gray-700">
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Movement + family as co-owners (70/30), aligned on long-term value creation</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Board representation for family, reserved matters protecting key decisions (hiring, capex, contracts)</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Continuation of culture and team - no day-1 changes; improvements come through working together</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Access to Movement&apos;s network: portfolio company connections, APAC deal flow, landlord/property relationships for growth and expansion</li>
               </ul>
             </div>
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+                  <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C10.08 2 8.5 3.58 8.5 5.5c0 .35.06.69.15 1.01L6.47 8.68A2.5 2.5 0 005 8c-1.38 0-2.5 1.12-2.5 2.5S3.62 13 5 13c.34 0 .66-.07.96-.19L9.5 16.8V20c0 1.1.9 2 2 2h1c1.1 0 2-.9 2-2v-3.2l3.54-3.99c.3.12.62.19.96.19 1.38 0 2.5-1.12 2.5-2.5S20.38 8 19 8c-.59 0-1.12.22-1.53.57l-2.18-2.17c.09-.32.15-.66.15-1.01C15.5 3.58 13.92 2 12 2zm0 2c.83 0 1.5.67 1.5 1.5S12.83 7 12 7s-1.5-.67-1.5-1.5S11.17 4 12 4z" /></svg>
                 </div>
                 <h3 className="text-sm font-bold text-gray-900">Unlocking Growth Together</h3>
               </div>
-              <ul className="space-y-1.5 text-xs text-gray-700">
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Overseas expansion</li>
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Regional delivery (CKD/installer model)</li>
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Technology and digital (AI, cybersecurity)</li>
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Production capacity</li>
+              <ul className="space-y-2.5 text-xs text-gray-700">
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Overseas expansion: leverage Movement&apos;s family office, government and regional network to accelerate new relationships and source potential acquisition targets</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Regional delivery: institutionalise the CKD/installer model for SEA and beyond, building on Mumbai and KL as proof points</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Technology and digital: invest in AI, digital and cybersecurity capabilities across the group</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Production capacity: operational planning and securing additional space to address current constraints</li>
               </ul>
             </div>
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                  <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" /></svg>
                 </div>
                 <h3 className="text-sm font-bold text-gray-900">Building the Next Generation</h3>
               </div>
-              <ul className="space-y-1.5 text-xs text-gray-700">
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Business transformation (stretch goals)</li>
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Organisation transformation (Gen-2 leaders)</li>
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Assessment and progression (criteria developed collaboratively)</li>
+              <ul className="space-y-2.5 text-xs text-gray-700">
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Business transformation: stretch goals across each business unit, tied to the 5-year growth plan developed during due diligence</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Organisation transformation: structured development for Gen-2 leaders, including cross-BU projects, overseas expansion leadership, and new business mandates</li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>Assessment and progression: clear criteria developed collaboratively with the family, with Movement providing coaching, benchmarking, and exposure to portfolio company best practices</li>
               </ul>
             </div>
           </div>
