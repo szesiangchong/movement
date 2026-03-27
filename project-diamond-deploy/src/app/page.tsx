@@ -639,19 +639,19 @@ function TermSheetTab() {
 
   return (
     <div className="space-y-4">
-      {/* How Movement Views this Opportunity */}
+      {/* How we envisage a partnership with you */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <div className="bg-gradient-to-r from-blue-950 to-blue-900 px-5 py-4">
-          <h2 className="text-base font-bold text-white tracking-wide">How Movement Views this Opportunity</h2>
+          <h2 className="text-base font-bold text-white tracking-wide">How we envisage a partnership with you</h2>
         </div>
         <div className="px-5 py-4">
           <div className="bg-blue-950 rounded-lg px-4 py-3 mb-5">
             <p className="text-xs text-blue-100 leading-relaxed"><strong className="text-white">Movement</strong> is a private investment firm backed by a global family office with generational time horizons. Through our affiliates including DVC Partners, we have invested in and grown 40+ companies across Europe, North America and Asia, with ~65% of recent transactions being add-on acquisitions to existing portfolio companies.</p>
           </div>
-          <div className="grid grid-cols-3 gap-5">
-            <div>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
                   <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
                 </div>
                 <h3 className="text-sm font-bold text-gray-900">Partnership, Not Just Capital</h3>
@@ -663,9 +663,9 @@ function TermSheetTab() {
                 <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Access to Movement&apos;s network</li>
               </ul>
             </div>
-            <div>
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
                   <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                 </div>
                 <h3 className="text-sm font-bold text-gray-900">Unlocking Growth Together</h3>
@@ -677,9 +677,9 @@ function TermSheetTab() {
                 <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5">•</span>Production capacity</li>
               </ul>
             </div>
-            <div>
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
                   <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
                 </div>
                 <h3 className="text-sm font-bold text-gray-900">Building the Next Generation</h3>
