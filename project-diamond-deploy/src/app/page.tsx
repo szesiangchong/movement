@@ -671,7 +671,7 @@ function TermSheetTab() {
                 <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span><span><strong>Overseas expansion:</strong> leverage Movement&apos;s family office, government and regional network to accelerate new relationships and source potential acquisition targets</span></li>
                 <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span><span><strong>Regional delivery:</strong> institutionalise the CKD/installer model for SEA and beyond, building on Mumbai and KL as proof points</span></li>
                 <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span><span><strong>Technology and digital:</strong> invest in AI, digital and cybersecurity capabilities across the group</span></li>
-                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span><span><strong>Production capacity:</strong> operational planning and securing additional space to address current constraints</span></li>
+                <li className="flex gap-1.5"><span className="text-amber-500 mt-0.5 flex-shrink-0">•</span><span><strong>Production capacity:</strong> operational planning, selective outsourcing, and securing additional space to support growth</span></li>
               </ul>
             </div>
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
