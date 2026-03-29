@@ -1732,29 +1732,322 @@ function PasswordGate({ children }: { children: React.ReactNode }) {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// MAIN
+// SWAN TERM SHEET TAB
+// ════════════════════════════════════════════════════════════════════════
+function SwanTermSheetTab() {
+  const [expandedSections, setExpandedSections] = useState<string[]>(["3", "0"]); // defaultOpen for sections 0 and 3
+
+  const toggleSection = (id: string) => {
+    setExpandedSections(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+
+  const sections = [
+    {
+      id: "0",
+      title: "Transaction Overview",
+      tag: "STANDARD",
+      rows: [
+        { label: "Target", value: "Multron Systems Pte Ltd" },
+        { label: "Parties", value: "Newly formed HoldCo (SPV) — Movement 90% / Existing Shareholders 10%" },
+        { label: "Transaction", value: "100% of Multron consolidated into HoldCo. Existing shareholders receive cash and rollover equity at agreed valuation." },
+        { label: "Enterprise Value", value: "S$11,460,000 (~6.0x adjusted unaudited FY2025 EBITDA of S$1,910,000). FY2025 reported EBITDA of S$1,810,000 adjusted for ~S$100,000 personal expenses." },
+        { label: "Equity Value", value: "S$20,420,000 (EV + Net Cash S$8,960,000). Subject to independent financial DD on debt, cash, and working capital." },
+        { label: "Payment", value: "Combination of upfront cash and contingent consideration (S$2,000,000 on JTC lease renewal)." },
+        { label: "Basis", value: "Cash-free, debt-free, subject to normalised working capital" },
+      ]
+    },
+    {
+      id: "1",
+      title: "Rollover Equity",
+      tag: "TBD",
+      rows: [
+        { label: "Rollover", value: "Family shareholders rollover 10% equity into HoldCo on mutually agreed terms." },
+        { label: "Purpose", value: "Alignment on long-term value creation. Mr Wong to stay 1-2 years, consult thereafter." },
+        { label: "Governance", value: "Rollover shareholders hold equity alongside Movement's 90% stake." },
+      ]
+    },
+    {
+      id: "2",
+      title: "Contingent Consideration",
+      tag: "CORE",
+      rows: [
+        { label: "Amount", value: "S$2,000,000" },
+        { label: "Trigger", value: "Successful renewal of JTC lease for 217 Kallang Bahru (60-year leasehold, ~7 years remaining)" },
+        { label: "Mechanism", value: "Joint letter to JTC at signing as condition precedent. Payable upon confirmed lease extension." },
+        { label: "Note", value: "Property OMV S$5-6M (book S$2.6M). 2 vacant floors generating S$228K/yr rental income." },
+      ]
+    },
+    {
+      id: "3",
+      title: "Founder Protections",
+      tag: "STANDARD",
+      rows: [
+        { label: "Underwriting", value: "Founders ok to underwrite aged receivables and obsolete inventory if required during DD" },
+        { label: "Key-man", value: "Mr Wong handles supplier relationships (3 China-based) and overseas BD. Client relationships held by sales team + distributors." },
+        { label: "Succession", value: "External MD (management-focused) + internal GM (existing manager). Mr Wong has candidates in mind." },
+        { label: "Personal Expenses", value: "~S$100K personal expenses currently run through business. Added back to EBITDA." },
+      ]
+    },
+    {
+      id: "4",
+      title: "Governance",
+      tag: "STANDARD",
+      rows: [
+        { label: "Board", value: "Majority Movement, including Chairman" },
+        { label: "Reserved Matters", value: "Capex above threshold, new indebtedness, RP transactions, dividend policy, key hires, material contracts" },
+        { label: "Info Rights", value: "Monthly mgmt accounts, quarterly board reporting, annual audited statements" },
+        { label: "Management Continuity", value: "Mr Wong stays 1-2 years. OK with earnout. Free consulting after." },
+      ]
+    },
+    {
+      id: "5",
+      title: "DD & Conditions",
+      tag: "STANDARD",
+      rows: [
+        { label: "DD Scope", value: "Financial, legal, tax, commercial, operational. 3-4 months post-LOI." },
+        { label: "Key Focus", value: "(1) Installed base analysis + AMC conversion, (2) Order book/pipeline, (3) DC client depth, (4) Overseas revenue reconciliation, (5) Key-man transition, (6) JTC lease" },
+        { label: "Conditions", value: "Satisfactory DD, no MAC, audited FY25 (expected early April), JTC lease renewal letter, key leadership arrangements" },
+      ]
+    },
+    {
+      id: "6",
+      title: "Funding",
+      tag: "STANDARD",
+      rows: [
+        { label: "Equity", value: "Movement fund (patient capital, family office). No financing contingency." },
+        { label: "Transaction Financing", value: "Potential secured debt at HoldCo level (2.0x EBITDA = ~S$3,820K)" },
+      ]
+    },
+    {
+      id: "7",
+      title: "Timeline",
+      tag: "STANDARD",
+      rows: [
+        { label: "LOI", value: "W1-2" },
+        { label: "DD", value: "W3-10" },
+        { label: "SPA", value: "W9-12" },
+        { label: "Close", value: "W13-15" },
+      ]
+    },
+    {
+      id: "8",
+      title: "Exclusivity",
+      tag: "CORE",
+      rows: [
+        { label: "Term", value: "4-month exclusivity from LOI signing. Standard terms." },
+      ]
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Partnership Intro Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
+          <h3 className="font-bold text-gray-800 text-sm mb-2">Partnership, Not Just Capital</h3>
+          <p className="text-xs text-gray-700 leading-relaxed">Movement + family as co-owners (90/10), board representation, continuation of culture and team, access to Movement's network</p>
+        </div>
+        <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5 border border-green-200">
+          <h3 className="font-bold text-gray-800 text-sm mb-2">Unlocking Growth Together</h3>
+          <p className="text-xs text-gray-700 leading-relaxed">BD activation (1-2 new hires), Malaysia JV (dormant entity, 60/40 with existing distributor), Data centre vertical expansion, Clean room HVAC bolt-on opportunity</p>
+        </div>
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-5 border border-purple-200">
+          <h3 className="font-bold text-gray-800 text-sm mb-2">Building the Next Generation</h3>
+          <p className="text-xs text-gray-700 leading-relaxed">Professional management (external MD + internal GM), Structured succession for Mr Wong, Cross-portfolio learnings from Movement's other investments</p>
+        </div>
+      </div>
+
+      {/* Header Banner */}
+      <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-xl p-6 text-white">
+        <h2 className="text-xl font-bold mb-1">Term Sheet Outline</h2>
+        <p className="text-blue-100 text-sm mb-4">Discussion Draft — Strictly Confidential</p>
+        <div className="grid grid-cols-3 gap-6 text-sm">
+          <div>
+            <p className="text-blue-200 text-xs font-semibold">Enterprise Value</p>
+            <p className="font-bold text-lg">S$11.5M</p>
+          </div>
+          <div>
+            <p className="text-blue-200 text-xs font-semibold">Multiple</p>
+            <p className="font-bold text-lg">~6.0x FY25 EBITDA</p>
+          </div>
+          <div>
+            <p className="text-blue-200 text-xs font-semibold">Date</p>
+            <p className="font-bold text-lg">March 2026</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Key Terms Summary */}
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-800 mb-4">Key Terms Summary</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+          <div className="bg-gray-50 rounded-lg p-3">
+            <p className="text-gray-500 font-semibold mb-1">Target</p>
+            <p className="text-gray-800 font-semibold">Multron Systems</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-3">
+            <p className="text-gray-500 font-semibold mb-1">Parties</p>
+            <p className="text-gray-800 font-semibold">Mov 90% / Fam 10%</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-3">
+            <p className="text-gray-500 font-semibold mb-1">FY25 EBITDA</p>
+            <p className="text-gray-800 font-semibold">S$1,910K</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-3">
+            <p className="text-gray-500 font-semibold mb-1">Equity Value</p>
+            <p className="text-gray-800 font-semibold">S$20,420K</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Detailed Sections */}
+      <div className="space-y-3">
+        {sections.map(section => (
+          <div key={section.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <button
+              onClick={() => toggleSection(section.id)}
+              className="w-full px-5 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${
+                  section.tag === "CORE" ? "bg-red-100 text-red-700" :
+                  section.tag === "TBD" ? "bg-yellow-100 text-yellow-700" :
+                  "bg-gray-100 text-gray-700"
+                }`}>
+                  {section.tag}
+                </span>
+                <h3 className="text-sm font-bold text-gray-800">{section.title}</h3>
+              </div>
+              <svg className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes(section.id) ? "rotate-180" : ""}`}
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </button>
+            {expandedSections.includes(section.id) && (
+              <div className="border-t border-gray-200 px-5 py-4 space-y-3">
+                {section.rows.map((row, idx) => (
+                  <div key={idx} className="flex gap-4 text-xs">
+                    <p className="font-semibold text-gray-600 min-w-[140px]">{row.label}</p>
+                    <p className="text-gray-700 flex-1 leading-relaxed">{row.value}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// MAIN DASHBOARD WITH PROJECT SELECTOR
 // ════════════════════════════════════════════════════════════════════════
 function Dashboard() {
   const [tab, setTab] = useState(0);
-  const content = [<ValueTab key={0} />, <EarnoutTab key={1} />, <HoldcoTab key={2} />, <TimelineTab key={3} />, <TermSheetTab key={4} />, <FamilyOverviewTab key={5} />];
+  const [activeProject, setActiveProject] = useState<"diamond" | "swan">("diamond");
+
+  const diamondContent = [<ValueTab key={0} />, <EarnoutTab key={1} />, <HoldcoTab key={2} />, <TimelineTab key={3} />, <TermSheetTab key={4} />, <FamilyOverviewTab key={5} />];
+
+  const getDiamondHeader = () => (
+    <>
+      <h1 className="text-2xl font-bold text-blue-900 tracking-tight">PROJECT DIAMOND</h1>
+      <p className="text-xs text-gray-400 mt-0.5">Preliminary Discussion &mdash; Confidential</p>
+      <p className="text-[11px] text-gray-500 mt-3 max-w-3xl mx-auto leading-relaxed italic">Movement is pleased to present this Partnership Proposal, reflecting our commitment to a lasting partnership with both generations<br />of the CARATS family to drive the Group&apos;s next chapter of growth.</p>
+    </>
+  );
+
+  const getSwanHeader = () => (
+    <>
+      <h1 className="text-2xl font-bold text-blue-900 tracking-tight">PROJECT SWAN</h1>
+      <p className="text-xs text-gray-400 mt-0.5">Multron Systems Pte Ltd — Discussion Draft</p>
+      <p className="text-[11px] text-gray-500 mt-3 max-w-3xl mx-auto leading-relaxed italic">Movement is pleased to present this partnership outline with Multron Systems, our vision for unlocking next-generation growth opportunities in the data centre and HVAC verticals.</p>
+    </>
+  );
+
+  const swanContent = [<SwanTermSheetTab key={0} />];
+  const swanTabs = ["Term Sheet"];
 
   return (
-    <div className="max-w-5xl mx-auto p-4 bg-gray-50 min-h-screen">
-      <header className="text-center py-3 mb-4">
-        <h1 className="text-2xl font-bold text-blue-900 tracking-tight">PROJECT DIAMOND</h1>
-        <p className="text-xs text-gray-400 mt-0.5">Preliminary Discussion &mdash; Confidential</p>
-        <p className="text-[11px] text-gray-500 mt-3 max-w-3xl mx-auto leading-relaxed italic">Movement is pleased to present this Partnership Proposal, reflecting our commitment to a lasting partnership with both generations<br />of the CARATS family to drive the Group&apos;s next chapter of growth.</p>
-      </header>
-      <div className="flex gap-1 mb-5 bg-white rounded-xl p-1 shadow-sm border border-gray-200">
-        {TABS.map((t, i) => (
-          <button key={i} onClick={() => setTab(i)}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-semibold transition-all ${tab === i ? 'bg-blue-900 text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`}>
-            {t}
+    <div className="flex h-screen bg-gray-50">
+      {/* SIDEBAR */}
+      <div className="w-[200px] bg-gray-900 text-white flex flex-col border-r border-gray-800">
+        {/* Logo Area */}
+        <div className="p-4 border-b border-gray-800">
+          <div className="text-xs font-bold text-blue-400 tracking-widest">MOVEMENT</div>
+          <p className="text-[10px] text-gray-500 mt-1">Deal Tools</p>
+        </div>
+
+        {/* Project List */}
+        <div className="flex-1 p-4 space-y-2">
+          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-3">Projects</div>
+          <button
+            onClick={() => { setActiveProject("diamond"); setTab(0); }}
+            className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              activeProject === "diamond"
+                ? "bg-blue-900 text-white shadow-md"
+                : "text-gray-300 hover:bg-gray-800"
+            }`}
+          >
+            <div className="font-semibold">Project Diamond</div>
+            <div className="text-[10px] text-gray-400 mt-0.5">Carats & Co</div>
           </button>
-        ))}
+          <button
+            onClick={() => { setActiveProject("swan"); setTab(0); }}
+            className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              activeProject === "swan"
+                ? "bg-blue-900 text-white shadow-md"
+                : "text-gray-300 hover:bg-gray-800"
+            }`}
+          >
+            <div className="font-semibold">Project Swan</div>
+            <div className="text-[10px] text-gray-400 mt-0.5">Multron Systems</div>
+          </button>
+        </div>
+
+        {/* Footer */}
+        <div className="border-t border-gray-800 p-4 text-[10px] text-gray-500">
+          <p>Movement</p>
+          <p className="mt-1">March 2026</p>
+        </div>
       </div>
-      {content[tab]}
-      <footer className="text-center text-[10px] text-gray-300 py-6 mt-8">Movement &mdash; March 2026</footer>
+
+      {/* MAIN CONTENT */}
+      <div className="flex-1 overflow-auto">
+        <div className="max-w-5xl mx-auto p-4">
+          <header className="text-center py-3 mb-4">
+            {activeProject === "diamond" ? getDiamondHeader() : getSwanHeader()}
+          </header>
+
+          {activeProject === "diamond" ? (
+            <>
+              <div className="flex gap-1 mb-5 bg-white rounded-xl p-1 shadow-sm border border-gray-200">
+                {TABS.map((t, i) => (
+                  <button key={i} onClick={() => setTab(i)}
+                    className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-semibold transition-all ${tab === i ? 'bg-blue-900 text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`}>
+                    {t}
+                  </button>
+                ))}
+              </div>
+              {diamondContent[tab]}
+            </>
+          ) : (
+            <>
+              <div className="flex gap-1 mb-5 bg-white rounded-xl p-1 shadow-sm border border-gray-200">
+                {swanTabs.map((t, i) => (
+                  <button key={i} onClick={() => setTab(i)}
+                    className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-semibold transition-all ${tab === i ? 'bg-blue-900 text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`}>
+                    {t}
+                  </button>
+                ))}
+              </div>
+              {swanContent[tab]}
+            </>
+          )}
+
+          <footer className="text-center text-[10px] text-gray-300 py-6 mt-8">Movement &mdash; March 2026</footer>
+        </div>
+      </div>
     </div>
   );
 }
