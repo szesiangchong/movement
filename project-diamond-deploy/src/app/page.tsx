@@ -1735,7 +1735,7 @@ function PasswordGate({ children }: { children: React.ReactNode }) {
 // SWAN TERM SHEET TAB
 // ════════════════════════════════════════════════════════════════════════
 function SwanTermSheetTab() {
-  const [expandedSections, setExpandedSections] = useState<string[]>(["3", "0"]); // defaultOpen for sections 0 and 3
+  const [expandedSections, setExpandedSections] = useState<string[]>(["0", "2", "6"]); // defaultOpen for Transaction, Deferred, S&U
 
   const toggleSection = (id: string) => {
     setExpandedSections(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
@@ -1749,10 +1749,11 @@ function SwanTermSheetTab() {
       rows: [
         { label: "Target", value: "Multron Systems Pte Ltd" },
         { label: "Parties", value: "Newly formed HoldCo (SPV) — Movement 90% / Existing Shareholders 10%" },
-        { label: "Transaction", value: "100% of Multron consolidated into HoldCo. Existing shareholders receive cash and rollover equity at agreed valuation." },
-        { label: "Enterprise Value", value: "S$11,460,000 (~6.0x adjusted unaudited FY2025 EBITDA of S$1,910,000). FY2025 reported EBITDA of S$1,810,000 adjusted for ~S$100,000 personal expenses." },
-        { label: "Equity Value", value: "S$20,420,000 (EV + Net Cash S$8,960,000). Subject to independent financial DD on debt, cash, and working capital." },
-        { label: "Payment", value: "Combination of upfront cash and contingent consideration (S$2,000,000 on JTC lease renewal)." },
+        { label: "Transaction", value: "100% of Multron consolidated into HoldCo. Existing shareholders receive cash, vendor take-back financing, and rollover equity at agreed valuation." },
+        { label: "Enterprise Value", value: "S$8,507,000 (~4.7x unaudited FY2025 EBITDA of S$1,810,000)" },
+        { label: "Equity Value", value: "S$17,467,000 (EV + Net Cash S$8,960,000). Subject to independent financial DD on debt, cash, and working capital." },
+        { label: "Upfront Equity", value: "S$15,467,000 (Equity Value less S$2,000,000 contingent consideration)" },
+        { label: "Payment", value: "Combination of upfront cash (S$13,557K equity to sellers at close), vendor take-back financing (S$1,910K in 3 tranches), and contingent consideration (S$2,000K on JTC lease renewal)." },
         { label: "Basis", value: "Cash-free, debt-free, subject to normalised working capital" },
       ]
     },
@@ -1768,13 +1769,16 @@ function SwanTermSheetTab() {
     },
     {
       id: "2",
-      title: "Contingent Consideration",
+      title: "Deferred Consideration",
       tag: "CORE",
       rows: [
-        { label: "Amount", value: "S$2,000,000" },
-        { label: "Trigger", value: "Successful renewal of JTC lease for 217 Kallang Bahru (60-year leasehold, ~7 years remaining)" },
-        { label: "Mechanism", value: "Joint letter to JTC at signing as condition precedent. Payable upon confirmed lease extension." },
-        { label: "Note", value: "Property OMV S$5-6M (book S$2.6M). 2 vacant floors generating S$228K/yr rental income." },
+        { label: "Total Deferred", value: "S$3,910,000 (22.2% of total transaction value)" },
+        { label: "VTB Tranche 1", value: "S$637,000 — Vendor take-back financing (1.0x EBITDA total, split into 3 equal tranches)" },
+        { label: "VTB Tranche 2", value: "S$637,000" },
+        { label: "VTB Tranche 3", value: "S$637,000" },
+        { label: "Contingent Consideration", value: "S$2,000,000 — Payable on successful JTC lease renewal for 217 Kallang Bahru (60-year leasehold, ~7 years remaining)" },
+        { label: "JTC Mechanism", value: "Joint letter to JTC at signing as condition precedent. Payable upon confirmed lease extension." },
+        { label: "Property Note", value: "Property OMV S$5-6M (book S$2.6M). 2 vacant floors generating S$228K/yr rental income." },
       ]
     },
     {
@@ -1811,11 +1815,22 @@ function SwanTermSheetTab() {
     },
     {
       id: "6",
-      title: "Funding",
-      tag: "STANDARD",
+      title: "Sources & Uses",
+      tag: "CORE",
       rows: [
-        { label: "Equity", value: "Movement fund (patient capital, family office). No financing contingency." },
-        { label: "Transaction Financing", value: "Potential secured debt at HoldCo level (2.0x EBITDA = ~S$3,820K)" },
+        { label: "— SOURCES —", value: "" },
+        { label: "Acquisition Debt (2.0x)", value: "S$3,620,000 (20.6%)" },
+        { label: "Seller Financing / VTB (1.0x)", value: "S$1,910,000" },
+        { label: "Contingent Consideration", value: "S$2,000,000 (11.4%)" },
+        { label: "Total Equity Required", value: "S$11,975,000 — Sponsor S$10,777K (61.3%) / Rollover S$1,197K (6.8%)" },
+        { label: "Total Sources", value: "S$17,595,000 (excl. excess cash — zero extraction)" },
+        { label: "— USES —", value: "" },
+        { label: "Equity Value to Sellers", value: "S$13,557,000 (77.1%)" },
+        { label: "Transaction Costs (~1.5%)", value: "S$128,000 (0.7%)" },
+        { label: "Total at Close", value: "S$13,685,000" },
+        { label: "Deferred (VTB + Contingent)", value: "S$3,910,000 (22.2%)" },
+        { label: "Total Uses", value: "S$17,595,000" },
+        { label: "— NOTE —", value: "Movement fund (patient capital, family office). No financing contingency. Debt: Secured term loan, 4.5% p.a., 5yr straight-line amort." },
       ]
     },
     {
@@ -1864,11 +1879,11 @@ function SwanTermSheetTab() {
         <div className="grid grid-cols-3 gap-6 text-sm">
           <div>
             <p className="text-blue-200 text-xs font-semibold">Enterprise Value</p>
-            <p className="font-bold text-lg">S$11.5M</p>
+            <p className="font-bold text-lg">S$8.5M</p>
           </div>
           <div>
             <p className="text-blue-200 text-xs font-semibold">Multiple</p>
-            <p className="font-bold text-lg">~6.0x FY25 EBITDA</p>
+            <p className="font-bold text-lg">~4.7x FY25 EBITDA</p>
           </div>
           <div>
             <p className="text-blue-200 text-xs font-semibold">Date</p>
@@ -1891,11 +1906,11 @@ function SwanTermSheetTab() {
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-gray-500 font-semibold mb-1">FY25 EBITDA</p>
-            <p className="text-gray-800 font-semibold">S$1,910K</p>
+            <p className="text-gray-800 font-semibold">S$1,810K</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-gray-500 font-semibold mb-1">Equity Value</p>
-            <p className="text-gray-800 font-semibold">S$20,420K</p>
+            <p className="text-gray-500 font-semibold mb-1">Total at Close</p>
+            <p className="text-gray-800 font-semibold">S$13,685K</p>
           </div>
         </div>
       </div>
