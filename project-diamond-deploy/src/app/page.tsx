@@ -1825,6 +1825,7 @@ function SwanTermSheetTab() {
         { label: "Seller Financing Tranche 1", value: "S$603,000 — Seller financing (1.0x EBITDA total = S$1,810K, split into 3 equal annual tranches)" },
         { label: "Seller Financing Tranche 2", value: "S$603,000" },
         { label: "Seller Financing Tranche 3", value: "S$603,000" },
+        { label: "Interest Rate", value: "To be discussed" },
         { label: "Contingent Consideration", value: "S$2,000,000 — Payable on successful JTC lease renewal for 217 Kallang Bahru (60-year leasehold, ~7 years remaining)" },
         { label: "JTC Mechanism", value: "Joint letter to JTC at signing as condition precedent. Payable upon confirmed lease extension." },
         { label: "Property Note", value: "Property OMV S$5-6M (book S$2.6M). 2 vacant floors generating S$228K per year rental income." },
@@ -1990,10 +1991,10 @@ function SwanTermSheetTab() {
             <Tooltip formatter={(v: any, name: any) => [`S$${Number(v).toLocaleString("en-SG")}K`, name === "sellerFinancing" ? "Seller Financing" : "Contingent Consideration"]} />
             <Legend formatter={(value: any) => value === "sellerFinancing" ? "Seller Financing" : "Contingent Consideration"} />
             <Bar dataKey="sellerFinancing" stackId="a" fill="#3b82f6" radius={[0, 0, 0, 0]}>
-              <LabelList dataKey="sellerFinancing" position="center" formatter={(v: any) => v > 0 ? `S$${v}K` : ""} style={{ fontSize: 11, fontWeight: 700, fill: '#ffffff' }} />
+              <LabelList dataKey="sellerFinancing" position="top" formatter={(v: any) => v > 0 ? `S$${v}K` : ""} style={{ fontSize: 11, fontWeight: 700, fill: '#1f2937' }} />
             </Bar>
             <Bar dataKey="contingent" stackId="a" fill="#f59e0b" radius={[4, 4, 0, 0]}>
-              <LabelList dataKey="contingent" position="center" formatter={(v: any) => v > 0 ? `S$${Number(v).toLocaleString("en-SG")}K` : ""} style={{ fontSize: 11, fontWeight: 700, fill: '#ffffff' }} />
+              <LabelList dataKey="contingent" position="top" formatter={(v: any) => v > 0 ? `S$${Number(v).toLocaleString("en-SG")}K` : ""} style={{ fontSize: 11, fontWeight: 700, fill: '#1f2937' }} />
             </Bar>
           </BarChart>
         </ResponsiveContainer>
@@ -2030,7 +2031,7 @@ function SwanTermSheetTab() {
               <div className="border-t border-gray-200 px-5 py-4 space-y-3">
                 {section.rows.map((row, idx) => (
                   <div key={idx} className="flex gap-4 text-xs">
-                    <p className="font-semibold text-gray-600 min-w-[140px]">{row.label}</p>
+                    <p className="font-semibold text-gray-600 min-w-[200px] shrink-0">{row.label}</p>
                     <p className="text-gray-700 flex-1 leading-relaxed">{row.value}</p>
                   </div>
                 ))}
