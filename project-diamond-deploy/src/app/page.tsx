@@ -1837,10 +1837,10 @@ function SwanTermSheetTab() {
       title: "Governance",
       tag: "STANDARD",
       rows: [
-        { label: "Board", value: "Majority Movement, including Chairman" },
+        { label: "Board", value: "Movement appoints the majority of board seats, including the Chairman. One seat is reserved for existing management in connection with their 10% rollover stake." },
         { label: "Reserved Matters", value: "Capital expenditure above threshold, new indebtedness, related-party transactions, dividend policy, key hires, material contracts" },
         { label: "Information Rights", value: "Monthly management accounts, quarterly board reporting, annual audited statements" },
-        { label: "Management Continuity", value: "Mr Wong stays 1-2 years. Agreeable to earnout structure. Free consulting thereafter." },
+        { label: "Management Continuity", value: "Mr Wong and/or Jeffrey to remain in an active role for 1-2 years post-completion. Agreeable to earnout structure. Available for consulting thereafter." },
       ]
     },
     {
