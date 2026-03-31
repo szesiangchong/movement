@@ -1735,11 +1735,59 @@ function PasswordGate({ children }: { children: React.ReactNode }) {
 // SWAN TERM SHEET TAB
 // ════════════════════════════════════════════════════════════════════════
 function SwanTermSheetTab() {
-  const [expandedSections, setExpandedSections] = useState<string[]>(["0", "2", "6"]); // defaultOpen for Transaction, Deferred, S&U
+  const [expandedSections, setExpandedSections] = useState<string[]>(["0", "2"]);
 
   const toggleSection = (id: string) => {
     setExpandedSections(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
   };
+
+  // Swan constants
+  const SWAN_EBITDA = 1810;
+  const SWAN_ENTRY_MULT = 4.7;
+  const SWAN_EV = 8507;
+  const SWAN_BS_CASH = 8960;
+  const SWAN_RESTRICTED = 1960;
+  const SWAN_NET_CASH = 7000;
+  const SWAN_UPFRONT_EQUITY = 15507;
+  const SWAN_CONTINGENT = 2000;
+  const SWAN_TOTAL_EQUITY = 17507;
+  const SWAN_SPONSOR_PCT = 90;
+  const SWAN_ROLLOVER_PCT = 10;
+  const SWAN_ACQ_DEBT = 3620;
+  const SWAN_VTB = 1810;
+  const SWAN_VTB_TRANCHE = 603;
+  const SWAN_TXN_COSTS = 213;
+  const SWAN_EQUITY_TO_SELLERS = 13697;
+  const SWAN_SPONSOR_EQUITY = 2961;
+  const SWAN_ROLLOVER_EQUITY = 329;
+
+  // Day-1 bar chart data
+  const swanBarData = [
+    { name: `Upfront Cash (${SWAN_SPONSOR_PCT}%)`, value: SWAN_EQUITY_TO_SELLERS / 1000, fill: "#1e40af" },
+    { name: `Continuing Stake (${SWAN_ROLLOVER_PCT}%)`, value: SWAN_ROLLOVER_EQUITY / 1000, fill: "#059669" },
+  ];
+
+  // Seller financing payout chart data
+  const payoutData = [
+    { year: "Year 1", sellerFinancing: SWAN_VTB_TRANCHE, contingent: 0 },
+    { year: "Year 2", sellerFinancing: SWAN_VTB_TRANCHE, contingent: 0 },
+    { year: "Year 3", sellerFinancing: SWAN_VTB_TRANCHE, contingent: SWAN_CONTINGENT },
+  ];
+
+  // Timeline phases
+  const swanPhases = [
+    { task: "Submit Draft LOI", start: 1, dur: 2, color: "#1e40af", group: "LOI" },
+    { task: "LOI Discussion & Agreement", start: 2, dur: 2, color: "#3b82f6", group: "LOI" },
+    { task: "Financial & Tax Due Diligence", start: 3, dur: 8, color: "#6d28d9", group: "DD" },
+    { task: "Commercial Due Diligence", start: 4, dur: 6, color: "#8b5cf6", group: "DD" },
+    { task: "Legal & Structural Review", start: 4, dur: 7, color: "#a78bfa", group: "DD" },
+    { task: "JTC Lease Renewal Process", start: 3, dur: 8, color: "#c4b5fd", group: "DD" },
+    { task: "Agreement Drafting (SPA)", start: 9, dur: 4, color: "#059669", group: "SPA" },
+    { task: "Leadership Transition Planning", start: 9, dur: 4, color: "#7c3aed", group: "SPA" },
+    { task: "Completion", start: 13, dur: 2, color: "#10b981", group: "Close" },
+  ];
+  const swanMaxW = 15;
+  const swanGc = { LOI: "bg-blue-100 text-blue-700", DD: "bg-purple-100 text-purple-700", SPA: "bg-green-100 text-green-700", Close: "bg-emerald-100 text-emerald-700" };
 
   const sections = [
     {
@@ -1749,12 +1797,12 @@ function SwanTermSheetTab() {
       rows: [
         { label: "Target", value: "Multron Systems Pte Ltd" },
         { label: "Parties", value: "Newly formed HoldCo (SPV) — Movement 90% / Existing Shareholders 10%" },
-        { label: "Transaction", value: "100% of Multron consolidated into HoldCo. Existing shareholders receive cash, vendor take-back financing, and rollover equity at agreed valuation." },
+        { label: "Transaction", value: "100% of Multron consolidated into HoldCo. Existing shareholders receive cash, seller financing, and rollover equity at agreed valuation." },
         { label: "Enterprise Value", value: "S$8,507,000 (~4.7x unaudited FY2025 EBITDA of S$1,810,000)" },
-        { label: "Net Cash", value: "S$7,000,000 (BS cash S$8,960K less S$1,960K restricted for operations)" },
-        { label: "Upfront Equity Value", value: "S$15,507,000 (EV S$8,507K + extractable cash S$7,000K). Of this, S$7,000K is funded from the company's own surplus cash swept at close." },
+        { label: "Net Cash", value: "S$7,000,000 (balance sheet cash S$8,960K less S$1,960K restricted for operations)" },
+        { label: "Upfront Equity Value", value: "S$15,507,000 (enterprise value S$8,507K + extractable cash S$7,000K)" },
         { label: "Total Equity Value", value: "S$17,507,000 (Upfront S$15,507K + Contingent Consideration S$2,000K)" },
-        { label: "Payment", value: "Combination of upfront cash (S$13,697K equity to sellers at close), vendor take-back financing (S$1,810K in 3 tranches), and contingent consideration (S$2,000K on JTC lease renewal)." },
+        { label: "Payment", value: "Combination of upfront cash (S$13,697K equity to sellers at close), seller financing (S$1,810K in 3 annual tranches), and contingent consideration (S$2,000K on JTC lease renewal)." },
         { label: "Basis", value: "Cash-free, debt-free, subject to normalised working capital" },
       ]
     },
@@ -1774,84 +1822,37 @@ function SwanTermSheetTab() {
       tag: "CORE",
       rows: [
         { label: "Total Deferred", value: "S$3,810,000 (21.5% of total transaction value)" },
-        { label: "VTB Tranche 1", value: "S$603,000 — Vendor take-back financing (1.0x EBITDA total = S$1,810K, split into 3 equal tranches)" },
-        { label: "VTB Tranche 2", value: "S$603,000" },
-        { label: "VTB Tranche 3", value: "S$603,000" },
+        { label: "Seller Financing Tranche 1", value: "S$603,000 — Seller financing (1.0x EBITDA total = S$1,810K, split into 3 equal annual tranches)" },
+        { label: "Seller Financing Tranche 2", value: "S$603,000" },
+        { label: "Seller Financing Tranche 3", value: "S$603,000" },
         { label: "Contingent Consideration", value: "S$2,000,000 — Payable on successful JTC lease renewal for 217 Kallang Bahru (60-year leasehold, ~7 years remaining)" },
         { label: "JTC Mechanism", value: "Joint letter to JTC at signing as condition precedent. Payable upon confirmed lease extension." },
-        { label: "Property Note", value: "Property OMV S$5-6M (book S$2.6M). 2 vacant floors generating S$228K/yr rental income." },
+        { label: "Property Note", value: "Property OMV S$5-6M (book S$2.6M). 2 vacant floors generating S$228K per year rental income." },
       ]
     },
     {
       id: "3",
-      title: "Founder Protections",
-      tag: "STANDARD",
-      rows: [
-        { label: "Underwriting", value: "Founders ok to underwrite aged receivables and obsolete inventory if required during DD" },
-        { label: "Key-man", value: "Mr Wong handles supplier relationships (3 China-based) and overseas BD. Client relationships held by sales team + distributors." },
-        { label: "Succession", value: "External MD (management-focused) + internal GM (existing manager). Mr Wong has candidates in mind." },
-        { label: "Personal Expenses", value: "~S$100K personal expenses currently run through business. Added back to EBITDA." },
-      ]
-    },
-    {
-      id: "4",
       title: "Governance",
       tag: "STANDARD",
       rows: [
         { label: "Board", value: "Majority Movement, including Chairman" },
-        { label: "Reserved Matters", value: "Capex above threshold, new indebtedness, RP transactions, dividend policy, key hires, material contracts" },
-        { label: "Info Rights", value: "Monthly mgmt accounts, quarterly board reporting, annual audited statements" },
-        { label: "Management Continuity", value: "Mr Wong stays 1-2 years. OK with earnout. Free consulting after." },
+        { label: "Reserved Matters", value: "Capital expenditure above threshold, new indebtedness, related-party transactions, dividend policy, key hires, material contracts" },
+        { label: "Information Rights", value: "Monthly management accounts, quarterly board reporting, annual audited statements" },
+        { label: "Management Continuity", value: "Mr Wong stays 1-2 years. Agreeable to earnout structure. Free consulting thereafter." },
+      ]
+    },
+    {
+      id: "4",
+      title: "Due Diligence & Conditions",
+      tag: "STANDARD",
+      rows: [
+        { label: "Due Diligence Scope", value: "Financial, legal, tax, commercial, operational. 3-4 months post-LOI." },
+        { label: "Key Focus Areas", value: "(1) Installed base analysis and AMC conversion, (2) Order book and pipeline, (3) Data centre client depth, (4) Overseas revenue reconciliation, (5) Key-man transition, (6) JTC lease" },
+        { label: "Conditions", value: "Satisfactory due diligence, no material adverse change, audited FY2025 (expected early April), JTC lease renewal letter, key leadership arrangements" },
       ]
     },
     {
       id: "5",
-      title: "DD & Conditions",
-      tag: "STANDARD",
-      rows: [
-        { label: "DD Scope", value: "Financial, legal, tax, commercial, operational. 3-4 months post-LOI." },
-        { label: "Key Focus", value: "(1) Installed base analysis + AMC conversion, (2) Order book/pipeline, (3) DC client depth, (4) Overseas revenue reconciliation, (5) Key-man transition, (6) JTC lease" },
-        { label: "Conditions", value: "Satisfactory DD, no MAC, audited FY25 (expected early April), JTC lease renewal letter, key leadership arrangements" },
-      ]
-    },
-    {
-      id: "6",
-      title: "Sources & Uses",
-      tag: "CORE",
-      rows: [
-        { label: "— SOURCES —", value: "" },
-        { label: "Acquisition Debt (2.0x)", value: "S$3,620,000 (20.4%)" },
-        { label: "Excess Cash Extraction", value: "S$7,000,000 (39.5%) — swept from company's own surplus cash at close" },
-        { label: "Seller Financing / VTB (1.0x)", value: "S$1,810,000" },
-        { label: "Contingent Consideration", value: "S$2,000,000 (11.3%)" },
-        { label: "Total Equity Required", value: "S$3,290,000 — Sponsor S$2,961K (16.7%) / Rollover S$329K (1.9%)" },
-        { label: "Total Sources", value: "S$17,720,000" },
-        { label: "— USES —", value: "" },
-        { label: "Equity Value to Sellers", value: "S$13,697,000 (77.3%)" },
-        { label: "Refinance Existing Debt", value: "S$0" },
-        { label: "Transaction Costs (~2.5%)", value: "S$213,000 (1.2%)" },
-        { label: "Total at Close", value: "S$13,910,000" },
-        { label: "VTB Tranches (3 × S$603K)", value: "S$1,810,000 (10.2%)" },
-        { label: "Contingent Consideration", value: "S$2,000,000 (11.3%)" },
-        { label: "Total Deferred", value: "S$3,810,000 (21.5%)" },
-        { label: "Total Uses", value: "S$17,720,000" },
-        { label: "— KEY MESSAGE —", value: "Your company has S$8.96M cash. We agree the business is worth S$8,507K on an EV basis. Because you have S$7,000K of surplus cash, your equity value is S$8,507K + S$7,000K = S$15,507K. We pay you that S$15,507K — and S$7,000K of it comes from the company's own cash swept at close. The remaining S$1.96M stays in the business as working capital." },
-        { label: "— NOTE —", value: "Movement fund (patient capital, family office). No financing contingency. Debt: Secured term loan, 4.5% p.a., 5yr straight-line amort." },
-      ]
-    },
-    {
-      id: "7",
-      title: "Timeline",
-      tag: "STANDARD",
-      rows: [
-        { label: "LOI", value: "W1-2" },
-        { label: "DD", value: "W3-10" },
-        { label: "SPA", value: "W9-12" },
-        { label: "Close", value: "W13-15" },
-      ]
-    },
-    {
-      id: "8",
       title: "Exclusivity",
       tag: "CORE",
       rows: [
@@ -1866,15 +1867,15 @@ function SwanTermSheetTab() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
           <h3 className="font-bold text-gray-800 text-sm mb-2">Partnership, Not Just Capital</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">Movement + family as co-owners (90/10), board representation, continuation of culture and team, access to Movement's network</p>
+          <p className="text-xs text-gray-700 leading-relaxed">Movement + family as co-owners (90/10), board representation, continuation of culture and team, access to Movement&apos;s network</p>
         </div>
         <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5 border border-green-200">
           <h3 className="font-bold text-gray-800 text-sm mb-2">Unlocking Growth Together</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">BD activation (1-2 new hires), Malaysia JV (dormant entity, 60/40 with existing distributor), Data centre vertical expansion, Clean room HVAC bolt-on opportunity</p>
+          <p className="text-xs text-gray-700 leading-relaxed">Business development activation (1-2 new hires), Malaysia joint venture (dormant entity, 60/40 with existing distributor), data centre vertical expansion, clean room HVAC bolt-on opportunity</p>
         </div>
         <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-5 border border-purple-200">
           <h3 className="font-bold text-gray-800 text-sm mb-2">Building the Next Generation</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">Professional management (external MD + internal GM), Structured succession for Mr Wong, Cross-portfolio learnings from Movement's other investments</p>
+          <p className="text-xs text-gray-700 leading-relaxed">Professional management (external Managing Director + internal General Manager), structured succession for Mr Wong, cross-portfolio learnings from Movement&apos;s other investments</p>
         </div>
       </div>
 
@@ -1889,7 +1890,7 @@ function SwanTermSheetTab() {
           </div>
           <div>
             <p className="text-blue-200 text-xs font-semibold">Multiple</p>
-            <p className="font-bold text-lg">~4.7x FY25 EBITDA</p>
+            <p className="font-bold text-lg">~4.7x FY2025 EBITDA</p>
           </div>
           <div>
             <p className="text-blue-200 text-xs font-semibold">Date</p>
@@ -1908,16 +1909,100 @@ function SwanTermSheetTab() {
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-gray-500 font-semibold mb-1">Parties</p>
-            <p className="text-gray-800 font-semibold">Mov 90% / Fam 10%</p>
+            <p className="text-gray-800 font-semibold">Movement 90% / Family 10%</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-gray-500 font-semibold mb-1">FY25 EBITDA</p>
+            <p className="text-gray-500 font-semibold mb-1">FY2025 EBITDA</p>
             <p className="text-gray-800 font-semibold">S$1,810K</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-gray-500 font-semibold mb-1">Total at Close</p>
             <p className="text-gray-800 font-semibold">S$13,910K</p>
           </div>
+        </div>
+      </div>
+
+      {/* ── Day-1 Value to Shareholders ── */}
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-700 mb-3">Indicative Offer Valuation</h3>
+        <div className="flex items-center gap-0 overflow-x-auto text-center text-xs">
+          {[
+            { label: "Enterprise\nValue", value: SWAN_EV, color: "bg-blue-600 text-white" },
+            { label: "(+) Extractable\nCash", value: SWAN_NET_CASH, color: "bg-green-100 text-green-700", sign: "+" },
+            { label: "Upfront\nEquity Value", value: SWAN_UPFRONT_EQUITY, color: "bg-blue-800 text-white", sign: "=" },
+            { label: "(+) Contingent\nConsideration", value: SWAN_CONTINGENT, color: "bg-amber-100 text-amber-700", sign: "+" },
+            { label: "Total\nEquity Value", value: SWAN_TOTAL_EQUITY, color: "bg-blue-900 text-white", sign: "=" },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center">
+              {i > 0 && i !== 2 && i !== 4 && <div className="text-gray-400 text-lg px-1.5 font-light">{item.sign}</div>}
+              {(i === 2 || i === 4) && <div className="text-gray-400 text-xl px-2 font-bold">=</div>}
+              <div className={`rounded-lg px-3 py-2.5 min-w-[85px] ${item.color} shadow-sm`}>
+                <div className="font-bold text-sm">{fmtFull(item.value)}</div>
+                <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{item.label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-gray-400 mt-2">Indicative valuation: <span className="font-bold text-gray-600">~{SWAN_ENTRY_MULT.toFixed(1)}x</span> unaudited FY2025 EBITDA of {fmtFull(SWAN_EBITDA)}</p>
+        <p className="text-[11px] italic text-gray-400 mt-1">Subject to independent financial due diligence and transaction financing (to be finalised)</p>
+      </div>
+
+      {/* Day-1 Value Bar Chart */}
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
+        <p className="text-[11px] text-gray-400 mb-1">Total equity value: {fmtFull(SWAN_TOTAL_EQUITY)}. Seller financing and contingent consideration paid over 3 years post-close.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <ResponsiveContainer width="100%" height={180}>
+              <BarChart layout="vertical" data={swanBarData} margin={{ left: 5, right: 80 }} barSize={44}>
+                <XAxis type="number" tickFormatter={v => `S$${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
+                <YAxis type="category" dataKey="name" width={180} tick={{ fontSize: 12, fontWeight: 600 }} />
+                <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
+                <Bar dataKey="value" radius={[0, 6, 6, 0]}>
+                  {swanBarData.map((d, i) => <Cell key={i} fill={d.fill} />)}
+                  <LabelList dataKey="value" position="center" formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} style={{ fontSize: 13, fontWeight: 800, fill: '#ffffff' }} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          {/* Breakdown table */}
+          <div className="space-y-1 text-xs">
+            <div className="flex justify-between"><span className="text-gray-600">Enterprise Value (4.7x EBITDA)</span><span className="font-mono font-bold text-blue-800">{fmtFull(SWAN_EV)}</span></div>
+            <div className="flex justify-between"><span className="text-green-700">(+) Extractable Cash</span><span className="font-mono font-bold text-green-700">{fmtFull(SWAN_NET_CASH)}</span></div>
+            <div className="flex justify-between border-t pt-1 mt-1"><span className="font-semibold">Upfront Equity Value</span><span className="font-mono font-bold">{fmtFull(SWAN_UPFRONT_EQUITY)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-600">(-) Excess Cash Extraction (at close)</span><span className="font-mono text-gray-500">({fmtFull(SWAN_NET_CASH)})</span></div>
+            <div className="flex justify-between"><span className="text-gray-600">Equity to Sellers at Close</span><span className="font-mono font-bold text-blue-700">{fmtFull(SWAN_EQUITY_TO_SELLERS)}</span></div>
+            <div className="flex justify-between mt-2 pt-2 border-t border-dashed border-gray-300"><span className="text-gray-600">Sponsor Equity</span><span className="font-mono">{fmtFull(SWAN_SPONSOR_EQUITY)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-600">Rollover Equity (10%)</span><span className="font-mono">{fmtFull(SWAN_ROLLOVER_EQUITY)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-600">Acquisition Debt (2.0x)</span><span className="font-mono">{fmtFull(SWAN_ACQ_DEBT)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-600">Transaction Costs (~2.5%)</span><span className="font-mono">{fmtFull(SWAN_TXN_COSTS)}</span></div>
+            <div className="flex justify-between mt-2 pt-2 border-t-2 border-gray-400"><span className="font-bold text-amber-700">(+) Contingent Consideration</span><span className="font-mono font-bold text-amber-700">{fmtFull(SWAN_CONTINGENT)}</span></div>
+            <div className="flex justify-between"><span className="font-bold text-blue-900">Total Equity Value (100%)</span><span className="font-mono font-bold text-blue-900">{fmtFull(SWAN_TOTAL_EQUITY)}</span></div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Seller Financing Payout Chart ── */}
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-700 mb-1">Deferred Consideration Payout Schedule</h3>
+        <p className="text-[11px] text-gray-400 mb-3">Seller financing (S$1,810K) paid in 3 equal annual tranches. Contingent consideration (S$2,000K) payable on JTC lease renewal.</p>
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart data={payoutData} margin={{ left: 10, right: 10, top: 10, bottom: 5 }} barSize={40}>
+            <XAxis dataKey="year" tick={{ fontSize: 12, fontWeight: 600 }} />
+            <YAxis tickFormatter={v => `S$${v}K`} tick={{ fontSize: 10 }} />
+            <Tooltip formatter={(v: any, name: any) => [`S$${Number(v).toLocaleString("en-SG")}K`, name === "sellerFinancing" ? "Seller Financing" : "Contingent Consideration"]} />
+            <Legend formatter={(value: any) => value === "sellerFinancing" ? "Seller Financing" : "Contingent Consideration"} />
+            <Bar dataKey="sellerFinancing" stackId="a" fill="#3b82f6" radius={[0, 0, 0, 0]}>
+              <LabelList dataKey="sellerFinancing" position="center" formatter={(v: any) => v > 0 ? `S$${v}K` : ""} style={{ fontSize: 11, fontWeight: 700, fill: '#ffffff' }} />
+            </Bar>
+            <Bar dataKey="contingent" stackId="a" fill="#f59e0b" radius={[4, 4, 0, 0]}>
+              <LabelList dataKey="contingent" position="center" formatter={(v: any) => v > 0 ? `S$${Number(v).toLocaleString("en-SG")}K` : ""} style={{ fontSize: 11, fontWeight: 700, fill: '#ffffff' }} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+        <div className="flex gap-6 mt-2 text-xs text-gray-500">
+          <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-blue-500" /> Seller Financing: 3 × S$603K per year</div>
+          <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-amber-500" /> Contingent: S$2,000K on JTC lease renewal</div>
         </div>
       </div>
 
@@ -1954,6 +2039,69 @@ function SwanTermSheetTab() {
                 ))}
               </div>
             )}
+          </div>
+        ))}
+      </div>
+
+      {/* ── Timeline Gantt Chart ── */}
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h3 className="text-sm font-bold text-gray-700 mb-3">Proposed Timeline</h3>
+        <div className="overflow-x-auto">
+          <div style={{ minWidth: 700 }}>
+            <div className="flex mb-1">
+              <div style={{ width: 260, flexShrink: 0 }} />
+              {Array.from({ length: swanMaxW }, (_, i) => (
+                <div key={i} className="flex-1 text-center text-gray-400" style={{ fontSize: 9, borderLeft: '1px solid #f3f4f6' }}>W{i + 1}</div>
+              ))}
+            </div>
+            <div className="flex mb-3">
+              <div style={{ width: 260, flexShrink: 0 }} />
+              {["Month 1", "Month 2", "Month 3", "Month 4"].map((m, i) => (
+                <div key={i} className="text-center text-xs font-semibold text-gray-500" style={{ flex: i < 3 ? 4 : 3, borderLeft: '1px solid #e5e7eb' }}>{m}</div>
+              ))}
+            </div>
+
+            {swanPhases.map((p, i) => (
+              <div key={i} className="flex items-center mb-2">
+                <div style={{ width: 260, flexShrink: 0, paddingLeft: 4, paddingRight: 8 }} className="flex items-center gap-1.5">
+                  <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold shrink-0 ${swanGc[p.group as keyof typeof swanGc]}`}>{p.group}</span>
+                  <span className="text-xs font-medium text-left">{p.task}</span>
+                </div>
+                <div className="flex-1 relative" style={{ height: 28 }}>
+                  {Array.from({ length: swanMaxW }, (_, w) => (
+                    <div key={w} className="absolute top-0 bottom-0" style={{ left: `${(w / swanMaxW) * 100}%`, width: 1, background: w % 4 === 0 ? '#e5e7eb' : '#f9fafb' }} />
+                  ))}
+                  <div className="absolute top-1 flex items-center px-2 rounded-md shadow-sm" style={{
+                    left: `${((p.start - 1) / swanMaxW) * 100}%`,
+                    width: `${(p.dur / swanMaxW) * 100}%`,
+                    height: 22, backgroundColor: p.color,
+                  }}>
+                    <span className="text-white font-bold" style={{ fontSize: 10 }}>{p.dur}w</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Key Due Diligence Topics ── */}
+      <h3 className="text-sm font-bold text-gray-700 mt-2">Key Due Diligence Topics</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {[
+          { num: 1, title: "Installed Base & AMC Conversion", desc: "Analyse the existing installed base of fire safety systems. Understand annual maintenance contract (AMC) renewal rates, conversion potential, and recurring revenue sustainability." },
+          { num: 2, title: "Order Book & Pipeline", desc: "Review current order book depth and new business pipeline across all verticals. Assess contracted versus project-based revenue and visibility into FY2026-2027." },
+          { num: 3, title: "Data Centre Client Depth", desc: "Evaluate Multron's positioning in the data centre vertical. Understand client concentration, share of wallet, and growth potential with hyperscaler and colocation operators." },
+          { num: 4, title: "Overseas Revenue Reconciliation", desc: "Reconcile overseas revenue streams (Malaysia, regional markets). Validate revenue recognition, foreign exchange exposure, and distributor arrangements." },
+          { num: 5, title: "Key-Man Transition", desc: "Assess dependency on Mr Wong for supplier relationships (3 China-based) and overseas business development. Plan structured handover to professional management team." },
+          { num: 6, title: "JTC Lease Renewal", desc: "Evaluate JTC lease status for 217 Kallang Bahru (60-year leasehold, ~7 years remaining). Property at open market value of S$5-6M (book value S$2.6M). Joint application to JTC as condition precedent." },
+        ].map(card => (
+          <div key={card.num} className="rounded-xl p-4 border" style={{ backgroundColor: "#faf5ff", borderColor: "#e9d5ff" }}>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: "#7c3aed" }}>{card.num}</span>
+              <h4 className="text-sm font-bold" style={{ color: "#7c3aed" }}>{card.title}</h4>
+            </div>
+            <p className="text-xs text-gray-600 ml-8">{card.desc}</p>
           </div>
         ))}
       </div>
