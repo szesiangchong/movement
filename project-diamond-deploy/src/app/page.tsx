@@ -1991,7 +1991,7 @@ function SwanTermSheetTab() {
             <Tooltip formatter={(v: any, name: any) => [`S$${Number(v).toLocaleString("en-SG")}K`, name === "sellerFinancing" ? "Seller Financing" : "Contingent Consideration"]} />
             <Legend formatter={(value: any) => value === "sellerFinancing" ? "Seller Financing" : "Contingent Consideration"} />
             <Bar dataKey="sellerFinancing" stackId="a" fill="#3b82f6" radius={[0, 0, 0, 0]}>
-              <LabelList dataKey="sellerFinancing" position="top" formatter={(v: any) => v > 0 ? `S$${v}K` : ""} style={{ fontSize: 11, fontWeight: 700, fill: '#1f2937' }} />
+              <LabelList dataKey="sellerFinancing" position="left" formatter={(v: any) => v > 0 ? `S$${v}K` : ""} style={{ fontSize: 11, fontWeight: 700, fill: '#1f2937' }} />
             </Bar>
             <Bar dataKey="contingent" stackId="a" fill="#f59e0b" radius={[4, 4, 0, 0]}>
               <LabelList dataKey="contingent" position="top" formatter={(v: any) => v > 0 ? `S$${Number(v).toLocaleString("en-SG")}K` : ""} style={{ fontSize: 11, fontWeight: 700, fill: '#1f2937' }} />
