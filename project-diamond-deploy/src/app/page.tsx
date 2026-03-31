@@ -1960,7 +1960,7 @@ function SwanTermSheetTab() {
                 <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
                 <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                   {swanBarData.map((d, i) => <Cell key={i} fill={d.fill} />)}
-                  <LabelList dataKey="value" position="center" formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} style={{ fontSize: 13, fontWeight: 800, fill: '#ffffff' }} />
+                  <LabelList dataKey="value" position="right" formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} style={{ fontSize: 13, fontWeight: 800, fill: '#1f2937' }} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -1970,14 +1970,11 @@ function SwanTermSheetTab() {
             <div className="flex justify-between"><span className="text-gray-600">Enterprise Value (4.7x EBITDA)</span><span className="font-mono font-bold text-blue-800">{fmtFull(SWAN_EV)}</span></div>
             <div className="flex justify-between"><span className="text-green-700">(+) Extractable Cash</span><span className="font-mono font-bold text-green-700">{fmtFull(SWAN_NET_CASH)}</span></div>
             <div className="flex justify-between border-t pt-1 mt-1"><span className="font-semibold">Upfront Equity Value</span><span className="font-mono font-bold">{fmtFull(SWAN_UPFRONT_EQUITY)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-600">(-) Excess Cash Extraction (at close)</span><span className="font-mono text-gray-500">({fmtFull(SWAN_NET_CASH)})</span></div>
-            <div className="flex justify-between"><span className="text-gray-600">Equity to Sellers at Close</span><span className="font-mono font-bold text-blue-700">{fmtFull(SWAN_EQUITY_TO_SELLERS)}</span></div>
-            <div className="flex justify-between mt-2 pt-2 border-t border-dashed border-gray-300"><span className="text-gray-600">Sponsor Equity</span><span className="font-mono">{fmtFull(SWAN_SPONSOR_EQUITY)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-600">Rollover Equity (10%)</span><span className="font-mono">{fmtFull(SWAN_ROLLOVER_EQUITY)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-600">Acquisition Debt (2.0x)</span><span className="font-mono">{fmtFull(SWAN_ACQ_DEBT)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-600">Transaction Costs (~2.5%)</span><span className="font-mono">{fmtFull(SWAN_TXN_COSTS)}</span></div>
-            <div className="flex justify-between mt-2 pt-2 border-t-2 border-gray-400"><span className="font-bold text-amber-700">(+) Contingent Consideration</span><span className="font-mono font-bold text-amber-700">{fmtFull(SWAN_CONTINGENT)}</span></div>
-            <div className="flex justify-between"><span className="font-bold text-blue-900">Total Equity Value (100%)</span><span className="font-mono font-bold text-blue-900">{fmtFull(SWAN_TOTAL_EQUITY)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-600">(-) Seller Financing</span><span className="font-mono text-gray-500">({fmtFull(SWAN_VTB)})</span></div>
+            <div className="flex justify-between border-t pt-1 mt-1"><span className="font-semibold text-blue-700">Equity to Sellers at Close</span><span className="font-mono font-bold text-blue-700">{fmtFull(SWAN_EQUITY_TO_SELLERS)}</span></div>
+            <div className="flex justify-between mt-3 pt-2 border-t border-dashed border-gray-300"><span className="text-amber-700">(+) Contingent Consideration</span><span className="font-mono font-bold text-amber-700">{fmtFull(SWAN_CONTINGENT)}</span></div>
+            <div className="flex justify-between"><span className="text-blue-600">(+) Seller Financing</span><span className="font-mono font-bold text-blue-600">{fmtFull(SWAN_VTB)}</span></div>
+            <div className="flex justify-between border-t-2 border-gray-400 pt-1 mt-1"><span className="font-bold text-blue-900">Total Equity Value (100%)</span><span className="font-mono font-bold text-blue-900">{fmtFull(SWAN_TOTAL_EQUITY)}</span></div>
           </div>
         </div>
       </div>
