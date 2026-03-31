@@ -1761,10 +1761,11 @@ function SwanTermSheetTab() {
   const SWAN_SPONSOR_EQUITY = 2961;
   const SWAN_ROLLOVER_EQUITY = 329;
 
-  // Day-1 bar chart data
+  // Day-1 bar chart: payment breakdown to sellers
   const swanBarData = [
-    { name: `Upfront Cash (${SWAN_SPONSOR_PCT}%)`, value: SWAN_EQUITY_TO_SELLERS / 1000, fill: "#1e40af" },
-    { name: `Continuing Stake (${SWAN_ROLLOVER_PCT}%)`, value: SWAN_ROLLOVER_EQUITY / 1000, fill: "#059669" },
+    { name: "Upfront Cash at Close", value: SWAN_EQUITY_TO_SELLERS / 1000, fill: "#1e40af" },
+    { name: "Seller Financing", value: SWAN_VTB / 1000, fill: "#3b82f6" },
+    { name: "Contingent Consideration", value: SWAN_CONTINGENT / 1000, fill: "#f59e0b" },
   ];
 
   // Seller financing payout chart data
@@ -1951,17 +1952,17 @@ function SwanTermSheetTab() {
       {/* Day-1 Value Bar Chart */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h3 className="text-sm font-bold text-gray-700 mb-1">Day-1 Value to Shareholders</h3>
-        <p className="text-[11px] text-gray-400 mb-1">Total equity value: {fmtFull(SWAN_TOTAL_EQUITY)}. Seller financing and contingent consideration paid over 3 years post-close.</p>
+        <p className="text-[11px] text-gray-400 mb-1">Total equity value: {fmtFull(SWAN_TOTAL_EQUITY)}. Breakdown of what sellers receive and when.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <ResponsiveContainer width="100%" height={180}>
-              <BarChart layout="vertical" data={swanBarData} margin={{ left: 5, right: 80 }} barSize={44}>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart layout="vertical" data={swanBarData} margin={{ left: 5, right: 80 }} barSize={36}>
                 <XAxis type="number" tickFormatter={v => `S$${v.toFixed(0)}M`} tick={{ fontSize: 10 }} />
-                <YAxis type="category" dataKey="name" width={180} tick={{ fontSize: 12, fontWeight: 600 }} />
+                <YAxis type="category" dataKey="name" width={190} tick={{ fontSize: 11, fontWeight: 600 }} />
                 <Tooltip formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} />
                 <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                   {swanBarData.map((d, i) => <Cell key={i} fill={d.fill} />)}
-                  <LabelList dataKey="value" position="right" formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} style={{ fontSize: 13, fontWeight: 800, fill: '#1f2937' }} />
+                  <LabelList dataKey="value" position="right" formatter={(v: any) => `S$${Number(v).toFixed(1)}M`} style={{ fontSize: 12, fontWeight: 800, fill: '#1f2937' }} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
