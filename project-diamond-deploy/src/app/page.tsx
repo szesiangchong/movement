@@ -1751,9 +1751,10 @@ function SwanTermSheetTab() {
         { label: "Parties", value: "Newly formed HoldCo (SPV) — Movement 90% / Existing Shareholders 10%" },
         { label: "Transaction", value: "100% of Multron consolidated into HoldCo. Existing shareholders receive cash, vendor take-back financing, and rollover equity at agreed valuation." },
         { label: "Enterprise Value", value: "S$8,507,000 (~4.7x unaudited FY2025 EBITDA of S$1,810,000)" },
-        { label: "Equity Value", value: "S$17,467,000 (EV + Net Cash S$8,960,000). Subject to independent financial DD on debt, cash, and working capital." },
-        { label: "Upfront Equity", value: "S$15,467,000 (Equity Value less S$2,000,000 contingent consideration)" },
-        { label: "Payment", value: "Combination of upfront cash (S$13,557K equity to sellers at close), vendor take-back financing (S$1,910K in 3 tranches), and contingent consideration (S$2,000K on JTC lease renewal)." },
+        { label: "Net Cash", value: "S$7,000,000 (BS cash S$8,960K less S$1,960K restricted for operations)" },
+        { label: "Upfront Equity Value", value: "S$15,507,000 (EV S$8,507K + extractable cash S$7,000K). Of this, S$7,000K is funded from the company's own surplus cash swept at close." },
+        { label: "Total Equity Value", value: "S$17,507,000 (Upfront S$15,507K + Contingent Consideration S$2,000K)" },
+        { label: "Payment", value: "Combination of upfront cash (S$13,697K equity to sellers at close), vendor take-back financing (S$1,810K in 3 tranches), and contingent consideration (S$2,000K on JTC lease renewal)." },
         { label: "Basis", value: "Cash-free, debt-free, subject to normalised working capital" },
       ]
     },
@@ -1772,10 +1773,10 @@ function SwanTermSheetTab() {
       title: "Deferred Consideration",
       tag: "CORE",
       rows: [
-        { label: "Total Deferred", value: "S$3,910,000 (22.2% of total transaction value)" },
-        { label: "VTB Tranche 1", value: "S$637,000 — Vendor take-back financing (1.0x EBITDA total, split into 3 equal tranches)" },
-        { label: "VTB Tranche 2", value: "S$637,000" },
-        { label: "VTB Tranche 3", value: "S$637,000" },
+        { label: "Total Deferred", value: "S$3,810,000 (21.5% of total transaction value)" },
+        { label: "VTB Tranche 1", value: "S$603,000 — Vendor take-back financing (1.0x EBITDA total = S$1,810K, split into 3 equal tranches)" },
+        { label: "VTB Tranche 2", value: "S$603,000" },
+        { label: "VTB Tranche 3", value: "S$603,000" },
         { label: "Contingent Consideration", value: "S$2,000,000 — Payable on successful JTC lease renewal for 217 Kallang Bahru (60-year leasehold, ~7 years remaining)" },
         { label: "JTC Mechanism", value: "Joint letter to JTC at signing as condition precedent. Payable upon confirmed lease extension." },
         { label: "Property Note", value: "Property OMV S$5-6M (book S$2.6M). 2 vacant floors generating S$228K/yr rental income." },
@@ -1819,17 +1820,22 @@ function SwanTermSheetTab() {
       tag: "CORE",
       rows: [
         { label: "— SOURCES —", value: "" },
-        { label: "Acquisition Debt (2.0x)", value: "S$3,620,000 (20.6%)" },
-        { label: "Seller Financing / VTB (1.0x)", value: "S$1,910,000" },
-        { label: "Contingent Consideration", value: "S$2,000,000 (11.4%)" },
-        { label: "Total Equity Required", value: "S$11,975,000 — Sponsor S$10,777K (61.3%) / Rollover S$1,197K (6.8%)" },
-        { label: "Total Sources", value: "S$17,595,000 (excl. excess cash — zero extraction)" },
+        { label: "Acquisition Debt (2.0x)", value: "S$3,620,000 (20.4%)" },
+        { label: "Excess Cash Extraction", value: "S$7,000,000 (39.5%) — swept from company's own surplus cash at close" },
+        { label: "Seller Financing / VTB (1.0x)", value: "S$1,810,000" },
+        { label: "Contingent Consideration", value: "S$2,000,000 (11.3%)" },
+        { label: "Total Equity Required", value: "S$3,290,000 — Sponsor S$2,961K (16.7%) / Rollover S$329K (1.9%)" },
+        { label: "Total Sources", value: "S$17,720,000" },
         { label: "— USES —", value: "" },
-        { label: "Equity Value to Sellers", value: "S$13,557,000 (77.1%)" },
-        { label: "Transaction Costs (~1.5%)", value: "S$128,000 (0.7%)" },
-        { label: "Total at Close", value: "S$13,685,000" },
-        { label: "Deferred (VTB + Contingent)", value: "S$3,910,000 (22.2%)" },
-        { label: "Total Uses", value: "S$17,595,000" },
+        { label: "Equity Value to Sellers", value: "S$13,697,000 (77.3%)" },
+        { label: "Refinance Existing Debt", value: "S$0" },
+        { label: "Transaction Costs (~2.5%)", value: "S$213,000 (1.2%)" },
+        { label: "Total at Close", value: "S$13,910,000" },
+        { label: "VTB Tranches (3 × S$603K)", value: "S$1,810,000 (10.2%)" },
+        { label: "Contingent Consideration", value: "S$2,000,000 (11.3%)" },
+        { label: "Total Deferred", value: "S$3,810,000 (21.5%)" },
+        { label: "Total Uses", value: "S$17,720,000" },
+        { label: "— KEY MESSAGE —", value: "Your company has S$8.96M cash. We agree the business is worth S$8,507K on an EV basis. Because you have S$7,000K of surplus cash, your equity value is S$8,507K + S$7,000K = S$15,507K. We pay you that S$15,507K — and S$7,000K of it comes from the company's own cash swept at close. The remaining S$1.96M stays in the business as working capital." },
         { label: "— NOTE —", value: "Movement fund (patient capital, family office). No financing contingency. Debt: Secured term loan, 4.5% p.a., 5yr straight-line amort." },
       ]
     },
@@ -1910,7 +1916,7 @@ function SwanTermSheetTab() {
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-gray-500 font-semibold mb-1">Total at Close</p>
-            <p className="text-gray-800 font-semibold">S$13,685K</p>
+            <p className="text-gray-800 font-semibold">S$13,910K</p>
           </div>
         </div>
       </div>
