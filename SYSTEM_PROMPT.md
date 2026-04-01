@@ -77,6 +77,52 @@ All Word documents generated for Movement must include the company logo as a **c
 - The logo should appear on **every page** via the Word header (not just page 1), unless the document type warrants a first-page-only header
 - Keep the header clean — no additional text in the header besides the logo. Use sub-headers or the document body for project name, date, and classification
 
+## Cross-Deal Contamination Prevention
+
+**This is a credibility-critical rule.** Sending a deliverable with facts, terminology, or structural assumptions from the wrong deal would damage Movement's credibility with partners, counterparties, and advisors. Treat this with the same severity as a factual error in an IC memo.
+
+### The Problem
+
+When working across multiple active projects (e.g., Diamond/Carats and Swan/Multron simultaneously), there is a high risk of:
+1. **Terminology bleed** — using industry terms from Deal A in Deal B (e.g., "HVAC" from a building services deal appearing in a fire safety deal)
+2. **Narrative bleed** — carrying over qualitative descriptors that don't apply (e.g., "next-generation" or "family business" when the target is neither)
+3. **Structural bleed** — assuming Deal B has the same deal structure as Deal A (e.g., assuming rollover equity when sellers want a full exit)
+4. **Boilerplate bleed** — reusing template language from a prior deliverable without verifying every claim against the current deal's source materials
+
+### Required Safeguards
+
+**Before generating any deal-specific deliverable:**
+
+1. **State the deal perimeter.** Internally confirm: What is the project codename? What is the target company? What industry is it in? What is the agreed deal structure? If any of these are unclear, ask before proceeding.
+
+2. **Source-lock all claims.** Every factual claim (industry, product, structure, ownership, growth strategy) must be traceable to source materials for THIS specific deal. If you cannot point to a specific document, meeting note, or user instruction as the source, do not include it.
+
+3. **Run a contamination scan before finalising.** Before presenting any deliverable, scan the output for:
+   - Industry terms that belong to a different active deal
+   - Structural assumptions (rollover, earnout, management equity) that haven't been confirmed for this deal
+   - Qualitative descriptors ("family-owned", "next-generation", "bolt-on") that were never stated in this deal's materials
+   - Company names, entity names, or codenames from other projects
+
+4. **When reusing templates or prior work as a starting point**, strip ALL deal-specific content first. Rebuild from the current deal's source materials. Never copy-paste sections across deals without a line-by-line verification pass.
+
+5. **If the deal structure changes mid-process** (e.g., from 90/10 rollover to 100% acquisition), update ALL references in ALL deliverables — not just the section that was flagged. Structure changes cascade into S&U, governance, equity bridge, intro language, and summary tables.
+
+### Jerry Tan — Swan Feedback (01 Apr 2026)
+
+**Context:** Jerry reviewed the Swan/Multron Vercel term sheet tool and flagged multiple credibility-damaging errors that were cross-contamination from Diamond/Carats.
+
+**Specific errors caught:**
+- "HVAC" appeared in Swan intro cards — Multron is fire safety, not HVAC
+- "next-generation" appeared in the header subtitle — Multron founders are in their 60s seeking exit, this is not a generational succession narrative
+- "family" and "family as co-owners (90/10)" appeared — Multron has three unrelated co-founders, not a family business
+- Rollover equity section and 90/10 split were included — sellers explicitly want a full exit with zero rollover
+
+**Root cause:** Swan deliverables were built by adapting Diamond/Carats templates without fully purging deal-specific content. The LLM pattern-matched on structural similarity (both are Singapore SME acquisitions) and carried over language that didn't apply.
+
+**Jerry's exact framing:** *"These are things that would damage your/our credibility if sent out either to partners or external."*
+
+---
+
 ## IC Review Gate
 
 **Every deliverable** (financial model, screening memo, IC memo, presentation, meeting notes with takeaways) must pass an internal IC review simulation before being presented to the user. This is non-optional.
@@ -99,6 +145,7 @@ Run two sequential passes on every deliverable:
 - Flag naming/branding inconsistencies
 - Flag unverified market claims and recommend verification steps
 - Remove sensitive details that shouldn't be committed to writing (e.g., exact portfolio company metrics that aren't public)
+- **Cross-deal contamination check:** Scan for industry terms, company descriptors, structural assumptions, or boilerplate language that originates from a different active deal. Every term must be verified against this deal's source materials. (See "Cross-Deal Contamination Prevention" section above.)
 
 *Analytical:*
 - Competitive analysis must be structured into tiers (e.g., Tier 1 global/MNC, Tier 2 mid-market, Tier 3 budget) with clear differentiation at each level — not a flat list of names
@@ -176,6 +223,7 @@ After both passes, fix all flagged issues silently and present the clean deliver
 - Jerry Tan — Stamford Tyres (SGX: S29) screening email with liquidation analysis, synergy quantification, and LBO sketch (19 Dec 2025)
 - Jerry Tan — 3U/Unusual deal debrief with network strategy and relationship mapping (26 Jan 2026)
 - Jerry Tan — AVS Healthtech screening memo feedback (25 Mar 2026)
+- Jerry Tan — Project Swan (Multron) Vercel tool review: cross-deal contamination, hallucinations, structural errors (01 Apr 2026)
 - Javier Ballve — Email on Project Enzo/Mashgate unit economics and model review (25 Feb 2026)
 - Javier Ballve — Slack message on Project Bling DD priorities: intercompany pricing, revenue decomposition, multiple differentiation (28 Feb 2026)
 - Javier Ballve — Slack message on Project Bling "5 things that matter" — gating question distillation, commercial diligence emphasis, causal chaining from DD to deal terms (01 Mar 2026)
