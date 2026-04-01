@@ -1735,7 +1735,7 @@ function PasswordGate({ children }: { children: React.ReactNode }) {
 // SWAN TERM SHEET TAB
 // ════════════════════════════════════════════════════════════════════════
 function SwanTermSheetTab() {
-  const [expandedSections, setExpandedSections] = useState<string[]>(["0", "2"]);
+  const [expandedSections, setExpandedSections] = useState<string[]>(["0", "1"]);
 
   const toggleSection = (id: string) => {
     setExpandedSections(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
@@ -1751,15 +1751,12 @@ function SwanTermSheetTab() {
   const SWAN_UPFRONT_EQUITY = 15507;
   const SWAN_CONTINGENT = 2000;
   const SWAN_TOTAL_EQUITY = 17507;
-  const SWAN_SPONSOR_PCT = 90;
-  const SWAN_ROLLOVER_PCT = 10;
   const SWAN_ACQ_DEBT = 3620;
   const SWAN_VTB = 1810;
   const SWAN_VTB_TRANCHE = 603;
   const SWAN_TXN_COSTS = 213;
   const SWAN_EQUITY_TO_SELLERS = 13697;
-  const SWAN_SPONSOR_EQUITY = 2961;
-  const SWAN_ROLLOVER_EQUITY = 329;
+  const SWAN_TOTAL_EQUITY_REQ = 3290; // 100% sponsor equity (no rollover)
 
   // Day-1 bar chart: payment breakdown to sellers
   const swanBarData = [
@@ -1797,8 +1794,8 @@ function SwanTermSheetTab() {
       tag: "STANDARD",
       rows: [
         { label: "Target", value: "Multron Systems Pte Ltd" },
-        { label: "Parties", value: "Newly formed HoldCo (SPV) — Movement 90% / Existing Shareholders 10%" },
-        { label: "Transaction", value: "100% of Multron consolidated into HoldCo. Existing shareholders receive cash, seller financing, and rollover equity at agreed valuation." },
+        { label: "Parties", value: "Newly formed HoldCo (SPV) — Movement 100%" },
+        { label: "Transaction", value: "100% acquisition of Multron by HoldCo. Existing shareholders receive cash and seller financing at agreed valuation." },
         { label: "Enterprise Value", value: "S$8,507,000 (~4.7x unaudited FY2025 EBITDA of S$1,810,000)" },
         { label: "Net Cash", value: "S$7,000,000 (balance sheet cash S$8,960K less S$1,960K restricted for operations)" },
         { label: "Upfront Equity Value", value: "S$15,507,000 (enterprise value S$8,507K + extractable cash S$7,000K)" },
@@ -1809,16 +1806,6 @@ function SwanTermSheetTab() {
     },
     {
       id: "1",
-      title: "Rollover Equity",
-      tag: "TBD",
-      rows: [
-        { label: "Rollover", value: "Family shareholders rollover 10% equity into HoldCo on mutually agreed terms." },
-        { label: "Purpose", value: "Alignment on long-term value creation. Mr Wong to stay 1-2 years, consult thereafter." },
-        { label: "Governance", value: "Rollover shareholders hold equity alongside Movement's 90% stake." },
-      ]
-    },
-    {
-      id: "2",
       title: "Deferred Consideration",
       tag: "CORE",
       rows: [
@@ -1833,18 +1820,18 @@ function SwanTermSheetTab() {
       ]
     },
     {
-      id: "3",
+      id: "2",
       title: "Governance",
       tag: "STANDARD",
       rows: [
-        { label: "Board", value: "Movement appoints the majority of board seats, including the Chairman. One seat is reserved for existing management in connection with their 10% rollover stake." },
+        { label: "Board", value: "Movement appoints all board seats, including the Chairman." },
         { label: "Reserved Matters", value: "Capital expenditure above threshold, new indebtedness, related-party transactions, dividend policy, key hires, material contracts" },
         { label: "Information Rights", value: "Monthly management accounts, quarterly board reporting, annual audited statements" },
         { label: "Management Continuity", value: "Mr Wong and/or Jeffrey to remain in an active role for 1-2 years post-completion. Agreeable to earnout structure. Available for consulting thereafter." },
       ]
     },
     {
-      id: "4",
+      id: "3",
       title: "Due Diligence & Conditions",
       tag: "STANDARD",
       rows: [
@@ -1854,7 +1841,7 @@ function SwanTermSheetTab() {
       ]
     },
     {
-      id: "5",
+      id: "4",
       title: "Exclusivity",
       tag: "CORE",
       rows: [
@@ -1865,19 +1852,19 @@ function SwanTermSheetTab() {
 
   return (
     <div className="space-y-6">
-      {/* Partnership Intro Cards */}
+      {/* Intro Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
-          <h3 className="font-bold text-gray-800 text-sm mb-2">Partnership, Not Just Capital</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">Movement + family as co-owners (90/10), board representation, continuation of culture and team, access to Movement&apos;s network</p>
+          <h3 className="font-bold text-gray-800 text-sm mb-2">Operational Continuity</h3>
+          <p className="text-xs text-gray-700 leading-relaxed">100% acquisition with structured transition. Continuation of culture, team, and client relationships. Access to Movement&apos;s network and resources.</p>
         </div>
         <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5 border border-green-200">
-          <h3 className="font-bold text-gray-800 text-sm mb-2">Unlocking Growth Together</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">Business development activation (1-2 new hires), Malaysia joint venture (dormant entity, 60/40 with existing distributor), data centre vertical expansion, clean room HVAC bolt-on opportunity</p>
+          <h3 className="font-bold text-gray-800 text-sm mb-2">Growth Activation</h3>
+          <p className="text-xs text-gray-700 leading-relaxed">Business development activation (1-2 new hires), Malaysia joint venture (dormant entity, 60/40 with existing distributor), data centre vertical expansion</p>
         </div>
         <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-5 border border-purple-200">
-          <h3 className="font-bold text-gray-800 text-sm mb-2">Building the Next Generation</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">Professional management (external Managing Director + internal General Manager), structured succession for Mr Wong, cross-portfolio learnings from Movement&apos;s other investments</p>
+          <h3 className="font-bold text-gray-800 text-sm mb-2">Professional Management</h3>
+          <p className="text-xs text-gray-700 leading-relaxed">External Managing Director + internal General Manager, structured succession for Mr Wong, cross-portfolio learnings from Movement&apos;s other investments</p>
         </div>
       </div>
 
@@ -1911,7 +1898,7 @@ function SwanTermSheetTab() {
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-gray-500 font-semibold mb-1">Parties</p>
-            <p className="text-gray-800 font-semibold">Movement 90% / Family 10%</p>
+            <p className="text-gray-800 font-semibold">Movement 100%</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-gray-500 font-semibold mb-1">FY2025 EBITDA</p>
@@ -2129,7 +2116,7 @@ function Dashboard() {
     <>
       <h1 className="text-2xl font-bold text-blue-900 tracking-tight">PROJECT SWAN</h1>
       <p className="text-xs text-gray-400 mt-0.5">Multron Systems Pte Ltd — Discussion Draft</p>
-      <p className="text-[11px] text-gray-500 mt-3 max-w-3xl mx-auto leading-relaxed italic">Movement is pleased to present this partnership outline with Multron Systems, our vision for unlocking next-generation growth opportunities in the data centre and HVAC verticals.</p>
+      <p className="text-[11px] text-gray-500 mt-3 max-w-3xl mx-auto leading-relaxed italic">Movement is pleased to present this indicative term sheet for the acquisition of Multron Systems, a leading fire safety systems provider in Singapore.</p>
     </>
   );
 
