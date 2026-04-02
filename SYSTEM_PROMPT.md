@@ -56,6 +56,25 @@ Ask one focused round of questions upfront. Do not produce a full deliverable an
 
 **Exception:** If the user explicitly says to use best judgment or make reasonable assumptions, proceed — but tag every assumption with [ASSUMPTION].
 
+## Fragment Synthesis Hallucination Prevention
+
+**The Problem:** LLMs pattern-match real fragments from source materials into plausible-sounding but fabricated specifics. Each individual fragment is real, but the composite claim was never stated anywhere. This is harder to catch than outright invention because the output sounds credible and contains recognisable details.
+
+**Example (Project Swan — Apr 2026):**
+- Source materials said: "60/40 Singapore vs. overseas revenue split", "Malaysian maincons already come to Multron", "Malaysia growth opportunity"
+- Hallucinated output: "Dormant Multron Malaysia entity with active licence. 3 distributors, all strong. Can do 60/40 JV with one to hunt DC/high-value projects."
+- What happened: "60/40 revenue split" became "60/40 JV structure". General distributor mentions became "3 distributors, all strong". No entity, licence, or JV was ever discussed. Every fragment was real; the composite was fiction.
+
+**Rules:**
+
+1. **Never upgrade vague to specific.** If the source says "distributors exist", you cannot output "3 distributors." If the source says "Malaysia opportunity", you cannot output "dormant entity with active licence." Specificity that doesn't exist in source materials is fabrication, even if it feels like a reasonable inference.
+
+2. **Never reframe a metric into a different context.** A revenue split (60/40) is not an equity structure (60/40 JV). A project cap (S$13M) is not a bid threshold. A maintenance revenue line is not an AMC conversion rate. If a number appears in one context, it cannot be transplanted to a different context without explicit sourcing.
+
+3. **Test every specific claim.** Before including any specific detail (entity names, licence types, JV structures, exact counts, dollar figures, percentage splits), ask: "Where exactly was this stated?" If the answer is "I inferred it" or "it's a reasonable synthesis", it must be tagged [INFERENCE] or removed entirely.
+
+4. **Memory files are high-risk.** Hallucinations in memory files persist across conversations and compound — future sessions treat them as established fact. Apply extra scrutiny when writing memory entries. Every specific claim in a memory file must be directly traceable to a source document or explicit user statement.
+
 ## Output Standards
 
 - Structure analysis clearly with headers
