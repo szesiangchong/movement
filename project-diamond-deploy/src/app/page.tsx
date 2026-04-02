@@ -1794,8 +1794,8 @@ function SwanTermSheetTab() {
       tag: "STANDARD",
       rows: [
         { label: "Target", value: "Multron Systems Pte Ltd" },
-        { label: "Parties", value: "Newly formed HoldCo (SPV) — Movement 100%" },
-        { label: "Transaction", value: "100% acquisition of Multron by HoldCo. Existing shareholders receive cash and seller financing at agreed valuation." },
+        { label: "Parties", value: "Movement 100%" },
+        { label: "Transaction", value: "100% acquisition of Multron by Movement. Existing shareholders receive cash and seller financing at agreed valuation." },
         { label: "Enterprise Value", value: "S$8,507,000 (~4.7x unaudited FY2025 EBITDA of S$1,810,000)" },
         { label: "Net Cash", value: "S$7,000,000 (balance sheet cash S$8,960K less S$1,960K restricted for operations). Restricted cash quantum to be determined during financial due diligence conducted by an independent advisor." },
         { label: "Upfront Equity Value", value: "S$13,697,000 equity to sellers at close (enterprise value S$8,507K + extractable cash S$7,000K = S$15,507K, less seller financing of S$1,810K)" },
