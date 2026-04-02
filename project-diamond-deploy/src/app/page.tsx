@@ -1797,7 +1797,7 @@ function SwanTermSheetTab() {
         { label: "Parties", value: "Newly formed HoldCo (SPV) — Movement 100%" },
         { label: "Transaction", value: "100% acquisition of Multron by HoldCo. Existing shareholders receive cash and seller financing at agreed valuation." },
         { label: "Enterprise Value", value: "S$8,507,000 (~4.7x unaudited FY2025 EBITDA of S$1,810,000)" },
-        { label: "Net Cash", value: "S$7,000,000 (balance sheet cash S$8,960K less S$1,960K restricted for operations)" },
+        { label: "Net Cash", value: "S$7,000,000 (balance sheet cash S$8,960K less S$1,960K restricted for operations). Restricted cash quantum to be determined during financial due diligence conducted by an independent advisor." },
         { label: "Upfront Equity Value", value: "S$15,507,000 (enterprise value S$8,507K + extractable cash S$7,000K)" },
         { label: "Total Equity Value", value: "S$17,507,000 (Upfront S$15,507K + Contingent Consideration S$2,000K)" },
         { label: "Payment", value: "Combination of upfront cash (S$13,697K equity to sellers at close), seller financing (S$1,810K in 3 annual tranches), and contingent consideration (S$2,000K on JTC lease renewal)." },
