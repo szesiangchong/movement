@@ -1852,22 +1852,6 @@ function SwanTermSheetTab() {
 
   return (
     <div className="space-y-6">
-      {/* Intro Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
-          <h3 className="font-bold text-gray-800 text-sm mb-2">Operational Continuity</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">100% acquisition with structured transition. Continuation of culture, team, and client relationships. Access to Movement&apos;s network and resources.</p>
-        </div>
-        <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5 border border-green-200">
-          <h3 className="font-bold text-gray-800 text-sm mb-2">Growth Activation</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">Business development activation (1-2 new hires), regional expansion via existing Malaysia distributors, data centre vertical expansion, bolt-on M&amp;A opportunities identified</p>
-        </div>
-        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-5 border border-purple-200">
-          <h3 className="font-bold text-gray-800 text-sm mb-2">Professional Management</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">External Managing Director + internal General Manager, structured succession for Mr Wong, cross-portfolio learnings from Movement&apos;s other investments</p>
-        </div>
-      </div>
-
       {/* Header Banner */}
       <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-xl p-6 text-white">
         <h2 className="text-xl font-bold mb-1">Term Sheet Outline</h2>
