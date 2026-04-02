@@ -1836,7 +1836,7 @@ function SwanTermSheetTab() {
       tag: "STANDARD",
       rows: [
         { label: "Due Diligence Scope", value: "Financial, legal, tax, commercial, operational. 3-4 months post-LOI." },
-        { label: "Key Focus Areas", value: "(1) Installed base analysis and AMC conversion, (2) Order book and pipeline, (3) Data centre client depth, (4) Overseas revenue reconciliation, (5) Key-man transition, (6) JTC lease" },
+        { label: "Key Focus Areas", value: "(1) Installed base analysis and AMC conversion, (2) Order book and pipeline, (3) Data centre client depth, (4) Regional expansion and bolt-on M&A, (5) Key-man transition, (6) JTC lease" },
         { label: "Conditions", value: "Satisfactory due diligence, no material adverse change, audited FY2025 (expected early April), JTC lease renewal letter, key leadership arrangements" },
       ]
     },
@@ -2080,7 +2080,7 @@ function SwanTermSheetTab() {
           { num: 1, title: "Installed Base & AMC Conversion", desc: "Analyse the existing installed base of fire safety systems. Understand annual maintenance contract (AMC) renewal rates, conversion potential, and recurring revenue sustainability." },
           { num: 2, title: "Order Book & Pipeline", desc: "Review current order book depth and new business pipeline across all verticals. Assess contracted versus project-based revenue and visibility into FY2026-2027." },
           { num: 3, title: "Data Centre Client Depth", desc: "Evaluate Multron's positioning in the data centre vertical. Understand client concentration, share of wallet, and growth potential with hyperscaler and colocation operators." },
-          { num: 4, title: "Overseas Revenue Reconciliation", desc: "Reconcile overseas revenue streams (Malaysia, regional markets). Validate revenue recognition, foreign exchange exposure, and distributor arrangements." },
+          { num: 4, title: "Regional Expansion & Bolt-on M&A", desc: "Assess Malaysia and regional distributor performance (MFP Systems, ActivSense) and pipeline. Evaluate identified bolt-on target (local fire maintenance company, ~S$1M, 7 technicians, recurring revenue). Validate overseas revenue by country and FX exposure." },
           { num: 5, title: "Key-Man Transition", desc: "Assess dependency on Mr Wong for supplier relationships (3 China-based) and overseas business development. Plan structured handover to professional management team." },
           { num: 6, title: "JTC Lease Renewal", desc: "Evaluate JTC lease status for 217 Kallang Bahru (60-year leasehold, ~7 years remaining). Property at open market value of S$5-6M (book value S$2.6M). Joint application to JTC as condition precedent." },
         ].map(card => (
