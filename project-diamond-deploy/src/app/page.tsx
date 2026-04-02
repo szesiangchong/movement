@@ -1905,8 +1905,8 @@ function SwanTermSheetTab() {
             <p className="text-gray-800 font-semibold">S$1,810K</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
-            <p className="text-gray-500 font-semibold mb-1">Total at Close</p>
-            <p className="text-gray-800 font-semibold">S$13,910K</p>
+            <p className="text-gray-500 font-semibold mb-1">Equity to Sellers at Close</p>
+            <p className="text-gray-800 font-semibold">S$13,697K</p>
           </div>
         </div>
       </div>
@@ -1916,18 +1916,20 @@ function SwanTermSheetTab() {
         <h3 className="text-sm font-bold text-gray-700 mb-3">Indicative Offer Valuation</h3>
         <div className="flex items-center gap-0 overflow-x-auto text-center text-xs">
           {[
-            { label: "Enterprise\nValue", value: SWAN_EV, color: "bg-blue-600 text-white" },
-            { label: "(+) Extractable\nCash", value: SWAN_NET_CASH, color: "bg-green-100 text-green-700", sign: "+" },
-            { label: "Upfront\nEquity Value", value: SWAN_UPFRONT_EQUITY, color: "bg-blue-800 text-white", sign: "=" },
-            { label: "(+) Contingent\nConsideration", value: SWAN_CONTINGENT, color: "bg-amber-100 text-amber-700", sign: "+" },
-            { label: "Total\nEquity Value", value: SWAN_TOTAL_EQUITY, color: "bg-blue-900 text-white", sign: "=" },
+            { label: "Enterprise\nValue", value: SWAN_EV, color: "bg-blue-600 text-white", op: "" },
+            { label: "(+) Extractable\nCash", value: SWAN_NET_CASH, color: "bg-green-100 text-green-700", op: "+" },
+            { label: "Upfront\nEquity Value", value: SWAN_UPFRONT_EQUITY, color: "bg-blue-800 text-white", op: "=" },
+            { label: "(-) Seller\nFinancing", value: SWAN_VTB, color: "bg-orange-100 text-orange-700", op: "\u2212" },
+            { label: "Equity to Sellers\nat Close", value: SWAN_EQUITY_TO_SELLERS, color: "bg-blue-700 text-white", op: "=" },
+            { label: "(+) Contingent\nConsideration", value: SWAN_CONTINGENT, color: "bg-amber-100 text-amber-700", op: "+" },
+            { label: "(+) Seller\nFinancing", value: SWAN_VTB, color: "bg-orange-100 text-orange-700", op: "+" },
+            { label: "Total\nEquity Value", value: SWAN_TOTAL_EQUITY, color: "bg-blue-900 text-white", op: "=" },
           ].map((item, i) => (
             <div key={i} className="flex items-center">
-              {i > 0 && i !== 2 && i !== 4 && <div className="text-gray-400 text-lg px-1.5 font-light">{item.sign}</div>}
-              {(i === 2 || i === 4) && <div className="text-gray-400 text-xl px-2 font-bold">=</div>}
-              <div className={`rounded-lg px-3 py-2.5 min-w-[85px] ${item.color} shadow-sm`}>
+              {i > 0 && <div className={`text-gray-400 px-1.5 font-${item.op === "=" ? "bold text-xl" : "light text-lg"}`}>{item.op}</div>}
+              <div className={`rounded-lg px-2.5 py-2 min-w-[80px] ${item.color} shadow-sm`}>
                 <div className="font-bold text-sm">{fmtFull(item.value)}</div>
-                <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:10}}>{item.label}</div>
+                <div className="mt-0.5 leading-tight opacity-80 whitespace-pre-line" style={{fontSize:9}}>{item.label}</div>
               </div>
             </div>
           ))}
