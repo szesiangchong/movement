@@ -1826,7 +1826,7 @@ function SwanTermSheetTab() {
       rows: [
         { label: "Board", value: "Movement appoints all board seats, including the Chairman." },
         { label: "Reserved Matters", value: "During the transition period, retained management may operate the business within agreed parameters. Prior written approval from Movement required for: capital expenditure above agreed threshold, new indebtedness, related-party transactions, material contracts, and key hires or terminations at senior level." },
-        { label: "Management Reporting", value: "Retained management to provide monthly management accounts within 15 business days of month-end, quarterly board reporting, and annual audited financial statements. Movement to have unrestricted access to all financial records, systems, and operational data at all times." },
+        { label: "Information Rights / Management Reporting", value: "Retained management to provide monthly management accounts within 15 business days of month-end, quarterly board reporting, and annual audited financial statements. Movement to have unrestricted access to all financial records, systems, and operational data at all times." },
         { label: "Management Continuity", value: "Mr Wong and/or Jeffrey to remain in an active role for 1-2 years post-completion. Agreeable to earnout structure. Available for consulting thereafter." },
       ]
     },
