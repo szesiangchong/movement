@@ -1860,7 +1860,7 @@ function SwanTermSheetTab() {
         </div>
         <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5 border border-green-200">
           <h3 className="font-bold text-gray-800 text-sm mb-2">Growth Activation</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">Business development activation (1-2 new hires), Malaysia joint venture (dormant entity, 60/40 with existing distributor), data centre vertical expansion</p>
+          <p className="text-xs text-gray-700 leading-relaxed">Business development activation (1-2 new hires), regional expansion via existing Malaysia distributors, data centre vertical expansion, bolt-on M&amp;A opportunities identified</p>
         </div>
         <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-5 border border-purple-200">
           <h3 className="font-bold text-gray-800 text-sm mb-2">Professional Management</h3>
@@ -2021,7 +2021,7 @@ function SwanTermSheetTab() {
               <div className="border-t border-gray-200 px-5 py-4 space-y-3">
                 {section.rows.map((row, idx) => (
                   <div key={idx} className="flex gap-4 text-xs">
-                    <p className="font-semibold text-gray-600 min-w-[200px] shrink-0">{row.label}</p>
+                    <p className="font-semibold text-gray-600 min-w-[220px] max-w-[220px] shrink-0">{row.label}</p>
                     <p className="text-gray-700 flex-1 leading-relaxed">{row.value}</p>
                   </div>
                 ))}
