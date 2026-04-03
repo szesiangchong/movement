@@ -405,7 +405,7 @@ function HoldcoTab() {
           <div className="space-y-3">
             {[
               { name: "Carats & Co", rev: "S$20M", desc: "Signage Design & Build", color: "from-slate-500 to-slate-600",
-                holders: ["Albert 23.3%", "Raymond 23.3%", "Charlie 20.0%", "Ann 17.1%", "TH 8.7%", "Susie 7.7%"] },
+                holders: ["Charlie 19.97%", "Albert 23.30%", "Raymond 23.30%", "Ann 17.05%", "TH 8.69%", "Susie 7.69%"] },
               { name: "Gleamedia", rev: "S$6M", desc: "OOH Media", color: "from-slate-400 to-slate-500",
                 holders: ["Raymond 22%", "Albert 22%", "TH 22%", "Geng Hao 30%", "Keith 4%"] },
               { name: "Adactive", rev: "S$2M", desc: "Digital Kiosks / Software", color: "from-slate-400 to-slate-500",
