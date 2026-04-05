@@ -144,6 +144,36 @@ Each entity overview must cover:
 - Order book / backlog analysis with book-to-bill ratio
 - Intercompany revenue as % of total (flagged for standalone viability assessment)
 
+**Chart Conventions (prescriptive — do not deviate):**
+
+| Data Type | Chart Type | Notes |
+|-----------|-----------|-------|
+| Revenue / EBITDA over time (by BU) | Clustered bar chart | X-axis = FY periods, one colour per BU. Stacked bar acceptable if showing total + mix simultaneously |
+| Revenue or EBITDA mix % over time | 100% stacked bar chart | Shows composition shift across periods. Never use pie charts |
+| Margin trends (GP%, EBITDA%) | Line chart overlaid on bar | Bars = absolute values, lines = margin %. Dual y-axis (left = S$, right = %) |
+| Unit economics (revenue/screen, capex/unit) | Horizontal bar chart | Ranked by value, highest to lowest. Use for site-level or per-unit comparisons |
+| Order book / backlog by category | Stacked bar chart | One bar per period, segments = project type (e.g., Project / Adhoc / Maintenance) |
+| Book-to-bill ratio over time | Line chart | Single line with 1.0x reference line. Overlay on backlog bar chart if space allows |
+| Customer concentration (top 5/10) | Horizontal bar chart | Ranked descending by % of revenue. Include a cumulative % line if top-10 |
+| Balance sheet composition | Waterfall chart | For showing asset/liability bridges or net debt to net cash swings |
+| Cash / debt bridge over time | Waterfall chart | Opening → movements → closing format |
+| Dividend history by entity | Clustered bar chart | X-axis = FY periods, one colour per entity |
+| NWC composition over time | Stacked bar chart | Current assets (positive) vs. current liabilities (negative), net line overlaid |
+| DSO / DPO / CCC trends | Line chart | Multiple lines on single axis, annotate inflection points |
+| Revenue projections (5-year) | Clustered bar chart | Actuals in solid fill, projections in hatched/lighter fill. YoY growth % as data labels |
+| FCF waterfall | Waterfall chart | Revenue → EBITDA → adjustments → LFCF. Green = positive, red = negative |
+| Returns sensitivity (MoIC/IRR) | Heat map table | Entry multiple rows × exit multiple columns. Colour gradient: green (high) → red (low). Not a chart — formatted table |
+| Competitive capability matrix | ✓/✗ table | Never chart this — table format only |
+| Market sizing | Bar chart | Segments side-by-side or stacked. Include CAGR annotation |
+
+**Rules:**
+- Never use pie charts. They don't show time trends and are hard to compare across periods.
+- Prefer bar + line combos over standalone bars when both absolute and % metrics matter.
+- All charts must have: axis labels, a title, data source footnote, and Movement blue (#1F4E79) as primary colour.
+- Use consistent BU colours across all charts in the document (e.g., Carats = blue, Gleamedia = teal, Adactive = orange).
+- Waterfall charts: green for positive movements, red for negative, grey for totals.
+- When a chart would have fewer than 3 data points, use a table instead.
+
 #### 4b. Timeline of Key Events
 
 - Bullet chronology from founding to present engagement
