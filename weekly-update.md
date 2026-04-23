@@ -150,22 +150,42 @@ Within each category, tier by priority:
 - **Tier 1 (High Priority / Material)**: Issues that could affect valuation, deal structure, or are deal-breakers. Flag in red (`#C62828`).
 - **Tier 2 (Medium Priority)**: Issues that need attention but are manageable. Flag in orange (`#E65100`).
 
-#### Slide Layout: Findings Table
+#### Format: Bullet Points (Not Tables)
 
-For each category (On-site, then VDR), create a slide with a table:
+Use bullet-point format for all findings — easier to read and present. Each finding follows this structure:
 
-**Title**: "2. Key Findings — On-site" / "2. Key Findings — From VDR"
+```
+- **[Category] Topic.** Description of the finding. *Impact:* What this means for the deal / valuation / operations. *Action:* What needs to happen next.
+```
 
-| Tier | Category | Topic | Description | So-What / Impact | Day-1 Solution / Priority |
-|------|----------|-------|-------------|------------------|---------------------------|
-| 🔴 T1 | Headcount | No man-hour tracking | Sage tracks materials-only GM... | Cannot validate labour margins... | Implement project-level labour... |
-| 🟠 T2 | Operations | ... | ... | ... | ... |
+- **Category labels**: Financials, Operations, Revenue, Legal, IT/Systems, Governance, Working Capital, People, Tax, Assets
+- Sort by Tier (T1 first), then by Category within each tier
+- On-site findings: prefix with the source meeting (e.g., "Source: 260423 Finance Team Meeting")
+- VDR findings: reference the specific file or sub-folder analysed
 
-- **Tier column**: Use a coloured dot or small flag (red for T1, orange for T2)
-- **Category examples**: Headcount, Financials, Operations, Revenue, Legal, IT/Systems, Governance, Working Capital
-- Sort by Tier (T1 first), then by Category
-- If many findings, split across multiple slides per category
-- Keep descriptions concise (1–2 lines max per cell)
+#### VDR Findings — Substantive Analysis Required
+
+**VDR findings are NOT just about what files are in or out.** The primary purpose is to read and analyse the actual file contents to assess risk. File-gap tracking belongs in Segment 1.
+
+For Category 2 (From VDR), the analysis should:
+
+1. **Read the financial data** — open xlsx/PDF files and extract key figures
+2. **Assess trends** — e.g., is working capital increasing in line with revenue, or disproportionately?
+3. **Flag anomalies** — e.g., AR aging deterioration, margin compression, revenue lumpiness
+4. **Link findings back to deal context** — e.g., "Revenue has been growing 15% YoY, so a modest increase in AR is expected. However, the >90-day bucket has grown from X% to Y%, suggesting collection issues with specific clients."
+5. **Identify commercial and operational risks** — not just financial. E.g., customer concentration, contract dependency, key-person risk from org charts, insurance coverage gaps.
+
+**Examples of substantive VDR findings (Tier 1):**
+- "Monthly P&L (B6) shows Carats gross margin declined from 38% in H1 FY24 to 32% in H2 FY25. This coincides with the ramp-up of the [project name] contract, suggesting the bid was margin-dilutive. Verify tender assumptions."
+- "AR aging (E2) shows S$X in the >90 day bucket, representing Y% of total receivables — up from Z% a year ago. Top exposure is [Client Name] at S$X. Cross-reference with D13 (top 20 clients) to assess whether this is a systemic issue."
+- "Customer concentration (D13): Top 1 client represents X% of group revenue. If this is a transport operator contract expiring 2033–34, concentration risk is mitigated by duration. But if it's a project-based relationship, concentration is a concern."
+
+**Examples of substantive VDR findings (Tier 2):**
+- "Inter-company billing checklists (B7) show Adactive billed Carats S$Xk in FY25 for software, but Carats' cost of this is buried in overheads. Need to quantify for elimination."
+- "FA register (F1) shows average asset age of X years. Bulk of Carats assets are [category]. No major capex cycle imminent, but screen assets at Gleamedia may need refresh in 2–3 years."
+- "Dividend workings show total distributions of S$Xm across all entities in FY25 — represents Y% of EBITDA. High distribution rate reduces retained cash cushion."
+
+If a file cannot be read (e.g., still syncing), note it as **"Pending analysis — file not yet accessible"** and flag what you plan to assess once available.
 
 ---
 
