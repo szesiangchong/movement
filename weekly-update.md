@@ -19,7 +19,7 @@ Generates a PowerPoint deck summarising the week's DD progress for Movement part
 ```
 202602 Carat & Co (SG building signages)/
 ├── 04 - Due Diligence/
-│   └── On-site Meetings/          ← Source for Segment 2 (on-site findings)
+│   └── On-site Meetings/          ← Source for Segment 2 findings (merged with VDR findings)
 ├── 08 - VDR/
 │   ├── VDR caa {DD MMM YYYY}/    ← Weekly VDR drops (e.g., "VDR caa 23 April 2026")
 │   │   ├── Project Diamond - Information Request List.xlsx   ← IRL tracker
@@ -148,9 +148,11 @@ Two summary tables on one slide:
 
 ---
 
-### Slides 5–6: On-site Findings — Tier 1
+### Slides 5–6: Key Findings — Tier 1 (High Priority)
 
-**Title**: "On-site Findings — Tier 1 (High Priority)" with red T1 badge
+**Title**: "Key Findings — Tier 1 (High Priority)" with red T1 badge
+
+Findings from ALL sources (on-site meetings AND VDR analysis) are merged into a single prioritised list. Do NOT separate findings by source — categorise by topic area instead (e.g., Operations, Financial, Commercial, Legal).
 
 5-column table format with bullet-pointed content in cells:
 
@@ -159,41 +161,20 @@ Two summary tables on one slide:
 
 - **Content in each cell uses bullet points** (• marker with `<br>` line breaks), not prose paragraphs
 - Topic column: bold, concise label
-- Description: factual bullets from meeting notes. Include source reference and any pending items in [brackets]
-- Impact: so-what bullets for the deal
+- Description: factual bullets from meeting notes or VDR files. Include source reference and any pending items in [brackets]
+- Impact: so-what bullets for the deal — **include dollar value estimates where possible** (see Quantification section below)
 - Action: next steps, who owns it, timeline
 - Use 7–8pt font to fit content
 - Split across 2 slides if >3 findings (aim for 2–3 findings per slide)
 - Reference appendices where supporting data exists (e.g., "Refer to Appendices for table")
 
----
-
-### Slide 7: On-site Findings — Tier 2
-
-**Title**: "On-site Findings — Tier 2 (Medium Priority)" with orange T2 badge
-
-Same 5-column table format. These are issues that need attention but are manageable or will be resolved in FDD/post-close.
-
----
-
-### Slides 8–9: VDR Findings — Tier 1
-
-**Title**: "VDR Findings — Tier 1 (High Priority)" with red T1 badge
-
-Same 5-column table format. **These findings come from substantive analysis of actual VDR file contents**, not just file-gap tracking.
-
-**How to generate VDR findings:**
-1. **Read the financial data** — open B6 (monthly P&L), E1 (monthly BS), D13 (clients), D15 (revenue breakdown), B7 (interco), D7 (L&M split) using openpyxl
-2. **Assess trends** — is revenue growing or declining? Is WC in line with revenue? Any margin compression?
-3. **Flag anomalies** — AR aging deterioration, client concentration, revenue lumpiness, unusual cost spikes
-4. **Link to deal context** — how does this affect valuation, structure, or risk assessment?
-5. **Use the right DSO methodology** — DSO = Trade AR / (Annual Revenue / 365). Do NOT use monthly or estimated quarterly revenue as denominator. Verify against actual B6 monthly P&L data.
-
-**Types of T1 VDR findings:**
+**Types of T1 findings:**
 - Customer concentration risk (single client >20% of entity revenue)
 - Revenue decline or EBITDA compression vs prior year
 - Client base churning — assess replacement rate (new client revenue vs lost client revenue)
 - P&L red flags (margin collapse, unusual cost spikes, one-offs)
+- Keyman risk on critical operations
+- Undisclosed liabilities or contingent exposures
 
 **Include a top client analysis table** (can be on its own slide or in appendices):
 - Blended top clients across FY2023–FY2025, sorted by FY2025 descending
@@ -203,23 +184,43 @@ Same 5-column table format. **These findings come from substantive analysis of a
 
 ---
 
-### Slide 10: VDR Findings — Tier 2
+### Slide 7: Key Findings — Tier 2 (Medium Priority)
 
-**Title**: "VDR Findings — Tier 2 (Medium Priority)" with orange T2 badge
+**Title**: "Key Findings — Tier 2 (Medium Priority)" with orange T2 badge
 
-Same 5-column table format. These are notable findings that don't rise to T1 but should be tracked.
+Same 5-column table format, same merged approach (on-site + VDR findings together). These are issues that need attention but are manageable or will be resolved in FDD/post-close.
 
-**Types of T2 VDR findings:**
+**Types of T2 findings:**
 - Working capital trends where DSO shows volatility but no structural deterioration (flag for FDD confirmation)
 - Dividend distribution patterns (include entity-level breakdown table by year)
-- Adactive L&M growth trajectory
+- Growth trajectory of sub-segments (e.g., Adactive L&M)
 - Operational fragility (outsourced workforce, manual processes)
+- Intercompany pricing gaps or transfer pricing issues
 
 **Dividend detail sub-table** (on the same slide, below the findings table):
 - Columns by year (FY2024, FY2025, etc.) — use all available years from board minutes
 - Rows by entity (Carats, Gleamedia, Adactive)
 - Notes column for context (e.g., "S$21M from property sale")
 - Total row with recurring vs extraordinary split
+
+---
+
+### Quantifying Findings — Dollar Value Estimates
+
+**Every finding should include a dollar value estimate where possible** to show partners the scale of each issue. This is critical for prioritising DD efforts and informing valuation adjustments.
+
+**How to quantify:**
+1. **Customer concentration** — state the revenue at risk (e.g., "Stellar Ace: S$4.5M = 30% of Carats revenue; CoC provisions could trigger loss of contract post-close")
+2. **Client churn** — calculate net revenue impact (e.g., "Net client churn: -S$2.03M (S$7.44M lost vs S$5.41M replaced)")
+3. **Unallocated costs** — estimate the annual cost exposure (e.g., "Unallocated worker costs: S$1.67M/year across X workers not assigned to projects")
+4. **Intercompany gaps** — quantify the margin leakage (e.g., "Gleamedia interco pricing gap: S$32K vs S$34–51K at cost = potential margin subsidy")
+5. **Revenue decline** — show absolute and percentage (e.g., "Carats FY25 revenue: S$15.0M, down S$1.5M (-9.1%) YoY")
+6. **Keyman risk** — estimate operational value tied to individual (e.g., "Raymond oversees S$X M of annual production output")
+7. **Rostrum / segment isolation** — flag when data is unavailable to quantify (e.g., "Rostrum revenue buried in Local Sales S$14.8M — cannot isolate without D3–D6 project-level data")
+
+**If a dollar value cannot be estimated**, explicitly state why (e.g., "data not yet received", "requires D3–D6 project-level breakdown") so the team knows to request the data.
+
+**Do NOT fabricate or estimate loosely.** All numbers must be traceable to VDR files or on-site meeting notes. Use ranges where precision is not possible (e.g., "S$1.5–2.0M estimated impact").
 
 ---
 
@@ -263,9 +264,11 @@ All appendix slides use the same header bar and 7–9pt font for tables.
 
 4. **Scan VDR files**: Count per category, list key documents.
 
-5. **Analyse VDR files substantively**: Open and read key xlsx files (B6, E1, D13, D15, B7, D7) to extract financial data, calculate trends, and identify risks.
+5. **Analyse VDR files substantively**: Open and read key xlsx files (B6, E1, D13, D15, B7, D7) to extract financial data, calculate trends, and identify risks. **Quantify each finding with a dollar value.**
 
-6. **Read on-site meeting notes**: Extract findings from `.docx` files in `04 - Due Diligence/On-site Meetings/`.
+6. **Read on-site meeting notes**: Extract findings from `.docx` files in `04 - Due Diligence/On-site Meetings/`. **Quantify findings where possible using VDR data.**
+
+6b. **Merge all findings**: Combine on-site and VDR findings into a single prioritised list. Categorise by topic (Operations, Financial, Commercial, Legal), NOT by source.
 
 7. **Build the deck**: Use pptxgenjs to create from scratch, replicating the header bar on every slide.
 
@@ -286,5 +289,7 @@ All appendix slides use the same header bar and 7–9pt font for tables.
 - **Date format**: "DD MMMM YYYY" (e.g., "24 APRIL 2026").
 - **Keep it tight.** Aim for 10–14 slides total (including appendices). Partners want signal, not noise.
 - **Findings use table format with bullet-pointed content in cells.** Do NOT use prose paragraphs or standalone bullet lists for findings. Use the 5-column table (Category | Topic | Description | Impact | Action) with • bullets and `<br>` line breaks within each cell.
+- **Findings are merged by topic, not by source.** Do NOT separate "On-site Findings" from "VDR Findings". All findings go into a single T1 or T2 section, categorised by topic area (Operations, Financial, Commercial, Legal).
+- **Every finding needs a dollar value.** Quantify the scale of each issue where possible. If data is unavailable, state what's needed to quantify it. See the Quantification section above.
 - **DSO methodology**: Always use Annual Revenue / 365 as the denominator. Do NOT estimate quarterly revenue or use monthly revenue — pull actual figures from B6 monthly P&L and sum appropriately.
 - **File-gap tracking goes in Segment 1** (Key Items Not Yet Received), NOT in Segment 2 findings. Segment 2 is for substantive analysis of files that HAVE been received.
