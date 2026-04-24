@@ -7,11 +7,11 @@ description: Generate a Partners Weekly DD Update presentation for Project Diamo
 
 > **CRITICAL — LIVE DEAL, DD PHASE**: This skill is used during an active due diligence process. All content in the deck MUST be strictly factual and sourced directly from the files in the VDR and on-site meeting notes. Do NOT make assumptions, infer, extrapolate, or fill in gaps with general knowledge. If a data point is not explicitly stated in the source files, do not include it — flag it as "not yet received" or "pending confirmation" instead. Every finding, number, and statement must be traceable to a specific file or document. Maintain clarity and precision on all pointers at all times — ambiguous or vague language is not acceptable in a partners-facing DD update.
 
-Generates a PowerPoint deck summarising the week's DD progress for Movement partners. The deck uses the Movement template (`Weekly update template.pptx`) and is structured into 4 segments.
+Generates a PowerPoint deck summarising the week's DD progress for Movement partners. The deck uses the Movement template and is structured into 4 segments plus appendices.
 
 ## Prerequisites
 
-- **Template file**: `Weekly update template.pptx` in the uploads folder or workspace. This contains the Movement header bar (navy `#001530`, Movement logo, "PROJECT DIAMOND", "Carats & Co", "STRICTLY CONFIDENTIAL", date/phase subtitle).
+- **Template file**: `Weekly update template.pptx` in the uploads folder or workspace. This contains the Movement header bar.
 - **PPTX skill**: Read and follow `/sessions/nice-dazzling-pascal/mnt/.claude/skills/pptx/SKILL.md` and its sub-guides (`editing.md`, `pptxgenjs.md`) for all slide creation/editing.
 
 ## Workspace Structure
@@ -37,262 +37,254 @@ Generates a PowerPoint deck summarising the week's DD progress for Movement part
 └── ...
 ```
 
-## Determining the Current Week
-
-When the user triggers this skill:
-1. List the folders under `08 - VDR/` to find the latest `VDR caa {date}` folder.
-2. Use that folder as the current week's VDR source unless the user specifies otherwise.
-3. Update the deck date in the header to match (e.g., "WEEKLY UPDATE AS OF {DATE} | DD PHASE").
-
 ## Template Layout
 
-The template has a single slide with the Movement header bar. All content slides should replicate this header bar structure:
+The template has a single slide with the Movement header bar. All content slides replicate this header:
 
-- **Header bar**: Full-width navy rectangle (`#001530`), height ~475488 EMU
-  - Movement logo (white mark) at left
-  - "PROJECT DIAMOND" in Georgia Bold 13pt white
-  - "Carats & Co" logo/text in Calibri 10pt muted (`#8896A6`)
-  - "STRICTLY CONFIDENTIAL" in Calibri 7pt gold (`#B8952A`), right-aligned
-  - "WEEKLY UPDATE AS OF {DATE} | DD PHASE" in Calibri 7pt muted (`#8896A6`), right-aligned below confidential marker
-- **Content area**: Below the header bar, use the full slide width with 0.5" margins
+- **Header bar**: Full-width navy rectangle (`#001530`), height 0.45"
+  - Movement logo (white mark) at x=0.25, y=0.05, w=0.9, h=0.35
+  - "PROJECT DIAMOND" in Georgia Bold 10pt white, x=1.3, valign middle
+  - "Carats & Co" in Calibri 8pt muted (`#8896A6`), x=3.3, valign middle
+  - "STRICTLY CONFIDENTIAL" in Calibri 6pt gold (`#B8952A`), right-aligned
+  - "WEEKLY UPDATE AS OF {DATE} | DD PHASE" in Calibri 6pt muted, right-aligned below
+- **Content area**: Starts at y=0.6, full slide width with 0.5" margins
+- **Layout**: `LAYOUT_16x9` (10" × 5.625")
 
 ### Color Palette
 
 | Element | Hex |
 |---------|-----|
-| Header bar / section headers | `#001530` (deep navy) |
+| Header bar / table headers | `#001530` (deep navy) |
 | Accent / gold | `#B8952A` |
 | Muted text | `#8896A6` |
-| Tier 1 (high priority) flag | `#C62828` (red) |
-| Tier 2 (medium priority) flag | `#E65100` (orange) |
-| Done / completed | `#2E7D32` (green) |
+| Tier 1 (high priority) badge | `#C62828` (red) |
+| Tier 2 (medium priority) badge | `#E65100` (orange) |
+| Done / completed / positive YoY | `#2E7D32` (green) |
+| Negative YoY / 0% categories | `#C62828` (red) |
 | Body text | `#1A1A1A` |
-| Light background for tables | `#F5F7FA` |
+| Light background for table rows | `#F5F7FA` |
 
 ### Typography
 
 | Element | Font | Size |
 |---------|------|------|
-| Slide title | Georgia Bold | 18pt |
-| Section header | Calibri Bold | 14pt |
-| Body / table content | Calibri | 10–11pt |
-| Table header | Calibri Bold | 10pt, white on navy |
-| Captions / footnotes | Calibri | 8pt, muted |
+| Slide title | Georgia Bold | 16pt |
+| Section header | Calibri Bold | 11pt |
+| Body / table content | Calibri | 8–9pt |
+| Table header | Calibri Bold | 8pt, white on navy |
+| Finding tables | Calibri | 7–8pt (to fit 5-column layout) |
+| Captions / footnotes | Calibri | 7pt, muted |
 
 ## Deck Structure
 
-### Cover Slide (Slide 1)
-Use the template slide as-is. Update the date: "WEEKLY UPDATE AS OF {DATE} | DD PHASE".
+### Slide 1: Cover
+- Navy background (`#001530`)
+- Movement logo (centred, white on white rectangle)
+- "PROJECT DIAMOND" in large Georgia Bold white
+- "Carats & Co" in muted text
+- Gold divider line
+- "WEEKLY UPDATE AS OF {DATE} | DD PHASE"
+- "STRICTLY CONFIDENTIAL" in gold
 
 ---
 
-### SEGMENT 1: VDR Received This Week
+### Slide 2: VDR Progress (Segment 1)
 
-**Purpose**: Summarise what was received in the VDR for the week and track IRL progress.
+**Title**: "1. VDR — Items Received This Week"
 
-#### Data Sources
-1. **IRL tracker**: `08 - VDR/VDR caa {date}/Project Diamond - Information Request List.xlsx`
-   - Read the Excel file using openpyxl
-   - Column L contains the status (look for "Done", checkmarks, "Y", or similar completion markers)
-   - Group items by their category column (should map to the VDR folder categories A–J)
-2. **VDR folder contents**: List all files within each category subfolder (A through J) of the current week's VDR folder
+- **Key stats callout** (large, prominent):
+  - Left: "{N} files received" (bold, large font)
+  - Right: "IRL Progress: X/Y (Z%)" (bold, large font)
+- **Category table** (A–K):
 
-#### Slide 2: IRL Progress Overview
-- **Title**: "1. VDR — Items Received This Week"
-- **Lead with two key stats** (large callout, prominent placement):
-  1. **Files received**: Total count of files across all category subfolders this week (e.g., "23 files received")
-  2. **IRL progress**: X/Y (Z%) — count of items marked "Done" in column L of the IRL tracker vs total IRL items (e.g., "47/128 (37%)")
-- **Category breakdown table** below the callouts:
+| Cat | Category | IRL | Done | % | Files |
+|-----|----------|-----|------|---|-------|
 
-| Category | IRL Items | Done | % | Files Received |
-|----------|-----------|------|---|----------------|
-| A. Corporate and Entity Structure | X | X | X% | X |
-| B. Financial Statements... | X | X | X% | X |
-| ... | ... | ... | ... | ... |
-| **Total** | **X** | **X** | **X%** | **X** |
-
-- Use green text or a green dot (●) for categories that are fully done
-- Use the alternating row background (`#F5F7FA` / white)
-
-#### Slide 3+: Category Summaries
-For each VDR category (A through J) that has files received this week, summarise the files received before moving to the next category:
-- **Section header**: Category name in bold (e.g., "B. Financial Statements and Management Accounts")
-- **Sub-header**: "X files received" + IRL status for that category (e.g., "5/12 Done (42%)")
-- **Bullet list**: For each file received in this category:
-  - File name
-  - One-line description of what the document contains (read the file if possible, or infer from filename)
-  - Flag any notable items or gaps
-- **Complete one category fully before moving to the next**
-- Group multiple categories per slide where the content is light (aim for 2–3 categories per slide if they have few files)
-- Skip categories with zero files received
-
-#### Key Items Not Yet Received
-After the category summaries, include a prioritised table of the most critical outstanding items from the IRL. This surfaces the key gaps that are blocking workstreams (model, legal DD, FDD advisor engagement). Format:
-
-| Priority | IRL Ref | Item | Why It Matters |
-|----------|---------|------|----------------|
-| Critical | D3–D6 | [description] | [what it blocks] |
-| High | F2 | [description] | [what it blocks] |
-| Standard | J1–J2 | [description] | [what it blocks] |
-
-Priority levels: **Critical** (blocking a major workstream), **High** (needed within 1–2 weeks), **Standard** (important but not blocking).
+- Green text for 100% categories, red for 0%
+- Navy header row, alternating `#F5F7FA` / white body rows
+- Bold total row at bottom
 
 ---
 
-### SEGMENT 2: Key Findings & Red Flags
+### Slide 3: Key Items Not Yet Received
 
-**Purpose**: Surface material findings from both on-site DD and VDR analysis, tiered by priority.
+**Title**: "Key Items Not Yet Received"
 
-#### Data Sources
-1. **On-site findings**: Read all files in `04 - Due Diligence/On-site Meetings/`
-   - These are typically `.docx` files from on-site meetings (finance team, BU heads, etc.)
-   - Extract key findings, issues, gaps, and concerns from the meeting notes
-2. **VDR findings**: Analyse files within the current week's VDR folder (`08 - VDR/VDR caa {date}/`)
-   - Read key documents (financial statements, contracts, org charts, etc.)
-   - Identify discrepancies, risks, missing items, or notable findings
+Prioritised table of the most critical outstanding IRL items blocking workstreams:
 
-#### Classification Framework
+| Priority | Ref | Item | Why It Matters |
+|----------|-----|------|----------------|
 
-All findings are classified into:
-- **Category 1: On-site** — findings from physical DD / management meetings
-- **Category 2: From VDR** — findings from document review
-
-Within each category, tier by priority:
-- **Tier 1 (High Priority / Material)**: Issues that could affect valuation, deal structure, or are deal-breakers. Flag in red (`#C62828`).
-- **Tier 2 (Medium Priority)**: Issues that need attention but are manageable. Flag in orange (`#E65100`).
-
-#### Format: Bullet Points (Not Tables)
-
-Use bullet-point format for all findings — easier to read and present. Each finding follows this structure:
-
-```
-- **[Category] Topic.** Description of the finding. *Impact:* What this means for the deal / valuation / operations. *Action:* What needs to happen next.
-```
-
-- **Category labels**: Financials, Operations, Revenue, Legal, IT/Systems, Governance, Working Capital, People, Tax, Assets
-- Sort by Tier (T1 first), then by Category within each tier
-- On-site findings: prefix with the source meeting (e.g., "Source: 260423 Finance Team Meeting")
-- VDR findings: reference the specific file or sub-folder analysed
-
-#### VDR Findings — Substantive Analysis Required
-
-**VDR findings are NOT just about what files are in or out.** The primary purpose is to read and analyse the actual file contents to assess risk. File-gap tracking belongs in Segment 1.
-
-For Category 2 (From VDR), the analysis should:
-
-1. **Read the financial data** — open xlsx/PDF files and extract key figures
-2. **Assess trends** — e.g., is working capital increasing in line with revenue, or disproportionately?
-3. **Flag anomalies** — e.g., AR aging deterioration, margin compression, revenue lumpiness
-4. **Link findings back to deal context** — e.g., "Revenue has been growing 15% YoY, so a modest increase in AR is expected. However, the >90-day bucket has grown from X% to Y%, suggesting collection issues with specific clients."
-5. **Identify commercial and operational risks** — not just financial. E.g., customer concentration, contract dependency, key-person risk from org charts, insurance coverage gaps.
-
-**Examples of substantive VDR findings (Tier 1):**
-- "Monthly P&L (B6) shows Carats gross margin declined from 38% in H1 FY24 to 32% in H2 FY25. This coincides with the ramp-up of the [project name] contract, suggesting the bid was margin-dilutive. Verify tender assumptions."
-- "AR aging (E2) shows S$X in the >90 day bucket, representing Y% of total receivables — up from Z% a year ago. Top exposure is [Client Name] at S$X. Cross-reference with D13 (top 20 clients) to assess whether this is a systemic issue."
-- "Customer concentration (D13): Top 1 client represents X% of group revenue. If this is a transport operator contract expiring 2033–34, concentration risk is mitigated by duration. But if it's a project-based relationship, concentration is a concern."
-
-**Examples of substantive VDR findings (Tier 2):**
-- "Inter-company billing checklists (B7) show Adactive billed Carats S$Xk in FY25 for software, but Carats' cost of this is buried in overheads. Need to quantify for elimination."
-- "FA register (F1) shows average asset age of X years. Bulk of Carats assets are [category]. No major capex cycle imminent, but screen assets at Gleamedia may need refresh in 2–3 years."
-- "Dividend workings show total distributions of S$Xm across all entities in FY25 — represents Y% of EBITDA. High distribution rate reduces retained cash cushion."
-
-If a file cannot be read (e.g., still syncing), note it as **"Pending analysis — file not yet accessible"** and flag what you plan to assess once available.
+- Priority levels: **Critical** (red text), **High** (orange text), **Standard** (muted text)
+- Critical = blocking a major workstream (model, legal DD, FDD advisor)
+- High = needed within 1–2 weeks
+- Standard = important but not blocking
+- Include items like: Gleamedia screen inventory (F2), legal contracts (H1/H2/H7), revenue data gaps (D3–D12), budget (C1–C4), people data (I3–I6)
 
 ---
 
-### SEGMENT 3: IC Memo / Financial Model Progress
+### Slide 4: Key Findings Overview (Segment 2)
 
-**Purpose**: Track progress on the investment committee memo and financial model.
+**Title**: "2. Key Findings & Red Flags"
 
-**DO NOT auto-populate.** Leave this as a placeholder slide with the title and empty structure. The user will prompt with specific content.
+Two summary tables on one slide:
 
-#### Slide Layout
-- **Title**: "3. IC Memo & Financial Model Progress"
-- **Two-column layout**:
-  - Left: "IC Memo" — bullet placeholder for status items
-  - Right: "Financial Model" — bullet placeholder for status items
-- **Footer note**: "[To be completed — prompt with specific updates]"
+**Table 1: Group Financial Summary** (from B6 Monthly P&L)
+
+| Entity | FY24 Rev | FY25 Rev | YoY | FY24 EBITDA | FY24 Margin | FY25 EBITDA | FY25 Margin |
+|--------|----------|----------|-----|-------------|-------------|-------------|-------------|
+
+- Calculate EBITDA as: PBT + Depreciation + Finance Costs (read from P&L)
+- YoY column: green for positive, red for negative
+- Bold group total row
+
+**Table 2: Customer Concentration** (from D13)
+
+| Entity | Top 1 Client | Top 1 % | Top 5 % | Top 10 % |
+|--------|-------------|---------|---------|----------|
+
+- Red text for any concentration >20%
+- Gold callout box below with key risk narrative (e.g., Stellar Ace CoC provisions)
 
 ---
 
-### SEGMENT 4: Next Week Key Activities
+### Slides 5–6: On-site Findings — Tier 1
 
-**Purpose**: Outline planned activities for the coming week.
+**Title**: "On-site Findings — Tier 1 (High Priority)" with red T1 badge
 
-**DO NOT auto-populate.** Leave as a placeholder slide for the user to prompt.
+5-column table format with bullet-pointed content in cells:
 
-#### Slide Layout
-- **Title**: "4. Next Week — Key Activities"
-- **Bullet list placeholder** with 5–6 empty bullet points
-- **Footer note**: "[To be completed — prompt with specific activities]"
+| Category | Topic | Description | Impact | Action |
+|----------|-------|-------------|--------|--------|
+
+- **Content in each cell uses bullet points** (• marker with `<br>` line breaks), not prose paragraphs
+- Topic column: bold, concise label
+- Description: factual bullets from meeting notes. Include source reference and any pending items in [brackets]
+- Impact: so-what bullets for the deal
+- Action: next steps, who owns it, timeline
+- Use 7–8pt font to fit content
+- Split across 2 slides if >3 findings (aim for 2–3 findings per slide)
+- Reference appendices where supporting data exists (e.g., "Refer to Appendices for table")
+
+---
+
+### Slide 7: On-site Findings — Tier 2
+
+**Title**: "On-site Findings — Tier 2 (Medium Priority)" with orange T2 badge
+
+Same 5-column table format. These are issues that need attention but are manageable or will be resolved in FDD/post-close.
+
+---
+
+### Slides 8–9: VDR Findings — Tier 1
+
+**Title**: "VDR Findings — Tier 1 (High Priority)" with red T1 badge
+
+Same 5-column table format. **These findings come from substantive analysis of actual VDR file contents**, not just file-gap tracking.
+
+**How to generate VDR findings:**
+1. **Read the financial data** — open B6 (monthly P&L), E1 (monthly BS), D13 (clients), D15 (revenue breakdown), B7 (interco), D7 (L&M split) using openpyxl
+2. **Assess trends** — is revenue growing or declining? Is WC in line with revenue? Any margin compression?
+3. **Flag anomalies** — AR aging deterioration, client concentration, revenue lumpiness, unusual cost spikes
+4. **Link to deal context** — how does this affect valuation, structure, or risk assessment?
+5. **Use the right DSO methodology** — DSO = Trade AR / (Annual Revenue / 365). Do NOT use monthly or estimated quarterly revenue as denominator. Verify against actual B6 monthly P&L data.
+
+**Types of T1 VDR findings:**
+- Customer concentration risk (single client >20% of entity revenue)
+- Revenue decline or EBITDA compression vs prior year
+- Client base churning — assess replacement rate (new client revenue vs lost client revenue)
+- P&L red flags (margin collapse, unusual cost spikes, one-offs)
+
+**Include a top client analysis table** (can be on its own slide or in appendices):
+- Blended top clients across FY2023–FY2025, sorted by FY2025 descending
+- Include ALL clients that were in the top 10 in ANY of the 3 years — shows the churn
+- Bottom rows: Top 10 per year total, Total entity revenue, Top 10 % of total
+- YoY column: green for positive, red for negative, "New" or "Exit" where applicable
+
+---
+
+### Slide 10: VDR Findings — Tier 2
+
+**Title**: "VDR Findings — Tier 2 (Medium Priority)" with orange T2 badge
+
+Same 5-column table format. These are notable findings that don't rise to T1 but should be tracked.
+
+**Types of T2 VDR findings:**
+- Working capital trends where DSO shows volatility but no structural deterioration (flag for FDD confirmation)
+- Dividend distribution patterns (include entity-level breakdown table by year)
+- Adactive L&M growth trajectory
+- Operational fragility (outsourced workforce, manual processes)
+
+**Dividend detail sub-table** (on the same slide, below the findings table):
+- Columns by year (FY2024, FY2025, etc.) — use all available years from board minutes
+- Rows by entity (Carats, Gleamedia, Adactive)
+- Notes column for context (e.g., "S$21M from property sale")
+- Total row with recurring vs extraordinary split
+
+---
+
+### Slide 11: IC Memo & Model + Next Week (Segments 3 & 4)
+
+**Combined on one slide** (or split into two if content is heavy).
+
+**Segment 3**: IC Memo & Financial Model Progress
+- Status update per entity on what data is still needed for the model
+- IC memo status (not started / drafting / review)
+
+**Segment 4**: Next Week — Key Activities
+- Bullet list of planned activities
+- Include **Operations Committee (OpsCo) agenda** if scheduled — list proposed agenda items in a numbered sub-table
+
+---
+
+### Appendices (Final slides)
+
+Multiple appendix slides as needed:
+
+1. **Top Client Analysis Table** — blended top 10+ clients FY2023–2025 with revenue by year, YoY change
+2. **Working Capital & DSO Trend** — quarterly tables showing Trade AR, Quarterly Revenue, and DSO for each entity. Use annual revenue / 365 method for DSO. Include explanatory note comparing entities.
+3. **Daily Labour Allocation** — photo/screenshot from on-site (if available)
+4. **VDR File Listing** — complete file listing by category (if requested)
+
+All appendix slides use the same header bar and 7–9pt font for tables.
 
 ---
 
 ## Execution Steps
 
-When this skill is triggered:
-
-1. **Read the PPTX skill**: Always read `/sessions/nice-dazzling-pascal/mnt/.claude/skills/pptx/SKILL.md` first for slide creation best practices.
+1. **Read the PPTX skill**: Always read the PPTX SKILL.md first.
 
 2. **Identify the current week's VDR folder**:
    ```bash
    ls "08 - VDR/" | grep "VDR caa"
    ```
-   Use the latest dated folder, or the one the user specifies.
 
-3. **Read the IRL tracker**:
-   - Open the `Project Diamond - Information Request List.xlsx` in the VDR week folder
-   - Parse categories and completion status from column L
-   - Count totals and per-category progress
+3. **Read the IRL tracker**: Parse categories and column L completion status.
 
-4. **Scan VDR files received**:
-   - List all files in each category subfolder (A–J)
-   - Count files per category
-   - Read key documents for content summaries (prioritise financial statements, contracts, org charts)
+4. **Scan VDR files**: Count per category, list key documents.
 
-5. **Read on-site meeting notes**:
-   - Read all `.docx` files in `04 - Due Diligence/On-site Meetings/`
-   - Extract findings, red flags, and observations
+5. **Analyse VDR files substantively**: Open and read key xlsx files (B6, E1, D13, D15, B7, D7) to extract financial data, calculate trends, and identify risks.
 
-6. **Build the deck**:
-   - Use the template-based editing workflow (unpack → duplicate slides → edit → clean → pack)
-   - OR use pptxgenjs to create from scratch, replicating the header bar from the template
-   - Replicate the header bar on every slide
-   - Populate Segments 1 and 2 from the data gathered
-   - Leave Segments 3 and 4 as placeholders
+6. **Read on-site meeting notes**: Extract findings from `.docx` files in `04 - Due Diligence/On-site Meetings/`.
 
-7. **QA**: Follow the PPTX skill's QA process — convert to images, inspect with subagent, fix issues.
+7. **Build the deck**: Use pptxgenjs to create from scratch, replicating the header bar on every slide.
 
-8. **Save output**: Save the final deck to:
+8. **QA**: Convert to PDF/images, inspect with subagent, fix issues.
+
+9. **Save output**:
    ```
-   202602 Carat & Co (SG building signages)/06 - Correspondence/Project Diamond - Weekly Update ({date}).pptx
+   06 - Correspondence/Project Diamond - Weekly Update ({date}).pptx
    ```
-
-### APPENDIX: Detailed File Listing (Final Slide of Deck)
-
-This is always the **last slide(s)** of the entire deck, after all 4 segments.
-
-- **Title**: "Appendix — VDR File Listing ({date})"
-- **Full table** listing every file received across all categories:
-
-| # | Category | File Name | Description |
-|---|----------|-----------|-------------|
-| 1 | A. Corporate... | file.pdf | Brief description |
-| 2 | B. Financial... | file.xlsx | Brief description |
-| ... | ... | ... | ... |
-
-- Use small font (9pt Calibri) to fit more rows
-- Navy header row (`#001530`, white text)
-- Alternating row backgrounds (`#F5F7FA` / white)
-- If too many files for one slide, split across multiple slides with continuation title ("Appendix — VDR File Listing (cont.)")
-- Sort by category (A–J), then alphabetically within each category
 
 ---
 
 ## Important Notes
 
-- **Do not fabricate findings.** Only report what is actually in the files. If a document cannot be read, note it as "unable to parse" rather than guessing.
-- **Cross-reference with memory.** Check auto-memory for Project Diamond context (deal overview, prior findings) but verify against current files before including.
-- **Maintain confidentiality markings.** Every slide must carry the "STRICTLY CONFIDENTIAL" marker.
-- **Date format**: Use "DD MMMM YYYY" format (e.g., "24 APRIL 2026") consistently.
-- **Keep it tight.** Partners want signal, not noise. Aim for 8–12 slides total. If findings are extensive, summarise on the slide and note "detailed analysis available in [file]".
+- **Do not fabricate findings.** Only report what is actually in the files.
+- **Cross-reference with memory.** Check auto-memory for Project Diamond context but verify against current files.
+- **Maintain confidentiality markings.** Every slide must carry "STRICTLY CONFIDENTIAL".
+- **Date format**: "DD MMMM YYYY" (e.g., "24 APRIL 2026").
+- **Keep it tight.** Aim for 10–14 slides total (including appendices). Partners want signal, not noise.
+- **Findings use table format with bullet-pointed content in cells.** Do NOT use prose paragraphs or standalone bullet lists for findings. Use the 5-column table (Category | Topic | Description | Impact | Action) with • bullets and `<br>` line breaks within each cell.
+- **DSO methodology**: Always use Annual Revenue / 365 as the denominator. Do NOT estimate quarterly revenue or use monthly revenue — pull actual figures from B6 monthly P&L and sum appropriately.
+- **File-gap tracking goes in Segment 1** (Key Items Not Yet Received), NOT in Segment 2 findings. Segment 2 is for substantive analysis of files that HAVE been received.
