@@ -126,6 +126,17 @@ For each VDR category (A through J) that has files received this week, summarise
 - Group multiple categories per slide where the content is light (aim for 2–3 categories per slide if they have few files)
 - Skip categories with zero files received
 
+#### Key Items Not Yet Received
+After the category summaries, include a prioritised table of the most critical outstanding items from the IRL. This surfaces the key gaps that are blocking workstreams (model, legal DD, FDD advisor engagement). Format:
+
+| Priority | IRL Ref | Item | Why It Matters |
+|----------|---------|------|----------------|
+| Critical | D3–D6 | [description] | [what it blocks] |
+| High | F2 | [description] | [what it blocks] |
+| Standard | J1–J2 | [description] | [what it blocks] |
+
+Priority levels: **Critical** (blocking a major workstream), **High** (needed within 1–2 weeks), **Standard** (important but not blocking).
+
 ---
 
 ### SEGMENT 2: Key Findings & Red Flags
