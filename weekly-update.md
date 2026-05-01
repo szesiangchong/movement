@@ -293,3 +293,113 @@ All appendix slides use the same header bar and 7–9pt font for tables.
 - **Every finding needs a dollar value.** Quantify the scale of each issue where possible. If data is unavailable, state what's needed to quantify it. See the Quantification section above.
 - **DSO methodology**: Always use Annual Revenue / 365 as the denominator. Do NOT estimate quarterly revenue or use monthly revenue — pull actual figures from B6 monthly P&L and sum appropriately.
 - **File-gap tracking goes in Segment 1** (Key Items Not Yet Received), NOT in Segment 2 findings. Segment 2 is for substantive analysis of files that HAVE been received.
+
+---
+
+## Post-Execution Review Layer
+
+> **After building the deck, run this checklist before delivering to the user.** These are the patterns Jerry (Partner) consistently flags. Catching them pre-delivery avoids rework and builds credibility.
+
+### R1. Tone Calibration — "Positions to Test, Not Decisions Made"
+
+Scan every Description, Impact, and Action cell for conclusive or alarmist language. The deck is a DD working document, not a final IC memo — findings should read as hypotheses under investigation, not verdicts.
+
+**Find and replace patterns:**
+- "directly impacts entry multiple" → "subject to negotiation; informs our view on entry multiple"
+- "could be called" / "would unwind entirely" / "risk of facility recall" → "we will need to size and work through with [counterparty]"
+- "delays model build by X weeks" → frame as a workstream with timeline, not a delay claim
+- Any conclusion stated as fact → add "subject to FDD", "indicative, pending validation", or "based on available data"
+- "recommend" / "should" in Action → "propose" / "position to test" (unless it's a procedural step like "request data from TH")
+
+**Judgment calls:** Factor in transition effort and dependencies. Present recommendations as positions to test, not decisions made. The partner audience will push back on premature conclusions.
+
+**IMPORTANT — Fact-check all Claude outputs before circulating.** This is a recurring issue. Every number, headcount, operational claim, and utilisation rate must be verified against source files before the deck ships. Do not trust prior-session outputs without re-checking — the same factual slip has come up multiple times.
+
+### R2. Tier Categorisation Rubric
+
+Before finalising tier assignments, apply this rubric:
+
+| Tier | Criteria | Examples |
+|------|----------|---------|
+| **Tier 1** | Moderate to high impact on LOI investment case; deeper DD needed to size or resolve | Customer concentration with CoC risk, keyman with no succession, material revenue decline |
+| **Tier 2** | Low to moderate impact; clarification or DD follow-up needed | Banking facilities within LOI parameters, operational process gaps, interco pricing |
+| **Observations** | Minimal to low impact; FYI items | Clean litigation, positive warranty history, sub-scale but growing segments |
+
+**Common mis-categorisations to watch for:**
+- PG/BG and banking items that are within LOI case → T2, not T1 (unless they surface a new risk not contemplated in LOI). Restricted cash being addressed in equity bridge does not warrant T1.
+- UOB CoC / facility items where amount is low and continuity of operations and debt serviceability are intact → T2. Drop alarmist framing ("facility recall, repricing") if actual exposure doesn't warrant it.
+- Family dynamics / segment items (e.g., Rostrum) where the segment may not be significant to group revenue → T2 or Observation. Verify materiality before elevating.
+- Items that read as "FYI" or "no action needed" → Observations, not T2. Carried-forward T2 items (e.g., interco billing, Adactive L&M, dividends) that haven't changed and read as informational should be moved to Observations.
+- Carried-forward items that haven't changed → consider downgrading if no new information.
+
+**Re-sort discipline:** After applying the rubric, re-order slides so all T1s appear first, then T2s, then Observations. Within each tier, new findings appear before carried-forward. Label each slide title with "(new this week)" or "(Week of X, carried forward)" accordingly.
+
+### R3. Factual Accuracy — Verify Before Stating
+
+Every number, headcount, and operational claim must be traceable to a specific VDR file or meeting note. Common error patterns:
+
+- **Headcount attribution**: Do not aggregate worker categories loosely. Cross-check against the org chart / I-series files. If the slide says "~100 workers under Raymond", verify which categories (construction, manufacturing, maintenance) are actually under his supervision vs. managed by other team leads.
+- **Facility utilisation**: When quoting utilisation rates, specify which sub-facility (PG vs PG2 vs OD) and show the calculation. Do not divide total outstanding by a single sub-limit.
+- **Revenue figures**: Cross-check any revenue figure cited in findings against B6 P&L. If the top-client appendix shows a different total than the P&L, flag and reconcile — do not let inconsistencies ship.
+- **Compensation / savings estimates**: Distinguish between gross savings (if person exits entirely) vs. realistic phased savings (transition arrangements, advisor roles). State assumptions.
+
+### R4. Compensation & Add-back Discipline
+
+When presenting family compensation findings:
+
+- **Do not present gross savings as falling to EBITDA at completion.** Frame as potential, phased, and pre-completion governance.
+- **Phasing**: Assume ~50–75% realisation in Y1 (transition arrangements, face-saving titles), full run-rate Y2+. State this explicitly.
+- **Incentive restructuring ≠ EBITDA add-back**: Shifting fixed bonuses to variable comp (e.g., moving 2nd-month AWS to performance-linked) does not flow to EBITDA unless total comp drops. Do not put it in the add-back stack. Present it as what it is: alignment improvement.
+- **Commission / profit-sharing**: Flag if BU-level profit-sharing creates entity silos rather than group alignment. Recommend group-level KPIs and MIP structure post-completion.
+- **Governance overlay**: Include compensation committee with threshold (e.g., ~S$150K) — any manager above that gets a documented role + market benchmark, plus any family-related staff.
+
+### R5. Risk Framing — Balanced, Not Alarmist
+
+For high-profile risks (customer concentration, CoC clauses, keyman):
+
+- **Always include mitigation context.** A 30-day termination clause is legally real but commercially harder to trigger. State both sides.
+- **Frame switching costs**: If the counterparty's own SLAs carry penalties, if prior vendors have failed, if operational scale is hard to replicate — say so.
+- **Net assessment**: End the Impact cell with a balanced net view (e.g., "Risk is real — size SPA protections — but commercial reality suggests low near-term probability of exercise").
+- **Avoid**: "could be called", "would unwind entirely", "at risk of immediate loss" without qualification.
+
+### R6. FDD Provider References
+
+Do not hardcode a specific FDD provider name (e.g., "KPMG") unless the engagement is formally signed. Until then, use "FDD provider (TBD)" or "FDD workstream" throughout the deck. This applies to:
+- NWC baseline references
+- Scope descriptions
+- Action items referencing FDD deliverables
+
+If a specific provider has been engaged for a limited scope (e.g., secondment for AR analysis), name them for that specific scope only and clarify the boundary.
+
+### R7. Cross-Slide Consistency & QC Check
+
+Before delivering, run these specific checks:
+
+**Number consistency:**
+- Revenue figures in findings slides must match B6 P&L and appendix totals. If the top-client appendix shows FY23 = S$22M but the P&L shows a different figure, reconcile or flag the delta.
+- EBITDA, margin, and YoY figures cited in findings must match the summary table on the Key Findings overview slide.
+- Any dollar value cited in Impact/Description must be traceable — grep the deck for each figure and verify its source.
+
+**Rate / ratio consistency:**
+- Utilisation rates must be consistent between findings slides and appendices. If the appendix says "PG: 42%, PG2: 99.9%", the findings slide must not say "97%".
+- DSO figures must use the same methodology (Annual Revenue / 365) across all slides.
+- Concentration percentages (Top 1%, Top 5%) must match between the overview and detailed findings.
+
+**Structural consistency:**
+- Tier labels on slide titles must match the content's actual tier assignment after R2 re-sorting.
+- Carried-forward items: check if new information this week changes the tier or content. Update or flag.
+- Slide numbering references within the deck (e.g., "Refer to Appendices") must point to the correct slide after any re-ordering.
+
+**Factual cross-checks:**
+- Headcount claims: verify against org chart / I-series VDR files. Do not state "~100 workers under X" without checking which categories are actually under that person's supervision.
+- Contract terms: verify clause references (e.g., CoC section numbers, termination notice periods) against the actual facility letters or contracts in the VDR.
+- Dates and timelines: ensure "as of" dates, expiry dates, and "since" dates are accurate (e.g., "OD undrawn since May'24" — verify against bank statements).
+
+### R8. Next Week Activities — Operational Depth
+
+The "Next Week" slide should include at least one operational/commercial activity beyond desk-based DD:
+- **Ridealongs / site visits**: Customer sites, tender meetings, production floor, maintenance routes
+- **Management sessions**: OpsCo agenda items, 1-on-1s with key operators
+- **Stakeholder engagement**: UOB (for CoC), key customers (if appropriate at this stage)
+
+Frame activities as building conviction and understanding the business beyond data room artefacts.
