@@ -35,6 +35,8 @@ This template supports multiple deal structures. The core LBO mechanics are shar
 | C. Exit Valuation | 84–91 | Two exit scenarios (flat + re-rate) |
 | D. Returns | 93–98 | MoIC and IRR for both scenarios |
 | Sensitivity | 101–106 | Entry × Exit multiple MoIC table |
+| Named Scenarios | 108+ | Base / Downside / Upside with full FCF each |
+| Returns Waterfall | after scenarios | Component decomposition of sponsor returns |
 
 ### Majority Acquisition with Rollover (Complex)
 
@@ -51,6 +53,9 @@ This template supports multiple deal structures. The core LBO mechanics are shar
 | E. Exit Valuation | 118–124 | Single exit multiple, pre-MIP EBITDA basis |
 | F. Returns | 127–133 | 4-way MIP × ESOP matrix (MoIC + IRR) |
 | Sensitivity | 135–165 | 3 tables: Entry/Exit, Margin/Exit, Margin/CAGR |
+| SF Interest Sensitivity | after sens. | SF rate impact on cash flow and returns |
+| Named Scenarios | after SF sens. | Base / Downside / Upside with full FCF each |
+| Returns Waterfall | after scenarios | Dual waterfall: Movement + rollover party |
 
 ---
 
@@ -288,13 +293,104 @@ Grid with 3 entry multiples (rows) × 5 exit multiples (columns). Cell formula:
 
 ---
 
-## FUTURE ENHANCEMENTS (v3 Roadmap)
+## NAMED SCENARIOS [ALL]
 
-Based on partner feedback and deal experience:
+Build three full FCF schedules side-by-side: Base, Downside, Upside. Each scenario gets its own column block (e.g., Base in C-H, Downside in J-O, Upside in Q-V) or its own tab.
 
-1. **Named Scenarios:** Base / Downside / Upside scenarios with full independent FCF schedules for each, rather than single-point projections with sensitivity tables
-2. **Seller Financing Interest Sensitivity:** 0% / 3% / 5% SF interest rate sensitivity table — currently SF interest is a single input; a dedicated table would show the cash flow impact of different SF terms during negotiation
-3. **Returns Waterfall:** Returns waterfall for Movement (sponsor) and rollover party (e.g., Vincent) on NPV basis — decomposes total returns into: entry equity, operating FCF contribution, multiple expansion, cash-on-cash, and ESOP/MIP dilution effects
+### Scenario Assumptions
+
+| Input | Base | Downside | Upside |
+|---|---|---|---|
+| Revenue CAGR | 5.0% | 0% (flat) | 8-10% |
+| EBITDA Margin | FY26 actual | -200bps | +200bps |
+| Exit Multiple | Entry (flat) | Entry -1.0x | Entry +1.0x |
+| Capex / NWC | Budget | +10% drag | -10% |
+
+### Workflow
+
+1. Define the three assumption sets in a scenario input block (rows above or beside the main assumptions)
+2. Replicate the full FCF schedule (Revenue → EBITDA → Tax → FCF → Debt → Excess Cash) for each scenario
+3. Each scenario flows independently into its own Exit Valuation and Returns row
+4. For rollover deals: MIP achievement ratios and earnout will differ per scenario — link each scenario's EBITDA to the Target EBITDA Schedule independently
+
+### Output
+
+| Metric | Base | Downside | Upside |
+|---|---|---|---|
+| Exit Equity (100%) | formula | formula | formula |
+| Sponsor MoIC | formula | formula | formula |
+| IRR | formula | formula | formula |
+
+> Downside should stress-test the thesis: can we return 1.5-2.0x even if growth stalls? Upside frames the optionality.
+
+---
+
+## SF INTEREST SENSITIVITY [ROLLOVER]
+
+Dedicated sensitivity table showing the cash flow impact of different SF interest rates during the hold period.
+
+### Layout
+
+Grid: SF Interest Rate (rows) × Metric (columns)
+
+| SF Rate | Cumul SF Interest Paid | Cash After Debt Service (Yr 3) | Sponsor MoIC | IRR |
+|---|---|---|---|---|
+| 0% | formula | formula | formula | formula |
+| 3% | formula | formula | formula | formula |
+| 5% | formula | formula | formula | formula |
+
+### Formula Logic
+
+For each SF rate `r`:
+- Cumul SF Interest = `SUM over Yr 1-3 of (Opening SF Balance × r)` — SF is fully repaid by Yr 3 under 30/30/40 tranches
+- Cash impact flows through to exit net cash and therefore MoIC/IRR
+- Use the same structure as the existing sensitivity tables: parameterise the rate in the row header, compute returns inline
+
+### Workflow
+
+1. Place below the existing sensitivity tables (or as a 4th table)
+2. Row headers: 0%, 1%, 2%, 3%, 4%, 5%
+3. Each cell computes the full impact: SF interest reduces levered FCF in Yr 1-3, which reduces cumulative excess cash at exit, which reduces exit equity
+4. Reference the base model's debt schedule and exit valuation — only the SF interest line changes
+
+---
+
+## RETURNS WATERFALL [ALL]
+
+Decomposes total sponsor returns into component drivers on an NPV basis. Shows where value comes from — entry equity, operating cash generation, multiple expansion, and dilution effects.
+
+### Waterfall Components (Sponsor perspective)
+
+| Component | Formula | Description |
+|---|---|---|
+| Entry Equity | `-C51` (sponsor cheque) | Cash out the door at close |
+| Cumulative Operating FCF | `=SUM(C107:G107)` × sponsor % | Cash generated during hold, net of debt service |
+| Multiple Expansion | `=(Exit Mult - Entry Mult) × Exit EBITDA × Sponsor %` | Value created by re-rating (zero if flat exit) |
+| Net Cash at Exit | Op min + cumul excess cash - remaining debt | Cash on the balance sheet at exit |
+| (-) MIP Dilution | Cumul after-tax MIP cost × sponsor % | Reduction from MIP payouts |
+| (-) ESOP Dilution | Exit equity × ESOP % × sponsor share | Reduction from ESOP pool |
+| **Net Return** | Sum of above | Should equal Sponsor Exit Proceeds - Entry Equity |
+
+### For Rollover Deals — Dual Waterfall
+
+Build two side-by-side waterfalls:
+1. **Movement (Sponsor):** 70% (or 66.5% post-ESOP) of exit equity, bears MIP cost through FCF
+2. **Rollover Party (e.g., Vincent):** 30% of exit equity, benefits from earnout, not diluted by ESOP
+
+| Component | Movement | Rollover Party |
+|---|---|---|
+| Entry Equity | `=C51` | `=C52` |
+| Share of Exit Equity | `=Exit Equity × 70% × (1-ESOP%)` | `=Exit Equity × 30%` |
+| (+) Earnout Received | 0 | `=C73` (Vincent's share) |
+| MoIC | formula | formula |
+| IRR | formula | formula |
+
+### Workflow
+
+1. Place after the returns matrix (or as a new section G)
+2. Compute each waterfall component using formulas that reference the existing model cells
+3. Components should sum to total return (cross-check: Net Return = Sponsor Exit Proceeds - Entry Equity)
+4. For presentation: this translates well into a stacked bar chart in the deck
 
 ---
 
