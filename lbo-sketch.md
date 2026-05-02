@@ -1,276 +1,333 @@
 # LBO Sketch Template
 
 > **Template for a back-of-envelope LBO analysis**
-> *Replicated from: Carats & Co — LBO Sketch v2.xlsx*
+> *Base: Carats & Co (full buyout) + RJ Crocker (majority acquisition with rollover)*
 > Currency: S$'000 unless stated
+
+---
+
+## Deal Archetypes
+
+This template supports multiple deal structures. The core LBO mechanics are shared, but the sheet layout and formula complexity vary by archetype:
+
+| Archetype | Example | Key Structural Features | Complexity |
+|---|---|---|---|
+| **Full Buyout** | Carats & Co | 100% acquisition, sponsor + family split, no rollover, no SF, no earnout | Simple |
+| **Majority Acquisition with Rollover** | RJ Crocker | <100% acquisition, seller rollover equity, seller financing, earnout, MIP/ESOP | Complex |
+| **Platform + Bolt-on** | (Future) | Initial platform buyout followed by add-on acquisitions at lower multiples | Advanced |
+| **Minority Growth Equity** | (Future) | Minority stake, no control premium, growth-oriented returns, no leverage | Different framework |
+
+> Select the archetype that matches your deal and follow the corresponding section markers below. Sections marked [ROLLOVER] are only needed for majority acquisitions with rollover. Sections marked [ALL] apply to every archetype.
 
 ---
 
 ## Sheet Layout
 
-Single sheet: **"LBO Sketch"**
+### Full Buyout (Simple)
 
-| Region | Rows | Columns | Purpose |
-|---|---|---|---|
-| Header | 1–3 | B | Deal title, date, confidentiality notice |
-| Key Assumptions | 4–24 | B–C, I | All blue-font inputs + notes |
-| A. Entry Val | 26–36 | B–G | EV, equity value, ownership split |
-| Sources & Uses | 38–47 | B–G | Dual-column S&U with percentages |
-| B. Net Debt Bridge | 49–82 | B–H, I | Pro forma debt, 5-yr FCF, net cash |
-| C. Exit Valuation | 84–91 | B–E | Two exit scenarios (flat + re-rate) |
-| D. Returns | 93–98 | B–E | MoIC and IRR for both scenarios |
-| Sensitivity | 101–106 | B–G | Entry × Exit multiple MoIC table |
-| Footer | 108 | B | Firm branding |
+| Region | Rows | Purpose |
+|---|---|---|
+| Header | 1–3 | Deal title, date, confidentiality notice |
+| Key Assumptions | 4–24 | All blue-font inputs + notes |
+| A. Entry Val | 26–36 | EV, equity value, ownership split |
+| Sources & Uses | 38–47 | Dual-column S&U with percentages |
+| B. Net Debt Bridge + FCF | 49–82 | Pro forma debt, 5-yr FCF, net cash |
+| C. Exit Valuation | 84–91 | Two exit scenarios (flat + re-rate) |
+| D. Returns | 93–98 | MoIC and IRR for both scenarios |
+| Sensitivity | 101–106 | Entry × Exit multiple MoIC table |
+
+### Majority Acquisition with Rollover (Complex)
+
+| Region | Rows | Purpose |
+|---|---|---|
+| Header | 1–2 | Deal title + structure summary |
+| Key Assumptions | 4–29 | Inputs incl. rollover %, SF terms, exit mult, MIP/ESOP toggles |
+| A. Entry Val | 31–39 | EV, earnout, extractable cash, equity value |
+| Ownership & Pricing | 41–44 | Per-party stake pricing |
+| Sources & Uses | 46–62 | At-close + deferred (SF, earnout) — dual column |
+| B. Target EBITDA & Earnout | 64–73 | Achievement schedule, earnout calc |
+| C. Net Debt Bridge | 75–79 | Pro forma opening position |
+| D. FCF Schedule | 81–117 | Revenue → EBITDA → MIP → tax → FCF → debt → SF → excess cash |
+| E. Exit Valuation | 118–124 | Single exit multiple, pre-MIP EBITDA basis |
+| F. Returns | 127–133 | 4-way MIP × ESOP matrix (MoIC + IRR) |
+| Sensitivity | 135–165 | 3 tables: Entry/Exit, Margin/Exit, Margin/CAGR |
 
 ---
 
-## Formatting Conventions
+## Formatting Conventions [ALL]
 
 | Convention | Style |
 |---|---|
-| Blue font + yellow bg | Hardcoded inputs (user editable) |
+| Blue font (`#0000FF`) | Hardcoded inputs (user editable) |
 | Black font | Formulas / calculations |
 | Grey italic font | Supporting labels, notes, ratios |
-| Dark header rows | White bold text on `#1A2332` background |
-| Light blue bg (`#DCE6F1`) | Key output / total rows |
-| Light grey bg (`#F2F2F2`) | Subtotal rows |
+| Dark header rows | White bold text on `#1F4E79` background |
 | Bold | Section totals and key outputs |
-| Number formats | `#,##0;(#,##0);-` for currency, `0.0x` for multiples, `0.0%` for percentages |
+| Number formats | `#,##0;(#,##0);"-"` for currency, `0.0x` for multiples, `0.0%` for percentages |
 
 ---
 
-## KEY ASSUMPTIONS (Rows 5–24)
+## KEY ASSUMPTIONS [ALL]
 
-All inputs go in column C (blue font, yellow background `#FFFFCC`). Notes/sources go in column I (grey italic).
+All inputs in column C (blue font). Notes in column I (grey italic).
 
-| Row | Label (Col B) | Input (Col C) | Format | Note (Col I) |
+### Core Inputs (both archetypes)
+
+| Row | Label | Example (Carats) | Example (RJC) | Format |
 |---|---|---|---|---|
-| 5 | EBITDA (FY2025, Unaudited) | 7,172 | `#,##0` | Source: Mgmt P&L FY2025 |
-| 6 | Entry Multiple | 6.0x | `0.0x` | [ASSUMPTION] |
-| 7 | Sponsor Stake (%) | 70% | `0.0%` | 100% acq; 75/25 sponsor/family |
-| 8 | Leverage (x EBITDA) | 2.0x | `0.0x` | [ASSUMPTION] |
-| 9 | Interest Rate (p.a.) | 4.0% | `0.0%` | Secured on company assets. [ASSUMPTION] |
-| 10 | Amortisation (years) | 5 | `0` | Straight-line |
-| 11 | Hold Period (years) | 5 | `0` | [ASSUMPTION] |
-| 12 | Tax Rate | 17% | `0.0%` | SG corporate rate |
-| 13 | Excess Cash (extractable) | 8,400 | `#,##0` | Source: Mgmt BS. Net of S$2M op. minimum. |
-| 14 | Existing Debt (to refinance) | 2,701 | `#,##0` | Source: Mgmt BS FY2025 |
-| 15 | Operating Cash Minimum | 2,000 | `#,##0` | Already netted in excess cash above |
-| 16 | Transaction Cost (% of EV) | 1.5% | `0.0%` | [ASSUMPTION] |
-| 17 | Exit Multiple — Scenario 1 | 6.0x | `0.0x` | Flat |
-| 18 | Exit Multiple — Scenario 2 | 10.0x | `0.0x` | Platform re-rating |
-| 19 | Base Revenue (FY2025) | 28,100 | `#,##0` | Source: Mgmt P&L FY2025 |
-| 20 | Revenue CAGR | 5.0% | `0.0%` | Conservative (vs CIM ~8%) |
-| 21 | EBITDA Margin | 26.0% | `0.0%` | FY2025 actual; cross-checks to C5 |
-| 22 | Capex (annual) | 1,200 | `#,##0` | Fab facility + media sites |
-| 23 | D&A (annual) | 1,240 | `#,##0` | FY2025 actual depreciation |
-| 24 | NWC (% of Revenue) | 15.0% | `0.0%` | Incremental drag on growth |
+| 5 | EBITDA (reference year) | 7,172 | 3,747 | `#,##0` |
+| 6/7 | Revenue (reference year) | 28,100 | 18,558 | `#,##0` |
+| 8 | Revenue CAGR | 5.0% | 5.0% | `0.0%` |
+| 9 | Entry Multiple | 6.0x | `=C34` (implied) | `0.0x` |
+| 10 | Sponsor Stake (%) | 70% | 51% (AAI) | `0.0%` |
+| 12 | Leverage (x EBITDA) | 2.0x | 1.0x | `0.0x` |
+| 13 | Interest Rate | 4.0% | 4.0% | `0.0%` |
+| 14 | Amortisation (years) | 5 | 7 | `0` |
+| 15 | Hold Period (years) | 5 | 5 | `0` |
+| 16 | Tax Rate | 17% | 17% | `0.0%` |
+| 17 | Total Cash (AFS) | — | 1,750 | `#,##0` |
+| 18 | Total Debt (AFS) | 2,701 | 517 | `#,##0` |
+| 19 | Operating Cash Minimum | 2,000 | 1,700 | `#,##0` |
+| 20 | Transaction Cost (% of stake) | 1.5% | 2.0% | `0.0%` |
+| 28 | Exit Multiple | 6.0x | 6.0x | `0.0x` |
+
+### Rollover-Specific Inputs [ROLLOVER]
+
+| Row | Label | Example (RJC) | Format | Notes |
+|---|---|---|---|---|
+| 11 | Founder Secondary Exit (%) | 19% | `0.0%` | Vincent's partial exit |
+| 21 | Upfront % for Sellers' Stakes | 80% | `0.0%` | Rest via SF |
+| 22-23 | SF % / Tranches | 20%, 30/30/40 | `0.0%` | Deferred payment structure |
+| 27 | SF Interest Rate | 0% | `0.0%` | Adjustable |
+| I5 | MIP Toggle (1=On) | 1 | `0` | Turns MIP cost on/off in FCF |
+| I6 | ESOP Pool (%) | 5% | `0.0%` | Dilutes sponsor at exit |
 
 ---
 
-## A. ENTRY VALUATION (Rows 26–36)
+## A. ENTRY VALUATION [ALL]
 
-### Core Valuation (Rows 27–32)
-
-| Row | Label | Formula | Notes |
-|---|---|---|---|
-| 28 | EBITDA (FY2025) | `=C5` | Links to assumption |
-| 29 | Entry Multiple | `=C6` | Links to assumption |
-| 30 | Enterprise Value | `=C28*C29` | EBITDA × Multiple |
-| 31 | (-) Net Debt / (+) Net Cash | `=C13-C14` | Excess Cash − Existing Debt |
-| 32 | Equity Value (100%) | `=C30+C31` | EV + Net Cash |
-
-### Ownership Split (Rows 34–36)
+### Full Buyout
 
 | Row | Label | Formula |
 |---|---|---|
-| 35 | Sponsor (70%) | `=C32*C7` |
-| 36 | Family Rollover (30%) | `=C32*(1-C7)` |
+| 28 | EBITDA | `=C5` |
+| 29 | Entry Multiple | `=C6` |
+| 30 | Enterprise Value | `=C28*C29` |
+| 31 | (-) Net Debt / (+) Net Cash | `=C13-C14` |
+| 32 | Equity Value (100%) | `=C30+C31` |
 
----
-
-## SOURCES & USES (Rows 38–47)
-
-Dual-column layout: Uses (B–D) and Sources (E–G).
-
-### Uses Side (Columns B–D)
-
-| Row | Label | Col C Formula | Col D (% of total) |
-|---|---|---|---|
-| 40 | Enterprise value (6.0x EBITDA) | `=C30` | `=C40/$C$45` |
-| 41 | Refinance existing debt | `=C14` | `=C41/$C$45` |
-| 42 | Transaction costs (~1.5%) | `=C30*C16` | `=C42/$C$45` |
-| 45 | Total Uses | `=SUM(C40:C42)` | `=SUM(D40:D44)` |
-
-### Sources Side (Columns E–G)
-
-| Row | Label | Col F Formula | Col G (% of total) |
-|---|---|---|---|
-| 40 | Acquisition debt (2.0x EBITDA) | `=C8*C5` | `=F40/$C$45` |
-| 41 | Excess cash extraction | `=C13` | `=F41/$C$45` |
-| 42 | Total equity required | `=C45-F40-F41` | (blank) |
-| 43 | Sponsor equity | `=F42-F44` | `=F43/$C$45` |
-| 44 | Family rollover | `=(C45-F40)*(1-C7)` | `=F44/$C$45` |
-| 45 | Total Sources | `=F40+F41+F42` | `=SUM(G40:G44)` |
-
-> **Row 47 note (merged):** Debt: Secured term loan, 4.0% p.a. fixed, 5yr straight-line amort. Secured against fabrication facility + company assets.
-
----
-
-## B. NET DEBT BRIDGE (Rows 49–82)
-
-### Pro Forma Opening (Rows 50–53)
+### Majority Acquisition with Rollover [ROLLOVER]
 
 | Row | Label | Formula | Notes |
 |---|---|---|---|
-| 51 | Pro forma acquisition debt | `=F40` | Links to Sources |
-| 52 | (-) Operating cash retained | `=-C15` | Op. cash minimum |
-| 53 | Start: Pro Forma Net Debt | `=C51+C52` | |
-
-### FCF Schedule (Rows 56–76)
-
-Columns C–G = Year 1 through Year 5; Column H = Cumulative.
-
-#### Revenue & EBITDA
-
-| Row | Label | Yr 1 (Col C) | Yr 2 (Col D) | Pattern |
-|---|---|---|---|---|
-| 57 | Revenue | `=C19*(1+C20)^1` | `=C19*(1+C20)^2` | `=C19*(1+C20)^N` for year N |
-| 58 | EBITDA | `=C57*$C$21` | `=D57*$C$21` | `=[YrCol]57*$C$21` |
-| 59 | (-) D&A | `=-$C$23` | `=-$C$23` | Constant each year |
-| 60 | EBIT | `=C58+C59` | `=D58+D59` | EBITDA − D&A |
-
-#### Debt Schedule
-
-| Row | Label | Yr 1 (Col C) | Yr 2+ Pattern |
-|---|---|---|---|
-| 62 | Opening Debt | `=F40` | `=[PrevYr]65` (prev closing debt) |
-| 63 | Less: Interest | `=-C62*$C$9` | `=-[YrCol]62*$C$9` |
-| 64 | (-) Principal Repayment | `=-F40/$C$10` | Constant: `=-F40/$C$10` |
-| 65 | Closing Debt | `=C62+C64` | `=[YrCol]62+[YrCol]64` |
-
-#### Income → FCF
-
-| Row | Label | Yr 1 (Col C) | Pattern |
-|---|---|---|---|
-| 67 | Pre-tax Income | `=C60+C63` | EBIT + Interest (interest is negative) |
-| 68 | Less: Tax (17%) | `=-C67*$C$12` | `=-[YrCol]67*$C$12` |
-| 69 | (+) D&A Addback | `=$C$23` | Constant |
-| 70 | (-) Capex | `=-$C$22` | Constant |
-| 71 | (-) Change in NWC | `=-(C57-C19)*$C$24` | `=-([YrCol]57-[PrevYrCol]57)*$C$24` |
-| 72 | Unlevered FCF | `=C67+C68+C69+C70+C71` | Sum of above |
-
-#### Cash Flow Summary
-
-| Row | Label | Yr 1 (Col C) | Pattern |
-|---|---|---|---|
-| 74 | Levered FCF | `=C72+C63+C64` | Unlevered FCF + Interest + Repayment |
-| 75 | Cumulative Excess Cash | `=C74` (Yr1) / `=[PrevYr]75+[YrCol]74` (Yr2+) | |
-| 76 | DSCR (FCF / Debt Service) | `=C72/(-C63-C64)` | Unlevered FCF / Total Debt Service |
-
-#### Cumulative Column (Col H)
-
-All cumulative cells use `=SUM(C[row]:G[row])` for the respective row.
-
-### Net Debt Bridge Summary (Rows 78–82)
-
-| Row | Label | Formula |
-|---|---|---|
-| 79 | Remaining debt at exit | `=G65` |
-| 80 | Cash on hand at exit | `=C15+G75` |
-| 81 | Net Cash Position at Exit | `=C80-C79` |
-| 82 | Exit leverage (Debt/EBITDA) | `=C79/C5` |
+| 33 | EBITDA (FY2026) | `=F5` | Screening basis |
+| 34 | Entry Multiple (Implied) | _input: 4.5x_ | Implied from EV ÷ EBITDA |
+| 35 | Enterprise Value | `=C33*C34` | |
+| 36 | (+) Earnout | `=C37-C35` | Contingent — see Section B |
+| 37 | Total EV (incl. Earnout) | _input: 18,000_ | Negotiated total |
+| 38 | (+) Extractable Cash | `=C17-C19` | Cash − Op. Minimum |
+| 39 | **Equity Value (100%)** | `=C37+C38` | |
 
 ---
 
-## C. EXIT VALUATION (Rows 84–91)
+## SOURCES & USES [ALL]
 
-Two scenarios side by side: Scenario 1 (Flat) in columns B–C, Scenario 2 (Re-Rate) in columns D–E.
+### Full Buyout — Single-close structure
 
-| Row | Label | Scenario 1 (Col C) | Scenario 2 (Col E) |
+| Side | Row | Label | Formula |
 |---|---|---|---|
-| 86 | Exit EBITDA (Year 5) | `=G58` | `=G58` |
+| Uses | 40 | Enterprise value | `=C30` |
+| Uses | 41 | Refinance existing debt | `=C14` |
+| Uses | 42 | Transaction costs | `=C30*C16` |
+| Uses | 45 | **Total Uses** | `=SUM(C40:C42)` |
+| Sources | 40 | Acquisition debt | `=C8*C5` |
+| Sources | 41 | Excess cash extraction | `=C13` |
+| Sources | 42 | Total equity required | `=C45-F40-F41` |
+| Sources | 43 | Sponsor equity | `=F42-F44` |
+| Sources | 44 | Family rollover | `=(C45-F40)*(1-C7)` |
+
+### Majority Acquisition with Rollover [ROLLOVER] — At-close + deferred
+
+**At Close:**
+
+| Side | Row | Label | Formula |
+|---|---|---|---|
+| Sources | 48 | Acquisition debt | `=C12*F5` |
+| Sources | 49 | Excess cash extraction | `=C17-C19` |
+| Sources | 50 | SPV equity | `=C53-C48-C49` |
+| Sources | 51 | Movement (sponsor) | `=0.7*C50` |
+| Sources | 52 | Vincent rollover (30%) | `=0.3*C50` |
+| Uses | 48 | AAI 51% stake (80% upfront) | `=C42*C22` |
+| Uses | 49 | Vincent 49% stake (80% upfront) | `=(C43+C44)*C22` |
+| Uses | 50 | Refinance existing debt | `=C18` |
+| Uses | 51 | Transaction costs | `=(C42+C43+C44)*C20` |
+
+**Deferred:**
+
+| Row | Label | Formula | Notes |
+|---|---|---|---|
+| 55 | Earnout (contingent — Year 4) | `=C36` | From Entry Val |
+| 56 | SF — Vincent | `=(C43+C44)-F49` | Deferred portion |
+| 57 | SF — AAI | `=C42-F48` | Deferred portion |
+| 54-56 | SF Year 1/2/3 payments | `=(C56+C57)*C24` etc. | 30/30/40 tranches |
+
+> Sources = Uses must balance at close. Deferred items (earnout, SF) are separate.
+
+---
+
+## B. TARGET EBITDA SCHEDULE & EARNOUT [ROLLOVER]
+
+| Row | Label | FY27 | FY28 | FY29 | Notes |
+|---|---|---|---|---|---|
+| 66 | Target EBITDA | _input_ | _input_ | _input_ | 95% of budget, +5% YoY |
+| 67 | Projected EBITDA | `=C84` | `=D84` | `=E84` | Links to FCF EBITDA |
+| 68 | Achievement Ratio | `=C67/C66` | etc. | | |
+| 70 | **Average Achievement** | `=AVERAGE(C68:E68)` | | | 3-year avg |
+| 71 | **Earnout Earned** | `=IF(C70<0.8,0,MIN(C70,1)*C36)` | | | Floor 80%, cap 100% |
+
+---
+
+## FCF SCHEDULE [ALL]
+
+### Full Buyout — includes Capex, D&A, NWC
+
+Revenue → EBITDA → D&A → EBIT → Interest → Tax → D&A addback → Capex → NWC → Unlevered FCF → Levered FCF
+
+### Majority Acquisition with Rollover [ROLLOVER] — includes MIP, SF
+
+Revenue → EBITDA (pre-MIP) → MIP deduction → EBITDA after MIP → Interest → Tax → Operating FCF → Debt schedule → SF schedule → Earnout payment → Cash after debt service → Cumulative excess cash
+
+**MIP Calculation (within FCF):**
+
+| Row | Label | Formula per year | Notes |
+|---|---|---|---|
+| 85 | Target EBITDA (ref) | `=C66` (FY27-29), `=E66*1.05` (FY30+) | Extends at 5% YoY |
+| 86 | Achievement Ratio | `=C84/C85` | Actual vs target |
+| 87 | MIP % (tiered) | `=IF(C86<0.8,0,IF(C86<0.9,0.03,IF(C86<1,0.04,0.05)))` | 3/4/5% tiers |
+| 88 | Less: MIP Cost | `=-C87*C84*$I$5` | Toggle-controlled |
+| 89 | **EBITDA after MIP** | `=C84+C88` | |
+
+**Seller Financing Schedule [ROLLOVER]:**
+
+| Row | Label | Yr 1 | Yr 2 | Yr 3 | Yr 4-5 |
+|---|---|---|---|---|---|
+| 102 | Opening SF Balance | `=$C$56+$C$57` | `=C105` | etc. | |
+| 103 | SF Interest | `=C102*$C$27` | | | |
+| 104 | SF Principal | `=-($C$56+$C$57)*$C$24` | `*$C$25` | `*$C$26` | 0 |
+| 105 | Closing SF Balance | `=MAX(C102+C103+C104,0)` | | | |
+
+---
+
+## EXIT VALUATION [ALL]
+
+### Full Buyout — Two scenarios
+
+| Row | Label | Scen 1 (Flat) | Scen 2 (Re-Rate) |
+|---|---|---|---|
+| 86 | Exit EBITDA | `=G58` | `=G58` |
 | 87 | Exit Multiple | `=C17` | `=C18` |
 | 88 | Enterprise Value | `=C86*C87` | `=E86*E87` |
-| 89 | (+) Net Cash at Exit | `=C81` | `=C81` |
-| 90 | Exit Equity Value (100%) | `=C88+C89` | `=E88+E89` |
-| 91 | Sponsor's 75% Share | `=C90*C7` | `=E90*C7` |
+| 90 | Exit Equity (100%) | `=C88+C89` | `=E88+E89` |
+| 91 | Sponsor Share | `=C90*C7` | `=E90*C7` |
 
----
+### Majority Acquisition [ROLLOVER] — Single exit + MIP/ESOP matrix
 
-## D. RETURNS (Rows 93–98)
-
-| Row | Label | Scenario 1 (Col C) | Scenario 2 (Col E) |
+| Row | Label | Formula | Notes |
 |---|---|---|---|
-| 95 | Sponsor equity invested | `=F42*C7` | `=F42*C7` |
-| 96 | Sponsor exit proceeds (75%) | `=C91` | `=E91` |
-| 97 | MoIC | `=C96/C95` | `=E96/E95` |
-| 98 | IRR (5-year hold) | `=C97^(1/C11)-1` | `=E97^(1/C11)-1` |
+| 120 | Exit EBITDA (pre-MIP) | `=G84` | Year 5, before MIP |
+| 121 | Exit Multiple | `=C28` | Single scenario |
+| 122 | Enterprise Value | `=C120*C121` | |
+| 123 | (+) Net Cash at Exit | `=C115` | From net debt bridge |
+| 124 | **Exit Equity (100%)** | `=C122+C123` | |
 
 ---
 
-## SENSITIVITY TABLE (Rows 101–106)
+## RETURNS [ALL]
 
-Grid: Entry Multiple (rows) × Exit Multiple (columns) → Sponsor MoIC
+### Full Buyout — Simple MoIC + IRR
 
-**Header row 103:**
+| Row | Label | Scen 1 | Scen 2 |
+|---|---|---|---|
+| 95 | Sponsor equity invested | `=F42*C7` | |
+| 96 | Sponsor exit proceeds | `=C91` | `=E91` |
+| 97 | **MoIC** | `=C96/C95` | `=E96/E95` |
+| 98 | IRR | `=C97^(1/C11)-1` | |
 
-| Col B | Col C | Col D | Col E | Col F | Col G |
+### Majority Acquisition [ROLLOVER] — 4-way MIP × ESOP matrix
+
+Helper cells (computed once, referenced by matrix):
+- **I125:** Base net cash (no MIP) = `=C115 - SUM(C88:G88)*(1-C16)` — adds back MIP if toggle was on
+- **I126:** Cumul after-tax MIP = sum of `IF(achievement<0.8,0,...)*EBITDA*(1-tax)` per year
+
+| Row | Label | Base (No MIP, No ESOP) | MIP Only | ESOP Only | Both |
 |---|---|---|---|---|---|
-| Entry ↓ / Exit → | 5.0x | 6.0x | 8.0x | 10.0x | Sponsor Eq. |
+| 129 | Exit EV | `=C120*C121` | same | same | same |
+| 130 | (+) Net Cash | `=$I$125` | `=$I$125-$I$126` | `=$I$125` | `=$I$125-$I$126` |
+| 131 | Sponsor Proceeds | `=(C129+C130)*(C10+C11)` | same | `*..*(1-I6)` | `*..*(1-I6)` |
+| 132 | **MoIC** | `=C131/$C$51` | | | |
+| 133 | IRR | `=C132^(1/$C$15)-1` | | | |
 
-**Data rows 104–106** (Entry multiples 5.0x, 6.0x, 7.0x in Col B):
+> The 4-way matrix shows the independent and combined impact of MIP (reduces FCF/cash) and ESOP (dilutes sponsor %) on returns, allowing partners to evaluate each lever separately.
 
-**Sponsor Equity (Col G) formula:**
-```
-=(B[row]*C5*(1+C16)+C14-C8*C5-(C13-C15))*C7
-```
-Logic: (Entry EV including txn costs + refi debt − acq debt − net cash extraction) × sponsor %
+---
 
-**MoIC cell formula (Cols C–F):**
-```
-=([ExitMult]*G58+C81)*C7/G[row]
-```
-Logic: (Exit EV + Net Cash at Exit) × Sponsor % ÷ Sponsor Equity Invested
+## SENSITIVITY TABLES [ALL]
 
-Where:
-- `[ExitMult]` = the exit multiple from row 103 (C103, D103, E103, or F103)
-- `G58` = Year 5 EBITDA
-- `C81` = Net Cash Position at Exit
-- `C7` = Sponsor stake %
-- `G[row]` = Sponsor equity for that entry multiple row
+### Standard (both archetypes): Entry × Exit Multiple MoIC
+
+Grid with 3 entry multiples (rows) × 5 exit multiples (columns). Cell formula:
+```
+=(ExitMult × Year5_EBITDA + NetCash) × SponsorShare / SponsorEquity
+```
+
+### Extended (Rollover archetype): 3 sensitivity tables
+
+1. **Entry / Exit Multiple** — MoIC grid (same as above, ESOP-adjusted)
+2. **EBITDA Margin / Exit Multiple** — MoIC at different margin assumptions
+3. **EBITDA Margin / Revenue CAGR** — operational sensitivity at fixed 6x exit
+
+---
+
+## FUTURE ENHANCEMENTS (v3 Roadmap)
+
+Based on partner feedback and deal experience:
+
+1. **Named Scenarios:** Base / Downside / Upside scenarios with full independent FCF schedules for each, rather than single-point projections with sensitivity tables
+2. **Seller Financing Interest Sensitivity:** 0% / 3% / 5% SF interest rate sensitivity table — currently SF interest is a single input; a dedicated table would show the cash flow impact of different SF terms during negotiation
+3. **Returns Waterfall:** Returns waterfall for Movement (sponsor) and rollover party (e.g., Vincent) on NPV basis — decomposes total returns into: entry equity, operating FCF contribution, multiple expansion, cash-on-cash, and ESOP/MIP dilution effects
 
 ---
 
 ## HOW TO USE THIS TEMPLATE
 
-1. Create a new sheet named "LBO Sketch"
-2. Set up the header (rows 1–3) with deal name and date
-3. Enter all assumptions (rows 5–24) in column C with blue font (`#0000FF`) on yellow background (`#FFFFCC`)
-4. Build Section A (Entry Valuation) — all formulas reference the assumptions above
-5. Build Sources & Uses — dual-column layout, everything links to assumptions + Section A
-6. Build Section B (Net Debt Bridge + FCF) — the most formula-intensive section; copy Yr 1 formulas across Yr 2–5
-7. Build Section C (Exit Valuation) — two side-by-side scenarios
-8. Build Section D (Returns) — MoIC and IRR reference entry equity and exit proceeds
-9. Build Sensitivity Table — parametric MoIC grid
+1. **Identify the deal archetype** — Full Buyout or Majority Acquisition with Rollover
+2. Create a new sheet named "LBO Sketch"
+3. Set up header (rows 1–3) with deal name and date
+4. Enter all assumptions in column C (blue font) — use the archetype-appropriate input set
+5. Build Entry Valuation — all formulas reference assumptions
+6. Build Sources & Uses — must balance. For rollover deals, include deferred section (SF, earnout)
+7. Build FCF Schedule — most formula-intensive section. For rollover deals, include MIP and SF sub-schedules
+8. Build Exit Valuation — single or dual scenario
+9. Build Returns — simple MoIC/IRR or 4-way matrix
+10. Build Sensitivity Tables
 
 ### Key Relationships / Circular Check
 
-- `C45` (Total Uses) == `F45` (Total Sources) ← must balance
-- `C81` (Net Cash at Exit) feeds into exit valuation
-- `G58` (Year 5 EBITDA) feeds into exit EV
-- `F42` (Total Equity Required) feeds into sponsor equity invested
-- No circular references — interest is calculated on opening debt, not average debt
+- Total Uses == Total Sources (at close) ← must balance
+- Net Cash at Exit feeds into exit valuation
+- Year 5 EBITDA (pre-MIP) feeds into exit EV
+- Total Equity Required feeds into sponsor equity invested
+- No circular references — interest calculated on opening debt, not average
 
 ### Adapting for a New Deal
 
 - Replace all blue-font assumptions with target company data
-- Update header text (Row 1–2) and footer (Row 108)
-- If hold period ≠ 5 years, add/remove FCF columns (C–G) and update cumulative column
-- If multiple debt tranches needed, duplicate the debt schedule rows (62–65) for each tranche
-- Adjust sensitivity table entry/exit ranges as appropriate
+- If hold period ≠ 5 years, add/remove FCF columns and update cumulative column
+- If multiple debt tranches, duplicate debt schedule rows for each
+- For rollover deals: adjust rollover %, SF tranches, MIP tiers, ESOP pool as needed
+- Adjust sensitivity table ranges as appropriate
 
 ---
 
-*Template generated from: Carats & Co — LBO Sketch v2.xlsx*
-*Movement Capital | Project Cast | 23 February 2026*
+*Template updated from: Carats & Co (v2) + RJ Crocker (v2)*
+*Movement Holdings | May 2026*
